@@ -27,76 +27,76 @@ export default function InternalTournamentsPage() {
   ];
 
   return (
-    <main class="min-h-screen bg-background text-on-surface pb-16 pt-20">
+    <main className="min-h-screen bg-background text-on-surface pb-16 pt-20">
       <Header />
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center gap-2 text-xs text-on-surface-variant my-4">
-          <Link href="/professor/dashboard" class="hover:text-primary transition-colors">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 text-xs text-on-surface-variant my-4">
+          <Link href="/professor/dashboard" className="hover:text-primary transition-colors">
             Dashboard
           </Link>
           <span>/</span>
-          <span class="text-on-surface font-bold">Campeonatos Internos</span>
+          <span className="text-on-surface font-bold">Campeonatos Internos</span>
         </div>
 
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 class="font-display font-bold text-2xl text-on-surface">Campeonatos Internos da Academia</h1>
-            <p class="text-xs text-on-surface-variant">
+            <h1 className="font-display font-bold text-2xl text-on-surface">Campeonatos Internos da Academia</h1>
+            <p className="text-xs text-on-surface-variant">
               Competições exclusivas de tatame para integração e testes dos alunos matriculados.
             </p>
           </div>
 
           <Link
             href="/professor/campeonatos/novo"
-            class="bg-primary-container hover:bg-secondary-container text-white font-bold text-xs px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-primary-container/20 cursor-pointer"
+            className="bg-primary-container hover:bg-secondary-container text-white font-bold text-xs px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-primary-container/20 cursor-pointer"
           >
-            <span class="material-symbols-outlined text-lg">add_circle</span>
+            <span className="material-symbols-outlined text-lg">add_circle</span>
             <span>⚡ Criar Campeonato Interno</span>
           </Link>
         </div>
 
         {/* Tournament Cards */}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {tournaments.map((t) => (
             <div
               key={t.id}
-              class="bg-surface-container border border-outline-variant/40 rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-primary/50 transition-all"
+              className="bg-surface-container border border-outline-variant/40 rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-primary/50 transition-all"
             >
               <div>
-                <div class="flex justify-between items-start mb-3">
+                <div className="flex justify-between items-start mb-3">
                   <span
-                    class={`text-[11px] font-mono font-bold px-3 py-1 rounded-full border ${t.statusColor}`}
+                    className={`text-[11px] font-mono font-bold px-3 py-1 rounded-full border ${t.statusColor}`}
                   >
                     {t.status}
                   </span>
-                  <span class="text-xs text-on-surface-variant flex items-center gap-1 font-mono">
-                    <span class="material-symbols-outlined text-sm">groups</span>
+                  <span className="text-xs text-on-surface-variant flex items-center gap-1 font-mono">
+                    <span className="material-symbols-outlined text-sm">groups</span>
                     <span>{t.athletesCount} Alunos</span>
                   </span>
                 </div>
 
-                <h3 class="font-display font-bold text-xl text-on-surface mb-2">{t.title}</h3>
-                <p class="text-xs text-on-surface-variant flex items-center gap-1 mb-1">
-                  <span class="material-symbols-outlined text-sm text-primary">calendar_month</span> {t.date}
+                <h3 className="font-display font-bold text-xl text-on-surface mb-2">{t.title}</h3>
+                <p className="text-xs text-on-surface-variant flex items-center gap-1 mb-1">
+                  <span className="material-symbols-outlined text-sm text-primary">calendar_month</span> {t.date}
                 </p>
-                <p class="text-xs text-on-surface-variant flex items-center gap-1">
-                  <span class="material-symbols-outlined text-sm text-tertiary">location_on</span> {t.location}
+                <p className="text-xs text-on-surface-variant flex items-center gap-1">
+                  <span className="material-symbols-outlined text-sm text-tertiary">location_on</span> {t.location}
                 </p>
               </div>
 
-              <div class="mt-6 pt-4 border-t border-outline-variant/30 flex flex-wrap gap-2">
+              <div className="mt-6 pt-4 border-t border-outline-variant/30 flex flex-wrap gap-2">
                 <Link
                   href="/professor/campeonatos/novo"
-                  class="flex-1 bg-surface-variant hover:bg-surface-bright text-on-surface text-center py-2 px-3 rounded-lg text-xs font-bold transition-all border border-outline-variant/40"
+                  className="flex-1 bg-surface-variant hover:bg-surface-bright text-on-surface text-center py-2 px-3 rounded-lg text-xs font-bold transition-all border border-outline-variant/40"
                 >
                   ⚙️ Categorias
                 </Link>
                 <Link
                   href={`/campeonato/${t.id}`}
-                  class="flex-1 bg-primary-container hover:bg-secondary-container text-white text-center py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 shadow"
+                  className="flex-1 bg-primary-container hover:bg-secondary-container text-white text-center py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 shadow"
                 >
-                  <span class="material-symbols-outlined text-sm">play_arrow</span>
+                  <span className="material-symbols-outlined text-sm">play_arrow</span>
                   <span>Chaves ao Vivo</span>
                 </Link>
               </div>

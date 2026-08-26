@@ -48,41 +48,41 @@ export default function TournamentConfigPage() {
   };
 
   return (
-    <main class="min-h-screen bg-background text-on-surface pb-16 pt-20">
+    <main className="min-h-screen bg-background text-on-surface pb-16 pt-20">
       <Header />
 
-      <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center gap-2 text-xs text-on-surface-variant my-4">
-          <Link href="/professor/dashboard" class="hover:text-primary transition-colors">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center gap-2 text-xs text-on-surface-variant my-4">
+          <Link href="/professor/dashboard" className="hover:text-primary transition-colors">
             Dashboard
           </Link>
           <span>/</span>
-          <Link href="/professor/campeonatos" class="hover:text-primary transition-colors">
+          <Link href="/professor/campeonatos" className="hover:text-primary transition-colors">
             Campeonatos Internos
           </Link>
           <span>/</span>
-          <span class="text-on-surface font-bold">Configurar Evento</span>
+          <span className="text-on-surface font-bold">Configurar Evento</span>
         </div>
 
-        <div class="mb-6 flex justify-between items-center">
+        <div className="mb-6 flex justify-between items-center">
           <div>
-            <h1 class="font-display font-bold text-2xl text-on-surface">1º Torneio Interno Forja 2026</h1>
-            <p class="text-xs text-on-surface-variant">Configuração de categorias, pesagem e montagem de chaves.</p>
+            <h1 className="font-display font-bold text-2xl text-on-surface">1º Torneio Interno Forja 2026</h1>
+            <p className="text-xs text-on-surface-variant">Configuração de categorias, pesagem e montagem de chaves.</p>
           </div>
           <Link
             href="/campeonato/1"
-            class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2 rounded-lg transition-all flex items-center gap-1 shadow cursor-pointer"
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2 rounded-lg transition-all flex items-center gap-1 shadow cursor-pointer"
           >
             <span>Ver Chave ao Vivo</span>
-            <span class="material-symbols-outlined text-sm">play_arrow</span>
+            <span className="material-symbols-outlined text-sm">play_arrow</span>
           </Link>
         </div>
 
         {/* Navigation Tabs */}
-        <div class="flex border-b border-outline-variant/30 mb-6 gap-4 font-bold text-xs">
+        <div className="flex border-b border-outline-variant/30 mb-6 gap-4 font-bold text-xs">
           <button
             onClick={() => setActiveTab("geral")}
-            class={`pb-3 px-2 transition-all cursor-pointer border-b-2 ${
+            className={`pb-3 px-2 transition-all cursor-pointer border-b-2 ${
               activeTab === "geral"
                 ? "border-primary text-primary"
                 : "border-transparent text-on-surface-variant hover:text-on-surface"
@@ -92,7 +92,7 @@ export default function TournamentConfigPage() {
           </button>
           <button
             onClick={() => setActiveTab("categorias")}
-            class={`pb-3 px-2 transition-all cursor-pointer border-b-2 ${
+            className={`pb-3 px-2 transition-all cursor-pointer border-b-2 ${
               activeTab === "categorias"
                 ? "border-primary text-primary"
                 : "border-transparent text-on-surface-variant hover:text-on-surface"
@@ -102,7 +102,7 @@ export default function TournamentConfigPage() {
           </button>
           <button
             onClick={() => setActiveTab("atletas")}
-            class={`pb-3 px-2 transition-all cursor-pointer border-b-2 ${
+            className={`pb-3 px-2 transition-all cursor-pointer border-b-2 ${
               activeTab === "atletas"
                 ? "border-primary text-primary"
                 : "border-transparent text-on-surface-variant hover:text-on-surface"
@@ -114,45 +114,45 @@ export default function TournamentConfigPage() {
 
         {/* Tab 1: Info Geral */}
         {activeTab === "geral" && (
-          <div class="bg-surface-container border border-outline-variant/40 rounded-xl p-6 shadow-xl space-y-4 animate-fade-in">
-            <h3 class="font-bold text-base text-on-surface">Dados do Torneio Interno</h3>
+          <div className="bg-surface-container border border-outline-variant/40 rounded-xl p-6 shadow-xl space-y-4 animate-fade-in">
+            <h3 className="font-bold text-base text-on-surface">Dados do Torneio Interno</h3>
             <div>
-              <label class="block text-xs font-bold text-on-surface-variant mb-1">Título do Campeonato</label>
+              <label className="block text-xs font-bold text-on-surface-variant mb-1">Título do Campeonato</label>
               <input
                 type="text"
                 defaultValue="1º Torneio Interno Forja 2026"
-                class="w-full bg-surface-dim border border-outline-variant/40 rounded-lg py-2.5 px-3 text-xs text-on-surface outline-none"
+                className="w-full bg-surface-dim border border-outline-variant/40 rounded-lg py-2.5 px-3 text-xs text-on-surface outline-none"
               />
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-bold text-on-surface-variant mb-1">Data do Evento</label>
+                <label className="block text-xs font-bold text-on-surface-variant mb-1">Data do Evento</label>
                 <input
                   type="date"
                   defaultValue="2026-09-15"
-                  class="w-full bg-surface-dim border border-outline-variant/40 rounded-lg py-2.5 px-3 text-xs text-on-surface outline-none"
+                  className="w-full bg-surface-dim border border-outline-variant/40 rounded-lg py-2.5 px-3 text-xs text-on-surface outline-none"
                 />
               </div>
               <div>
-                <label class="block text-xs font-bold text-on-surface-variant mb-1">Local no Tatame</label>
+                <label className="block text-xs font-bold text-on-surface-variant mb-1">Local no Tatame</label>
                 <input
                   type="text"
                   defaultValue="Tatame Principal - Academia HQ"
-                  class="w-full bg-surface-dim border border-outline-variant/40 rounded-lg py-2.5 px-3 text-xs text-on-surface outline-none"
+                  className="w-full bg-surface-dim border border-outline-variant/40 rounded-lg py-2.5 px-3 text-xs text-on-surface outline-none"
                 />
               </div>
             </div>
             <div>
-              <label class="block text-xs font-bold text-on-surface-variant mb-1">Regras Especiais</label>
+              <label className="block text-xs font-bold text-on-surface-variant mb-1">Regras Especiais</label>
               <textarea
                 rows={3}
                 defaultValue="Regras oficiais IBJJF. Lutas de 5 minutos. Obrigatório kimono limpo e unhas cortadas."
-                class="w-full bg-surface-dim border border-outline-variant/40 rounded-lg p-3 text-xs text-on-surface outline-none"
+                className="w-full bg-surface-dim border border-outline-variant/40 rounded-lg p-3 text-xs text-on-surface outline-none"
               />
             </div>
             <button
               onClick={() => setToastMessage("Salvo com sucesso!")}
-              class="bg-primary-container text-white font-bold text-xs px-6 py-2.5 rounded-lg hover:bg-secondary-container transition-all cursor-pointer"
+              className="bg-primary-container text-white font-bold text-xs px-6 py-2.5 rounded-lg hover:bg-secondary-container transition-all cursor-pointer"
             >
               Salvar Alterações
             </button>
@@ -161,23 +161,23 @@ export default function TournamentConfigPage() {
 
         {/* Tab 2: Categorias */}
         {activeTab === "categorias" && (
-          <div class="space-y-6 animate-fade-in">
+          <div className="space-y-6 animate-fade-in">
             {/* Form Nova Categoria */}
-            <form onSubmit={handleAddCategory} class="bg-surface-container border border-outline-variant/40 rounded-xl p-5 shadow-xl space-y-4">
-              <h3 class="font-bold text-sm text-on-surface">+ Adicionar Nova Categoria</h3>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <form onSubmit={handleAddCategory} className="bg-surface-container border border-outline-variant/40 rounded-xl p-5 shadow-xl space-y-4">
+              <h3 className="font-bold text-sm text-on-surface">+ Adicionar Nova Categoria</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <input
                   type="text"
                   required
                   placeholder="Nome da Categoria (ex: Azul Leve)"
                   value={newCatName}
                   onChange={(e) => setNewCatName(e.target.value)}
-                  class="bg-surface-dim border border-outline-variant/40 rounded-lg py-2 px-3 text-xs text-on-surface outline-none"
+                  className="bg-surface-dim border border-outline-variant/40 rounded-lg py-2 px-3 text-xs text-on-surface outline-none"
                 />
                 <select
                   value={newCatBelt}
                   onChange={(e) => setNewCatBelt(e.target.value)}
-                  class="bg-surface-dim border border-outline-variant/40 rounded-lg py-2 px-3 text-xs text-on-surface outline-none"
+                  className="bg-surface-dim border border-outline-variant/40 rounded-lg py-2 px-3 text-xs text-on-surface outline-none"
                 >
                   <option value="branca">Faixa Branca</option>
                   <option value="azul">Faixa Azul</option>
@@ -190,28 +190,28 @@ export default function TournamentConfigPage() {
                   placeholder="Peso Máximo (ex: 82.3)"
                   value={newCatWeight}
                   onChange={(e) => setNewCatWeight(e.target.value)}
-                  class="bg-surface-dim border border-outline-variant/40 rounded-lg py-2 px-3 text-xs text-on-surface outline-none"
+                  className="bg-surface-dim border border-outline-variant/40 rounded-lg py-2 px-3 text-xs text-on-surface outline-none"
                 />
               </div>
               <button
                 type="submit"
-                class="bg-primary-container text-white font-bold text-xs px-4 py-2 rounded-lg hover:bg-secondary-container transition-all cursor-pointer"
+                className="bg-primary-container text-white font-bold text-xs px-4 py-2 rounded-lg hover:bg-secondary-container transition-all cursor-pointer"
               >
                 Adicionar Categoria
               </button>
             </form>
 
             {/* Lista de Categorias */}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {categories.map((c) => (
-                <div key={c.id} class="bg-surface-container border border-outline-variant/40 rounded-xl p-4 shadow-lg flex justify-between items-center">
+                <div key={c.id} className="bg-surface-container border border-outline-variant/40 rounded-xl p-4 shadow-lg flex justify-between items-center">
                   <div>
-                    <h4 class="font-bold text-sm text-on-surface">{c.name}</h4>
-                    <p class="text-xs text-on-surface-variant">
+                    <h4 className="font-bold text-sm text-on-surface">{c.name}</h4>
+                    <p className="text-xs text-on-surface-variant">
                       Faixa {c.belt} • Limite: {c.maxWeight}
                     </p>
                   </div>
-                  <span class="text-[10px] bg-primary-container/20 text-primary px-2.5 py-1 rounded font-mono font-bold">
+                  <span className="text-[10px] bg-primary-container/20 text-primary px-2.5 py-1 rounded font-mono font-bold">
                     Ativa
                   </span>
                 </div>
@@ -222,37 +222,37 @@ export default function TournamentConfigPage() {
 
         {/* Tab 3: Atletas & Pesagem */}
         {activeTab === "atletas" && (
-          <div class="bg-surface-container border border-outline-variant/40 rounded-xl p-6 shadow-xl space-y-4 animate-fade-in">
-            <h3 class="font-bold text-base text-on-surface">Confirmação de Pesagem no Tatame</h3>
-            <p class="text-xs text-on-surface-variant">Marque a pesagem realizada antes de gerar as chaves.</p>
+          <div className="bg-surface-container border border-outline-variant/40 rounded-xl p-6 shadow-xl space-y-4 animate-fade-in">
+            <h3 className="font-bold text-base text-on-surface">Confirmação de Pesagem no Tatame</h3>
+            <p className="text-xs text-on-surface-variant">Marque a pesagem realizada antes de gerar as chaves.</p>
 
-            <div class="space-y-3">
-              <div class="flex justify-between items-center p-3 bg-surface-dim rounded-lg border border-outline-variant/30">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-surface-container border border-outline-variant/40 flex items-center justify-center font-bold text-xs">
+            <div className="space-y-3">
+              <div className="flex justify-between items-center p-3 bg-surface-dim rounded-lg border border-outline-variant/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-surface-container border border-outline-variant/40 flex items-center justify-center font-bold text-xs">
                     L
                   </div>
                   <div>
-                    <div class="font-bold text-xs text-on-surface">Lucas Almeida Silva</div>
-                    <div class="text-[10px] text-on-surface-variant">Categoria: Adulto Azul Médio</div>
+                    <div className="font-bold text-xs text-on-surface">Lucas Almeida Silva</div>
+                    <div className="text-[10px] text-on-surface-variant">Categoria: Adulto Azul Médio</div>
                   </div>
                 </div>
-                <span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded border border-emerald-500/40 font-bold">
+                <span className="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded border border-emerald-500/40 font-bold">
                   🟢 Peso OK (81.2 kg)
                 </span>
               </div>
 
-              <div class="flex justify-between items-center p-3 bg-surface-dim rounded-lg border border-outline-variant/30">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-surface-container border border-outline-variant/40 flex items-center justify-center font-bold text-xs">
+              <div className="flex justify-between items-center p-3 bg-surface-dim rounded-lg border border-outline-variant/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-surface-container border border-outline-variant/40 flex items-center justify-center font-bold text-xs">
                     M
                   </div>
                   <div>
-                    <div class="font-bold text-xs text-on-surface">Matheus Henrique</div>
-                    <div class="text-[10px] text-on-surface-variant">Categoria: Adulto Branca Leve</div>
+                    <div className="font-bold text-xs text-on-surface">Matheus Henrique</div>
+                    <div className="text-[10px] text-on-surface-variant">Categoria: Adulto Branca Leve</div>
                   </div>
                 </div>
-                <span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded border border-emerald-500/40 font-bold">
+                <span className="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded border border-emerald-500/40 font-bold">
                   🟢 Peso OK (75.1 kg)
                 </span>
               </div>

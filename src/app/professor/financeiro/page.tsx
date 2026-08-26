@@ -82,22 +82,22 @@ export default function FinancialPage() {
   };
 
   return (
-    <main class="min-h-screen bg-background text-on-surface pb-16 pt-20">
+    <main className="min-h-screen bg-background text-on-surface pb-16 pt-20">
       <Header />
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center gap-2 text-xs text-on-surface-variant my-4">
-          <Link href="/professor/dashboard" class="hover:text-primary transition-colors">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 text-xs text-on-surface-variant my-4">
+          <Link href="/professor/dashboard" className="hover:text-primary transition-colors">
             Dashboard
           </Link>
           <span>/</span>
-          <span class="text-on-surface font-bold">Planilha Financeira</span>
+          <span className="text-on-surface font-bold">Planilha Financeira</span>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
-            <h1 class="font-display font-bold text-2xl text-on-surface">Planilha Inteligente de Mensalidades</h1>
-            <p class="text-xs text-on-surface-variant">
+            <h1 className="font-display font-bold text-2xl text-on-surface">Planilha Inteligente de Mensalidades</h1>
+            <p className="text-xs text-on-surface-variant">
               Controle de mensalidades presencial sem gateway. Baixa manual em 1 clique.
             </p>
           </div>
@@ -105,59 +105,59 @@ export default function FinancialPage() {
         </div>
 
         {/* Legend Banner */}
-        <div class="bg-surface-container border border-outline-variant/40 rounded-xl p-4 mb-6 flex flex-wrap items-center gap-4 text-xs font-mono">
-          <span class="text-on-surface-variant font-bold">Legenda:</span>
-          <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/30">
+        <div className="bg-surface-container border border-outline-variant/40 rounded-xl p-4 mb-6 flex flex-wrap items-center gap-4 text-xs font-mono">
+          <span className="text-on-surface-variant font-bold">Legenda:</span>
+          <span className="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/30">
             🟢 Pago
           </span>
-          <span class="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded border border-amber-500/30">
+          <span className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded border border-amber-500/30">
             🟡 A Vencer
           </span>
-          <span class="inline-flex items-center gap-1 bg-red-500/20 text-red-400 px-2.5 py-1 rounded border border-red-500/30">
+          <span className="inline-flex items-center gap-1 bg-red-500/20 text-red-400 px-2.5 py-1 rounded border border-red-500/30">
             🔴 Atrasado
           </span>
-          <span class="inline-flex items-center gap-1 bg-stone-500/20 text-stone-300 px-2.5 py-1 rounded border border-stone-500/30">
+          <span className="inline-flex items-center gap-1 bg-stone-500/20 text-stone-300 px-2.5 py-1 rounded border border-stone-500/30">
             ⚪ Isento
           </span>
         </div>
 
         {/* Financial Spreadsheet Table */}
-        <div class="bg-surface-container border border-outline-variant/40 rounded-xl p-4 shadow-xl overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
+        <div className="bg-surface-container border border-outline-variant/40 rounded-xl p-4 shadow-xl overflow-x-auto">
+          <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr class="border-b border-outline-variant/30 text-on-surface-variant uppercase font-mono">
-                <th class="py-3 px-4 min-w-[200px]">Aluno</th>
-                <th class="py-3 px-2 text-center">Dia</th>
+              <tr className="border-b border-outline-variant/30 text-on-surface-variant uppercase font-mono">
+                <th className="py-3 px-4 min-w-[200px]">Aluno</th>
+                <th className="py-3 px-2 text-center">Dia</th>
                 {monthKeys.map((m) => (
-                  <th key={m} class="py-3 px-2 text-center min-w-[60px]">
+                  <th key={m} className="py-3 px-2 text-center min-w-[60px]">
                     {m}
                   </th>
                 ))}
-                <th class="py-3 px-4 text-right">Cobrança</th>
+                <th className="py-3 px-4 text-right">Cobrança</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-outline-variant/20">
+            <tbody className="divide-y divide-outline-variant/20">
               {records.map((r) => {
                 const hasOverdue = Object.values(r.months).includes("overdue");
                 return (
-                  <tr key={r.id} class="hover:bg-surface-variant/20 transition-colors">
-                    <td class="py-3 px-4 font-bold text-on-surface">
-                      <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-surface-dim border border-outline-variant/40 flex items-center justify-center text-xs font-bold text-primary">
+                  <tr key={r.id} className="hover:bg-surface-variant/20 transition-colors">
+                    <td className="py-3 px-4 font-bold text-on-surface">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-surface-dim border border-outline-variant/40 flex items-center justify-center text-xs font-bold text-primary">
                           {r.name.charAt(0)}
                         </div>
                         <span>{r.name}</span>
                       </div>
                     </td>
-                    <td class="py-3 px-2 text-center font-mono text-on-surface-variant">Dia {r.dueDay}</td>
+                    <td className="py-3 px-2 text-center font-mono text-on-surface-variant">Dia {r.dueDay}</td>
                     {monthKeys.map((m) => {
                       const st = r.months[m] || "pending";
                       return (
-                        <td key={m} class="py-3 px-2 text-center">
+                        <td key={m} className="py-3 px-2 text-center">
                           <button
                             onClick={() => handleCellClick(r.id, r.name, m, st)}
                             title={st === "paid" ? "Baixa efetuada" : "Clique para dar baixa manual"}
-                            class={`w-8 h-8 rounded-lg font-bold text-[10px] inline-flex items-center justify-center transition-all cursor-pointer ${
+                            className={`w-8 h-8 rounded-lg font-bold text-[10px] inline-flex items-center justify-center transition-all cursor-pointer ${
                               st === "paid"
                                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
                                 : st === "overdue"
@@ -170,15 +170,15 @@ export default function FinancialPage() {
                         </td>
                       );
                     })}
-                    <td class="py-3 px-4 text-right">
+                    <td className="py-3 px-4 text-right">
                       {hasOverdue && (
                         <a
                           href={`https://wa.me/${r.phone}?text=Olá%20${encodeURIComponent(r.name)},%20notamos%20que%20sua%20mensalidade%20está%20pendente.%20Favor%20acertar%20na%20recepção.`}
                           target="_blank"
                           rel="noreferrer"
-                          class="inline-flex items-center gap-1 bg-emerald-600/90 hover:bg-emerald-500 text-white px-2.5 py-1 rounded text-[11px] font-bold transition-all shadow"
+                          className="inline-flex items-center gap-1 bg-emerald-600/90 hover:bg-emerald-500 text-white px-2.5 py-1 rounded text-[11px] font-bold transition-all shadow"
                         >
-                          <span class="material-symbols-outlined text-xs">chat</span>
+                          <span className="material-symbols-outlined text-xs">chat</span>
                           <span>WhatsApp</span>
                         </a>
                       )}
@@ -197,18 +197,18 @@ export default function FinancialPage() {
         onClose={() => setSelectedCell(null)}
         title={`💳 Dar Baixa Manual — Mês de ${selectedCell?.month}`}
       >
-        <div class="space-y-4">
-          <p class="text-xs text-on-surface-variant">
+        <div className="space-y-4">
+          <p className="text-xs text-on-surface-variant">
             Confirmar recebimento da mensalidade de R$ 150,00 para <strong>{selectedCell?.studentName}</strong>?
           </p>
 
           <div>
-            <label class="block text-xs font-bold text-on-surface mb-1">Forma de Pagamento Recebida</label>
-            <div class="grid grid-cols-3 gap-2">
+            <label className="block text-xs font-bold text-on-surface mb-1">Forma de Pagamento Recebida</label>
+            <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => setPaymentMethod("pix")}
-                class={`py-2 px-3 text-xs font-bold rounded-lg border transition-all ${
+                className={`py-2 px-3 text-xs font-bold rounded-lg border transition-all ${
                   paymentMethod === "pix"
                     ? "bg-primary-container text-white border-primary-container"
                     : "bg-surface-dim border-outline-variant/40 text-on-surface-variant"
@@ -219,7 +219,7 @@ export default function FinancialPage() {
               <button
                 type="button"
                 onClick={() => setPaymentMethod("dinheiro")}
-                class={`py-2 px-3 text-xs font-bold rounded-lg border transition-all ${
+                className={`py-2 px-3 text-xs font-bold rounded-lg border transition-all ${
                   paymentMethod === "dinheiro"
                     ? "bg-primary-container text-white border-primary-container"
                     : "bg-surface-dim border-outline-variant/40 text-on-surface-variant"
@@ -230,7 +230,7 @@ export default function FinancialPage() {
               <button
                 type="button"
                 onClick={() => setPaymentMethod("cartao")}
-                class={`py-2 px-3 text-xs font-bold rounded-lg border transition-all ${
+                className={`py-2 px-3 text-xs font-bold rounded-lg border transition-all ${
                   paymentMethod === "cartao"
                     ? "bg-primary-container text-white border-primary-container"
                     : "bg-surface-dim border-outline-variant/40 text-on-surface-variant"
@@ -243,7 +243,7 @@ export default function FinancialPage() {
 
           <button
             onClick={handleConfirmPayment}
-            class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg text-xs transition-all shadow-lg cursor-pointer mt-4"
+            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg text-xs transition-all shadow-lg cursor-pointer mt-4"
           >
             Confirmar Baixa na Planilha
           </button>

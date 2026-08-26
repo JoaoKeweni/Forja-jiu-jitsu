@@ -9,10 +9,10 @@ export default function DemoSwitcher() {
   return (
     <div
       id="demo-switcher"
-      class="fixed bottom-4 right-4 z-[9999] bg-[#1F2937]/95 border border-[#b91c1c]/50 backdrop-blur-md px-3 py-2 rounded-full shadow-2xl flex items-center gap-2 text-xs font-mono text-on-surface"
+      className="fixed bottom-4 right-4 z-[9999] bg-[#1F2937]/95 border border-[#b91c1c]/50 backdrop-blur-md px-3 py-2 rounded-full shadow-2xl flex items-center gap-2 text-xs font-mono text-on-surface"
     >
-      <span class="flex items-center gap-1 font-bold text-[#ffb4ab] px-2">
-        <span class="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse" />
+      <span className="flex items-center gap-1 font-bold text-[#ffb4ab] px-2">
+        <span className="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse" />
         DEMO SWITCHER
       </span>
       <select
@@ -20,7 +20,7 @@ export default function DemoSwitcher() {
         onChange={(e) => {
           if (e.target.value) router.push(e.target.value);
         }}
-        class="bg-[#0A0A0A] border border-[#374151] text-on-surface text-xs rounded-full px-3 py-1 focus:outline-none focus:border-[#b91c1c] cursor-pointer"
+        className="bg-[#0A0A0A] border border-[#374151] text-on-surface text-xs rounded-full px-3 py-1 focus:outline-none focus:border-[#b91c1c] cursor-pointer"
       >
         <optgroup label="⚡ Geral Multi-Tenant">
           <option value="/gracie-barra-matriz/login">🔑 Login Academia</option>

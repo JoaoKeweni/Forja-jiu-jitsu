@@ -35,9 +35,9 @@ export default function Toast({ message, isOpen, onClose, type = "success" }: To
 
   return (
     <div
-      class={`fixed top-20 right-4 z-[9999] ${bgStyles[type]} px-4 py-3 rounded-lg shadow-2xl font-bold text-sm flex items-center gap-2 border animate-bounce`}
+      className={`fixed top-20 right-4 z-[9999] ${bgStyles[type]} px-4 py-3 rounded-lg shadow-2xl font-bold text-sm flex items-center gap-2 border animate-bounce`}
     >
-      <span class="material-symbols-outlined text-lg">{icons[type]}</span>
+      <span className="material-symbols-outlined text-lg">{icons[type]}</span>
       <span>{message}</span>
     </div>
   );

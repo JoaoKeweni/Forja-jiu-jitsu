@@ -24,19 +24,19 @@ export default function TeamSelector({ onTeamChange }: TeamSelectorProps) {
   };
 
   return (
-    <div class="relative inline-block w-full sm:w-auto">
+    <div className="relative inline-block w-full sm:w-auto">
       <select
         value={selectedTeam}
         onChange={handleChange}
-        class="w-full bg-surface-container border border-primary-container/40 text-on-surface font-label-bold text-sm rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container appearance-none cursor-pointer shadow-sm transition-all"
+        className="w-full bg-surface-container border border-primary-container/40 text-on-surface font-label-bold text-sm rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container appearance-none cursor-pointer shadow-sm transition-all"
       >
         {teams.map((t) => (
-          <option key={t.id} value={t.id} class="bg-surface-container text-on-surface py-2">
+          <option key={t.id} value={t.id} className="bg-surface-container text-on-surface py-2">
             {t.name}
           </option>
         ))}
       </select>
-      <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-primary pointer-events-none text-xl">
+      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-primary pointer-events-none text-xl">
         expand_more
       </span>
     </div>
