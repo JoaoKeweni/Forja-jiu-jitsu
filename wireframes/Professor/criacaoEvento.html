@@ -1,0 +1,497 @@
+<!DOCTYPE html><html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Forja - Configuração do Evento</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:ital,wght@0,700;0,900;1,900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#ffdad7",
+                        "on-tertiary-container": "#ffd099",
+                        "tertiary-container": "#855300",
+                        "inverse-primary": "#b91c1c",
+                        "tertiary": "#ffb95f",
+                        "surface-variant": "#353534",
+                        "surface-container": "#201f1f",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "surface": "#131313",
+                        "primary-fixed": "#ffdad6",
+                        "secondary": "#ffb3ad",
+                        "on-secondary-container": "#ffaea8",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-highest": "#353534",
+                        "primary-fixed-dim": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-dim": "#131313",
+                        "on-secondary-fixed": "#410004",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary": "#472a00",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-background": "#e5e2e1",
+                        "on-primary-container": "#ffcdc7",
+                        "on-tertiary-fixed": "#2a1700",
+                        "secondary-container": "#a40217",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#930013",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary-fixed-variant": "#93000b",
+                        "primary": "#ffb4ab",
+                        "on-surface-variant": "#e4beb9",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "surface-bright": "#3a3939",
+                        "on-primary-fixed": "#410002",
+                        "background": "#131313",
+                        "primary-container": "#b91c1c",
+                        "error-container": "#93000a",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary": "#68000a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-tint": "#ffb4ab",
+                        "on-primary": "#690005",
+                        "outline-variant": "#5b403d",
+                        "outline": "#ab8985"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "unit": "4px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "container-max-width": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    fontFamily: {
+                        "label-bold": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "display-lg-mobile": ["Montserrat"]
+                    },
+                    fontSize: {
+                        "label-bold": ["14px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "700" }],
+                        "body-md": ["16px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "1.3", fontWeight: "700" }],
+                        "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "display-lg": ["48px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "900" }],
+                        "display-lg-mobile": ["32px", { lineHeight: "1.2", letterSpacing: "-0.01em", fontWeight: "900" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom scrollbar for a sleeker dark mode look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #353534;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5b403d;
+        }
+        
+        /* Hide tab contents by default */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased selection:bg-primary-container selection:text-white pb-20">
+<!-- TopAppBar (JSON Component) -->
+<header class="fixed top-0 w-full z-50 bg-surface/40 backdrop-blur-xl dark:bg-surface/40 border-b border-outline-variant/30 flex justify-between items-center px-gutter h-16 transition-transform no shadows">
+<div class="flex items-center gap-4">
+<img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" data-alt="A close-up, high-contrast portrait of a Brazilian Jiu-Jitsu instructor wearing a black gi. The lighting is dramatic, casting deep shadows on one side of the face while highlighting a focused, intense expression. The background is a pure, dark charcoal void, aligning perfectly with a modern, premium athletic brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7yhi0IJUhygLU0O_fmxJGCDVzdB-LLQFTmysSWNkqpTTat8-TUBTNAjTsLHbUpGVCyS99pZVCda5sbJh53lWHKP8GGyJeVSjB9YcTkPS3773uy-Z9a4NL-yCUv4f_KMxeSjA4Dc7WcUolMpK9zU483rVCwaF_tPrtRh50dcYTdTaVXnUq1fc1yrPJTFl1A1dXDjA5xVILN888fDeCDmKX3u_M14lHyhH9PTAHXyIWyF0lbeS0vKce">
+<span class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary italic uppercase">FORJA</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</header>
+<main class="pt-24 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto flex flex-col gap-8">
+<!-- Page Context Header -->
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant hover:text-primary-container active:scale-95 group">
+<span class="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Configuração do Evento</h1>
+</div>
+<!-- Tab Navigation -->
+<nav class="flex overflow-x-auto border-b border-outline-variant/30 hide-scrollbar" role="tablist">
+<button class="tab-btn active font-label-bold text-label-bold px-6 py-4 border-b-2 border-primary-container text-primary-container hover:bg-surface-container/50 transition-colors whitespace-nowrap" data-target="tab-geral" role="tab">
+                Geral
+            </button>
+<button class="tab-btn font-label-bold text-label-bold px-6 py-4 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container/50 transition-colors whitespace-nowrap" data-target="tab-categorias" role="tab">
+                Categorias
+            </button>
+<button class="tab-btn font-label-bold text-label-bold px-6 py-4 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container/50 transition-colors whitespace-nowrap" data-target="tab-atletas" role="tab">
+                Atletas / Pesagem
+            </button>
+</nav>
+<!-- TAB 1: Geral -->
+<section class="tab-content active space-y-6" id="tab-geral">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Info Básica -->
+<div class="lg:col-span-1 bg-surface-container rounded-lg border border-outline-variant/30 p-6 flex flex-col gap-6">
+<h2 class="font-label-bold text-label-bold text-primary uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">info</span> Detalhes Principais
+                    </h2>
+<div class="flex flex-col gap-2">
+<label class="font-body-md text-body-md text-on-surface-variant text-sm">Nome do Evento</label>
+<input class="bg-surface border border-outline-variant/50 rounded-lg px-4 py-3 font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none transition-all placeholder:text-surface-variant" type="text" value="1ª Copa Forja 2026">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-body-md text-body-md text-on-surface-variant text-sm">Status</label>
+<select class="bg-surface border border-outline-variant/50 rounded-lg px-4 py-3 font-body-md text-primary focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none transition-all appearance-none">
+<option value="draft">Rascunho</option>
+<option selected="" value="published">Publicado - Inscrições Abertas</option>
+<option value="closed">Encerrado</option>
+</select>
+</div>
+</div>
+<!-- Logística -->
+<div class="lg:col-span-2 bg-surface-container rounded-lg border border-outline-variant/30 p-6 flex flex-col gap-6 relative overflow-hidden">
+<!-- Glassmorphism decorative element -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<h2 class="font-label-bold text-label-bold text-primary uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">map</span> Logística &amp; Local
+                    </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-body-md text-body-md text-on-surface-variant text-sm">Data do Evento</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">calendar_month</span>
+<input class="w-full bg-surface border border-outline-variant/50 rounded-lg pl-10 pr-4 py-3 font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none transition-all [color-scheme:dark]" type="date" value="2026-11-15">
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-body-md text-body-md text-on-surface-variant text-sm">Horário de Início</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">schedule</span>
+<input class="w-full bg-surface border border-outline-variant/50 rounded-lg pl-10 pr-4 py-3 font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none transition-all [color-scheme:dark]" type="time" value="08:00">
+</div>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="font-body-md text-body-md text-on-surface-variant text-sm">Localização</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">location_on</span>
+<input class="w-full bg-surface border border-outline-variant/50 rounded-lg pl-10 pr-4 py-3 font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none transition-all" type="text" value="Ginásio Poliesportivo do Ibirapuera, São Paulo - SP">
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Regulamento -->
+<div class="bg-surface-container rounded-lg border border-outline-variant/30 p-6 flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<h2 class="font-label-bold text-label-bold text-primary uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">description</span> Regulamento Oficial
+                    </h2>
+<div class="flex gap-2">
+<button class="p-2 bg-surface hover:bg-surface-bright rounded border border-outline-variant/30 text-on-surface-variant transition-colors" title="Negrito"><span class="material-symbols-outlined text-sm">format_bold</span></button>
+<button class="p-2 bg-surface hover:bg-surface-bright rounded border border-outline-variant/30 text-on-surface-variant transition-colors" title="Lista"><span class="material-symbols-outlined text-sm">format_list_bulleted</span></button>
+</div>
+</div>
+<textarea class="w-full h-64 bg-surface border border-outline-variant/50 rounded-lg p-4 font-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none transition-all resize-y font-mono text-sm leading-relaxed"># REGRAS DO EVENTO - 1ª Copa Forja 2026
+
+## 1. Pesagem
+- A pesagem ocorrerá no dia do evento, 1 hora antes do início da categoria.
+- Tolerância de 500g apenas para categorias com kimono (Gi).
+- Atletas que não baterem o peso serão desclassificados sumariamente, sem direito a reembolso.
+
+## 2. Tempo de Luta
+- Faixa Branca: 5 Minutos
+- Faixa Azul: 6 Minutos
+- Faixa Roxa: 7 Minutos
+- Faixa Marrom/Preta: 8 Minutos
+
+## 3. Uniforme
+- Kimonos trançados nas cores: Branco, Azul ou Preto.
+- Patchs são permitidos, desde que não interfiram na pegada.
+                </textarea>
+<div class="flex justify-end">
+<button class="bg-primary-container text-white px-6 py-3 rounded-lg font-label-bold hover:bg-inverse-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">save</span> Salvar Alterações
+                    </button>
+</div>
+</div>
+</section>
+<!-- TAB 2: Categorias -->
+<section class="tab-content space-y-8" id="tab-categorias">
+<!-- Quick Add Form -->
+<div class="bg-surface-container-low border border-primary-container/30 rounded-lg p-6 relative">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container rounded-l-lg"></div>
+<h3 class="font-headline-md text-body-lg text-on-surface mb-6">Criar Nova Categoria</h3>
+<form class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="font-body-md text-sm text-on-surface-variant">Nome Customizado (Opcional)</label>
+<input class="bg-surface border border-outline-variant/50 rounded-lg px-3 py-2 text-on-surface focus:border-primary-container focus:outline-none" placeholder="Ex: Absoluto PRO" type="text">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-body-md text-sm text-on-surface-variant">Faixa</label>
+<select class="bg-surface border border-outline-variant/50 rounded-lg px-3 py-2 text-on-surface focus:border-primary-container focus:outline-none [color-scheme:dark]">
+<option>Branca</option>
+<option>Azul</option>
+<option>Roxa</option>
+<option>Marrom</option>
+<option>Preta</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-body-md text-sm text-on-surface-variant">Idade</label>
+<select class="bg-surface border border-outline-variant/50 rounded-lg px-3 py-2 text-on-surface focus:border-primary-container focus:outline-none [color-scheme:dark]">
+<option>Juvenil</option>
+<option selected="">Adulto</option>
+<option>Master 1</option>
+<option>Master 2</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-body-md text-sm text-on-surface-variant">Peso</label>
+<select class="bg-surface border border-outline-variant/50 rounded-lg px-3 py-2 text-on-surface focus:border-primary-container focus:outline-none [color-scheme:dark]">
+<option>Galo (-57kg)</option>
+<option>Pluma (-64kg)</option>
+<option>Pena (-70kg)</option>
+<option selected="">Leve (-76kg)</option>
+<option>Médio (-82kg)</option>
+</select>
+</div>
+<div class="md:col-span-5 flex justify-end mt-2">
+<button class="bg-surface border border-primary-container text-primary-container hover:bg-primary-container hover:text-white px-6 py-2 rounded-lg font-label-bold transition-colors flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-sm">add</span> Adicionar Categoria
+                        </button>
+</div>
+</form>
+</div>
+<!-- Categories List -->
+<div class="flex flex-col gap-4">
+<h3 class="font-label-bold text-on-surface-variant uppercase tracking-widest text-sm">Categorias Ativas</h3>
+<!-- Category Card 1 -->
+<div class="bg-surface-container border border-outline-variant/30 rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:border-outline-variant transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-2 h-12 bg-blue-600 rounded-full flex-shrink-0" title="Faixa Azul"></div>
+<div>
+<h4 class="font-body-lg font-bold text-on-surface">Faixa Azul - Adulto - Masculino - Leve (76kg)</h4>
+<div class="flex gap-3 mt-1">
+<span class="bg-surface px-2 py-1 rounded text-xs text-on-surface-variant font-mono border border-outline-variant/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">group</span> 12 Inscritos
+                                </span>
+<span class="bg-surface px-2 py-1 rounded text-xs text-on-surface-variant font-mono border border-outline-variant/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Chave: Gerada
+                                </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end border-t md:border-t-0 border-outline-variant/20 pt-4 md:pt-0">
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Gerenciar Chaves"><span class="material-symbols-outlined">account_tree</span></button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Editar"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors" title="Remover"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</div>
+<!-- Category Card 2 -->
+<div class="bg-surface-container border border-outline-variant/30 rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:border-outline-variant transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-2 h-12 bg-purple-600 rounded-full flex-shrink-0" title="Faixa Roxa"></div>
+<div>
+<h4 class="font-body-lg font-bold text-on-surface">Faixa Roxa - Master 1 - Masculino - Médio (82kg)</h4>
+<div class="flex gap-3 mt-1">
+<span class="bg-surface px-2 py-1 rounded text-xs text-on-surface-variant font-mono border border-outline-variant/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">group</span> 8 Inscritos
+                                </span>
+<span class="bg-primary-container/20 text-primary-container px-2 py-1 rounded text-xs font-mono border border-primary-container/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Chave Pendente
+                                </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end border-t md:border-t-0 border-outline-variant/20 pt-4 md:pt-0">
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Gerenciar Chaves"><span class="material-symbols-outlined">account_tree</span></button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Editar"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors" title="Remover"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</div>
+<!-- Category Card 3 -->
+<div class="bg-surface-container border border-outline-variant/30 rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:border-outline-variant transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-2 h-12 bg-white rounded-full flex-shrink-0" title="Faixa Branca"></div>
+<div>
+<h4 class="font-body-lg font-bold text-on-surface">Faixa Branca - Adulto - Feminino - Pena (70kg)</h4>
+<div class="flex gap-3 mt-1">
+<span class="bg-surface px-2 py-1 rounded text-xs text-on-surface-variant font-mono border border-outline-variant/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">group</span> 4 Inscritos
+                                </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end border-t md:border-t-0 border-outline-variant/20 pt-4 md:pt-0">
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Gerenciar Chaves"><span class="material-symbols-outlined">account_tree</span></button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Editar"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors" title="Remover"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</div>
+</div>
+</section>
+<!-- TAB 3: Atletas & Pesagem -->
+<section class="tab-content space-y-6" id="tab-atletas">
+<!-- Filter Bar -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-container p-4 rounded-lg border border-outline-variant/30">
+<div class="flex items-center gap-2 w-full md:w-auto">
+<span class="material-symbols-outlined text-on-surface-variant">filter_list</span>
+<select class="w-full md:w-80 bg-surface border border-outline-variant/50 rounded-lg px-3 py-2 text-on-surface focus:border-primary-container focus:outline-none [color-scheme:dark]">
+<option>Filtrar por Categoria...</option>
+<option selected="">Faixa Azul - Adulto - Leve (76kg)</option>
+<option>Faixa Roxa - Master 1 - Médio (82kg)</option>
+</select>
+</div>
+<div class="flex items-center gap-4 text-sm font-mono text-on-surface-variant">
+<span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-green-500"></div> Pesados: 8/12</span>
+</div>
+</div>
+<!-- Athletes List -->
+<div class="flex flex-col gap-2">
+<!-- Headers (Desktop only) -->
+<div class="hidden md:grid grid-cols-12 gap-4 px-4 py-2 border-b border-outline-variant/20 text-xs font-label-bold text-on-surface-variant uppercase tracking-wider">
+<div class="col-span-5">Atleta &amp; Equipe</div>
+<div class="col-span-3">Peso Alvo</div>
+<div class="col-span-2">Peso Oficial (kg)</div>
+<div class="col-span-2 text-right">Confirmado</div>
+</div>
+<!-- Athlete Row 1 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-surface-container-low hover:bg-surface-container p-4 rounded-lg border border-outline-variant/10 transition-colors">
+<div class="col-span-1 md:col-span-5 flex items-center gap-4">
+<img alt="Athlete" class="w-12 h-12 rounded-full object-cover border border-blue-600/50" data-alt="A medium shot profile picture of a young male Brazilian Jiu-Jitsu athlete wearing a blue gi. He has a serious, determined expression. The background is a dimly lit gym setting with dramatic, moody lighting typical of professional sports photography. High contrast, dark aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlR9eOhe6VK16gSIX2nr58RUjSZSCVALbNwAdHBgp5dsJsxhRaMvy8QxezsB8K6QwD6XQ09FoS0yrR-YeVwte_lnnxt0KnqM0q8pdxyiLCHOa0S9bE_uMv0Sl7KRYoKofmz0NGzISTQuEcIiCa7K251rcK8pznZyIAnu58kcPz3Cw1gLd8MgRtWG_hOjDl7TiNjqtN8lTh9IaCbjXXRAPgwUD_koUJuFZ62wGlMUc3T1OOhIjFEbTh">
+<div>
+<div class="font-body-md font-bold text-on-surface">Lucas Almeida Silva</div>
+<div class="text-xs text-on-surface-variant mt-0.5">Gracie Barra • Faixa Azul</div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-3 flex justify-between md:block text-sm">
+<span class="md:hidden text-on-surface-variant">Categoria:</span>
+<span class="text-on-surface bg-surface px-2 py-1 rounded border border-outline-variant/20 font-mono">-76.0 kg</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:block items-center">
+<span class="md:hidden text-on-surface-variant text-sm">Peso Lançado:</span>
+<input class="w-24 bg-surface border border-outline-variant/50 rounded px-2 py-1 text-center font-mono text-on-surface focus:border-primary-container focus:outline-none [color-scheme:dark]" step="0.1" type="number" value="75.4">
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:justify-end items-center">
+<span class="md:hidden text-on-surface-variant text-sm">Status:</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-surface after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container shadow-inner"></div>
+</label>
+</div>
+</div>
+<!-- Athlete Row 2 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-surface-container-low hover:bg-surface-container p-4 rounded-lg border border-outline-variant/10 transition-colors">
+<div class="col-span-1 md:col-span-5 flex items-center gap-4">
+<img alt="Athlete" class="w-12 h-12 rounded-full object-cover border border-blue-600/50" data-alt="A portrait of a male BJJ competitor with short hair, wearing a white gi with team patches. The shot is captured in a dark, atmospheric studio environment with rim lighting separating him from the charcoal black background. The mood is intense and competitive, fitting a premium martial arts platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbhuKSBOBuHY_u39k0iY7ChgmwPYa56Gcrw1n-Xn5KRd-jByHG9cSXUP9sJ1HHDv6A0ljditco59IlFREymBenQd8L6e3YfFAf683zRr9WN7JWtojyrZkq4LYvOW7jwQvyPv4WHOae6YQFu1tu8DzXerW4COCwUa-g1_nmxQ3p5yz24vDjWZVYs0QeUmVdR8SPoFakuFtJrIfxWhNjG5wa-duo3EYPiPEP7y00_-S-lRIFqbvTzzYg">
+<div>
+<div class="font-body-md font-bold text-on-surface">Mateus Costa</div>
+<div class="text-xs text-on-surface-variant mt-0.5">Alliance • Faixa Azul</div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-3 flex justify-between md:block text-sm">
+<span class="md:hidden text-on-surface-variant">Categoria:</span>
+<span class="text-on-surface bg-surface px-2 py-1 rounded border border-outline-variant/20 font-mono">-76.0 kg</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:block items-center">
+<span class="md:hidden text-on-surface-variant text-sm">Peso Lançado:</span>
+<input class="w-24 bg-surface border border-error text-error rounded px-2 py-1 text-center font-mono focus:border-error focus:outline-none [color-scheme:dark]" step="0.1" title="Acima do peso permitido" type="number" value="76.8">
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:justify-end items-center">
+<span class="md:hidden text-on-surface-variant text-sm">Status:</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-surface after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container shadow-inner"></div>
+</label>
+</div>
+</div>
+<!-- Athlete Row 3 (Empty State / Not Weighed) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-surface-container-low hover:bg-surface-container p-4 rounded-lg border border-outline-variant/10 transition-colors opacity-70">
+<div class="col-span-1 md:col-span-5 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant border border-outline-variant/50">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<div class="font-body-md font-bold text-on-surface">Rafael Mendes Jr.</div>
+<div class="text-xs text-on-surface-variant mt-0.5">Checkmat • Faixa Azul</div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-3 flex justify-between md:block text-sm">
+<span class="md:hidden text-on-surface-variant">Categoria:</span>
+<span class="text-on-surface bg-surface px-2 py-1 rounded border border-outline-variant/20 font-mono">-76.0 kg</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:block items-center">
+<span class="md:hidden text-on-surface-variant text-sm">Peso Lançado:</span>
+<input class="w-24 bg-surface border border-outline-variant/30 rounded px-2 py-1 text-center font-mono text-on-surface focus:border-primary-container focus:outline-none [color-scheme:dark]" placeholder="--" step="0.1" type="number">
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:justify-end items-center">
+<span class="md:hidden text-on-surface-variant text-sm">Status:</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" disabled="" type="checkbox">
+<div class="w-11 h-6 bg-surface-variant/50 rounded-full peer after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-surface-variant/50 after:rounded-full after:h-5 after:w-5"></div>
+</label>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Simple Vanilla JS for Tabs -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active from all
+                    tabBtns.forEach(b => {
+                        b.classList.remove('active', 'border-primary-container', 'text-primary-container');
+                        b.classList.add('border-transparent', 'text-on-surface-variant');
+                    });
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    // Add active to clicked
+                    btn.classList.add('active', 'border-primary-container', 'text-primary-container');
+                    btn.classList.remove('border-transparent', 'text-on-surface-variant');
+                    
+                    const targetId = btn.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body></html>

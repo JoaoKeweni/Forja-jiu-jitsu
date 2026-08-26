@@ -1,0 +1,405 @@
+<!DOCTYPE html><html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Histórico Financeiro - FORJA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#353534",
+                        "background": "#131313",
+                        "on-primary-fixed": "#410002",
+                        "primary-fixed": "#ffdad6",
+                        "on-surface": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb4ab",
+                        "on-background": "#e5e2e1",
+                        "tertiary-container": "#855300",
+                        "on-secondary-fixed": "#410004",
+                        "on-primary": "#690005",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-fixed": "#ffddb8",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#ffdad7",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#201f1f",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-surface": "#e5e2e1",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "surface-dim": "#131313",
+                        "on-primary-fixed-variant": "#93000b",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-surface-variant": "#e4beb9",
+                        "outline-variant": "#5b403d",
+                        "on-primary-container": "#ffcdc7",
+                        "surface-bright": "#3a3939",
+                        "inverse-on-surface": "#313030",
+                        "outline": "#ab8985",
+                        "on-secondary-container": "#ffaea8",
+                        "secondary-container": "#a40217",
+                        "primary": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#930013",
+                        "surface-container-highest": "#353534",
+                        "surface": "#131313",
+                        "surface-tint": "#ffb4ab",
+                        "primary-container": "#b91c1c",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "tertiary": "#ffb95f",
+                        "on-tertiary-container": "#ffd099",
+                        "on-tertiary": "#472a00",
+                        "on-secondary": "#68000a",
+                        "inverse-primary": "#b91c1c",
+                        "on-tertiary-fixed": "#2a1700",
+                        "error-container": "#93000a",
+                        "secondary": "#ffb3ad",
+                        // Custom Brand Colors based on instructions
+                        "brand-deep-black": "#0A0A0A",
+                        "brand-dark-gray": "#1F2937",
+                        "brand-border": "#374151",
+                        "brand-deep-red": "#b91c1c",
+                        "brand-bright-red": "#ffb4ab",
+                        "brand-gold": "#F59E0B",
+                        "brand-success": "#10B981",
+                        "brand-warning": "#F59E0B"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max-width": "1280px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Montserrat"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "900" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0A0A; /* brand-deep-black */
+            color: #e5e2e1; /* on-background */
+        }
+        .glass-panel {
+            background: rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid #374151;
+        }
+        .champion-card {
+            border-top: 2px solid #F59E0B;
+        }
+        .btn-primary {
+            background-color: #b91c1c;
+            color: white;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #ffb4ab;
+            color: #410002;
+        }
+        .btn-ghost {
+            border: 2px solid #ffb4ab;
+            background: transparent;
+            color: #ffb4ab;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-ghost:hover {
+            background-color: rgba(255, 180, 171, 0.1);
+        }
+        .text-glow:focus-within {
+            box-shadow: 0 0 12px rgba(255, 180, 171, 0.3);
+            border-color: #ffb4ab;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-body-md">
+<!-- Desktop Sidebar & Main Content Wrapper -->
+<div class="flex h-screen overflow-hidden">
+<!-- Navigation Drawer (Desktop) -->
+<aside class="hidden md:flex flex-col h-full w-80 rounded-r-full border-r border-outline-variant shadow-2xl bg-surface-container py-8 z-40 shrink-0">
+<!-- Header Layout: left_align -->
+<div class="px-6 mb-8 flex items-center gap-4">
+<img alt="Professor Profile" class="w-16 h-16 rounded-full object-cover border-2 border-primary" data-alt="A striking portrait of a Brazilian Jiu-Jitsu Master in a black uniform, serious expression, high-contrast lighting emphasizing discipline, dark background with deep red accents, professional modern sports photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfy1AKw3BgIH8o_b9B1zpkHLepuD0W5zZEhJlPK3ceorfie_DP8lYr4pZJamMK0xsHAkHb5tO9YD8THTh3MoPoqKM5vxqNE9pmDkFYI0T_ye3Rh3y0qxR2-lZQOhqCcG7Wop4O5O7NOvgkHFTYSNQayZB7VG0BQG_BDGl2a2ju0eBlNkfLu8b9pbDAxHNHRhhouREO9aA3amf4QqMLpyJvMRGZgx3OgZ7CU_sR4I5iy0LdK-6qXZPN">
+<div>
+<h2 class="font-headline-md text-primary text-headline-md leading-tight">Master Silva</h2>
+<p class="font-body-md text-on-surface-variant text-sm">Black Belt 3rd Degree</p>
+<p class="font-body-md text-on-surface-variant text-xs opacity-75">Gracie Barra HQ</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto w-full px-2">
+<ul class="space-y-2">
+<li>
+<a class="text-on-surface-variant mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant/50 transition-colors duration-200 cursor-pointer rounded-full font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                            Home
+                        </a>
+</li>
+<li>
+<a class="text-on-surface-variant mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant/50 transition-colors duration-200 cursor-pointer rounded-full font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">fitness_center</span>
+                            Training
+                        </a>
+</li>
+<!-- Active State for Finance -->
+<li>
+<a class="bg-primary-container text-on-primary-container rounded-full mx-2 my-1 px-4 py-3 flex items-center gap-4 transition-colors duration-200 cursor-pointer font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+                            Finance
+                        </a>
+</li>
+<li>
+<a class="text-on-surface-variant mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant/50 transition-colors duration-200 cursor-pointer rounded-full font-label-bold text-label-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+                            Profile
+                        </a>
+</li>
+</ul>
+<div class="mt-8 border-t border-outline-variant/30 pt-4 px-2">
+<p class="px-4 text-xs font-label-bold text-on-surface-variant uppercase tracking-wider mb-2">Admin Tools</p>
+<ul class="space-y-1">
+<li>
+<a class="text-on-surface-variant mx-2 my-1 px-4 py-2 flex items-center gap-4 hover:bg-surface-variant/50 transition-colors duration-200 cursor-pointer rounded-full font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+                                Gym Management
+                            </a>
+</li>
+<li>
+<a class="text-on-surface-variant mx-2 my-1 px-4 py-2 flex items-center gap-4 hover:bg-surface-variant/50 transition-colors duration-200 cursor-pointer rounded-full font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">emoji_events</span>
+                                Tournament Brackets
+                            </a>
+</li>
+<li>
+<a class="text-on-surface-variant mx-2 my-1 px-4 py-2 flex items-center gap-4 hover:bg-surface-variant/50 transition-colors duration-200 cursor-pointer rounded-full font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+                                Student Approvals
+                            </a>
+</li>
+<li>
+<a class="text-on-surface-variant mx-2 my-1 px-4 py-2 flex items-center gap-4 hover:bg-surface-variant/50 transition-colors duration-200 cursor-pointer rounded-full font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">settings_applications</span>
+                                SaaS Settings
+                            </a>
+</li>
+<li>
+<a class="text-on-surface-variant mx-2 my-1 px-4 py-2 flex items-center gap-4 hover:bg-surface-variant/50 transition-colors duration-200 cursor-pointer rounded-full font-body-md text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+                                Support
+                            </a>
+</li>
+</ul>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto relative pb-24 md:pb-0">
+<!-- TopAppBar (Mobile Only - Replaces Drawer Header) -->
+<header class="md:hidden flex justify-between items-center px-4 h-16 w-full fixed top-0 z-50 bg-surface/40 backdrop-blur-xl border-b border-outline-variant/20">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary uppercase">FORJA</h1>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform p-2">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<div class="mt-16 md:mt-0 p-4 md:p-8 md:px-margin-desktop max-w-container-max-width mx-auto w-full">
+<!-- Page Header -->
+<div class="mb-8 md:mb-12">
+<h1 class="font-headline-md text-headline-md text-on-surface mb-2">Histórico Financeiro</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Acompanhe suas mensalidades e status de pagamento.</p>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-gutter">
+<!-- Timeline / List Column -->
+<div class="lg:col-span-8 flex flex-col gap-4">
+<!-- Month Card: October (Pending) -->
+<div class="glass-panel p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-l-4 border-l-brand-deep-red hover:bg-brand-dark-gray/60 transition-colors">
+<div class="flex items-start gap-4">
+<div class="bg-surface-container p-3 rounded-lg flex-shrink-0 text-brand-bright-red">
+<span class="material-symbols-outlined text-[28px]">receipt_long</span>
+</div>
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-1">Mensalidade Outubro/2023</h3>
+<div class="flex items-center gap-2 text-sm font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                        Vence em: 10/10/2023
+                                    </div>
+</div>
+</div>
+<div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center w-full sm:w-auto mt-2 sm:mt-0">
+<span class="font-headline-md text-lg text-on-surface">R$ 150,00</span>
+<div class="flex items-center gap-1 mt-1 bg-error-container/20 text-error px-2 py-1 rounded-md text-xs font-label-bold">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                    Pendente
+                                </div>
+</div>
+</div>
+<!-- Month Card: September (Soon) -->
+<div class="glass-panel p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-l-4 border-l-brand-warning hover:bg-brand-dark-gray/60 transition-colors">
+<div class="flex items-start gap-4">
+<div class="bg-surface-container p-3 rounded-lg flex-shrink-0 text-brand-warning">
+<span class="material-symbols-outlined text-[28px]">schedule</span>
+</div>
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-1">Mensalidade Setembro/2023</h3>
+<div class="flex items-center gap-2 text-sm font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                        Vencimento: 10/09/2023
+                                    </div>
+</div>
+</div>
+<div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center w-full sm:w-auto mt-2 sm:mt-0">
+<span class="font-headline-md text-lg text-on-surface">R$ 150,00</span>
+<div class="flex items-center gap-1 mt-1 bg-tertiary-container/20 text-tertiary px-2 py-1 rounded-md text-xs font-label-bold">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                                    A Vencer
+                                </div>
+</div>
+</div>
+<!-- Month Card: August (Paid) -->
+<div class="glass-panel p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-l-4 border-l-brand-success opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-start gap-4">
+<div class="bg-surface-container p-3 rounded-lg flex-shrink-0 text-brand-success">
+<span class="material-symbols-outlined text-[28px]">check_circle</span>
+</div>
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-1">Mensalidade Agosto/2023</h3>
+<div class="flex items-center gap-2 text-sm font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                        Pago em: 08/08/2023
+                                    </div>
+</div>
+</div>
+<div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center w-full sm:w-auto mt-2 sm:mt-0">
+<span class="font-headline-md text-lg text-on-surface-variant">R$ 150,00</span>
+<div class="flex items-center gap-1 mt-1 bg-[#10B981]/10 text-[#10B981] px-2 py-1 rounded-md text-xs font-label-bold">
+<span class="material-symbols-outlined text-[14px]">done</span>
+                                    Pago
+                                </div>
+</div>
+</div>
+<!-- Month Card: July (Paid) -->
+<div class="glass-panel p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-l-4 border-l-brand-success opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-start gap-4">
+<div class="bg-surface-container p-3 rounded-lg flex-shrink-0 text-brand-success">
+<span class="material-symbols-outlined text-[28px]">check_circle</span>
+</div>
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-1">Mensalidade Julho/2023</h3>
+<div class="flex items-center gap-2 text-sm font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                        Pago em: 09/07/2023
+                                    </div>
+</div>
+</div>
+<div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center w-full sm:w-auto mt-2 sm:mt-0">
+<span class="font-headline-md text-lg text-on-surface-variant">R$ 150,00</span>
+<div class="flex items-center gap-1 mt-1 bg-[#10B981]/10 text-[#10B981] px-2 py-1 rounded-md text-xs font-label-bold">
+<span class="material-symbols-outlined text-[14px]">done</span>
+                                    Pago
+                                </div>
+</div>
+</div>
+</div>
+<!-- Payment Instructions Sidebar -->
+<div class="lg:col-span-4 mt-8 lg:mt-0">
+<div class="glass-panel rounded-xl p-6 champion-card sticky top-24">
+<h3 class="font-headline-md text-lg text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-brand-gold">account_balance_wallet</span>
+                                Instruções de Pagamento
+                            </h3>
+<p class="font-body-md text-sm text-on-surface-variant mb-6">
+                                Utilize a chave PIX abaixo para realizar o pagamento da sua mensalidade. O reconhecimento é automático em até 1 hora.
+                            </p>
+<div class="bg-surface-container p-4 rounded-lg border border-brand-border mb-6">
+<p class="text-xs font-label-bold text-on-surface-variant uppercase tracking-wider mb-2">Chave PIX (CNPJ)</p>
+<div class="flex items-center justify-between gap-2 bg-brand-deep-black p-3 rounded-md text-glow border border-transparent">
+<code class="font-mono text-sm text-primary break-all" id="pix-key">12.345.678/0001-90</code>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded-md" onclick="copyPix()" title="Copiar Chave">
+<span class="material-symbols-outlined text-[20px]" id="copy-icon">content_copy</span>
+</button>
+</div>
+</div>
+<button class="w-full btn-primary font-label-bold py-3 rounded-lg flex justify-center items-center gap-2 mb-4">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+                                Pagar Mensalidade Atual
+                            </button>
+<button class="w-full btn-ghost font-label-bold py-3 rounded-lg flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">description</span>
+                                Gerar Boleto (Taxa R$ 2,50)
+                            </button>
+<div class="mt-6 pt-4 border-t border-brand-border">
+<p class="font-body-md text-xs text-on-surface-variant text-center opacity-75">
+                                    Dúvidas? <a class="text-primary hover:underline" href="#">Fale com a secretaria</a>.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden flex justify-around items-center w-full px-2 h-20 fixed bottom-0 z-50 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-4px_12px_rgba(185,28,28,0.1)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant gap-1 hover:text-primary-fixed-dim active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-bold text-xs">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant gap-1 hover:text-primary-fixed-dim active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">fitness_center</span>
+<span class="font-label-bold text-xs">Training</span>
+</a>
+<!-- Active State for Finance on Mobile -->
+<a class="flex flex-col items-center justify-center text-primary gap-1 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-bold text-xs">Finance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant gap-1 hover:text-primary-fixed-dim active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+<span class="font-label-bold text-xs">Profile</span>
+</a>
+</nav>
+<script>
+        function copyPix() {
+            const pixKey = document.getElementById('pix-key').innerText;
+            const icon = document.getElementById('copy-icon');
+            
+            navigator.clipboard.writeText(pixKey).then(() => {
+                icon.innerText = 'check';
+                icon.classList.add('text-brand-success');
+                setTimeout(() => {
+                    icon.innerText = 'content_copy';
+                    icon.classList.remove('text-brand-success');
+                }, 2000);
+            });
+        }
+    </script>
+</body></html>

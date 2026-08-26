@@ -1,0 +1,267 @@
+<!DOCTYPE html><html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Forja Jiu-Jitsu - Gestão de Alunos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:ital,wght@0,700;0,900;1,900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed": "#ffdad6",
+                        "on-secondary": "#68000a",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "inverse-primary": "#b91c1c",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#353534",
+                        "tertiary-container": "#855300",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "surface-container": "#201f1f",
+                        "surface-container-low": "#1c1b1b",
+                        "background": "#131313",
+                        "on-primary-fixed": "#410002",
+                        "on-tertiary-container": "#ffd099",
+                        "tertiary-fixed": "#ffddb8",
+                        "on-background": "#e5e2e1",
+                        "secondary-fixed": "#ffdad7",
+                        "primary-container": "#b91c1c",
+                        "inverse-on-surface": "#313030",
+                        "surface-dim": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "on-surface-variant": "#e4beb9",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface-tint": "#ffb4ab",
+                        "on-tertiary": "#472a00",
+                        "secondary-container": "#a40217",
+                        "on-secondary-fixed": "#410004",
+                        "primary-fixed-dim": "#ffb4ab",
+                        "tertiary": "#ffb95f",
+                        "on-primary-fixed-variant": "#93000b",
+                        "on-primary": "#690005",
+                        "on-primary-container": "#ffcdc7",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "secondary": "#ffb3ad",
+                        "on-secondary-fixed-variant": "#930013",
+                        "on-secondary-container": "#ffaea8",
+                        "primary": "#ffb4ab",
+                        "outline": "#ab8985",
+                        "surface-bright": "#3a3939",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "outline-variant": "#5b403d",
+                        "surface-container-highest": "#353534"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "container-max-width": "1280px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "label-bold": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "900" }],
+                        "label-bold": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .belt-stripes {
+            background-image: repeating-linear-gradient(90deg, #1c1b1b, #1c1b1b 2px, transparent 2px, transparent 6px);
+            background-size: 6px 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen pb-24 md:pb-0 pt-16">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/40 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-gutter h-16 w-full">
+<div class="flex items-center gap-3 active:scale-95 transition-transform cursor-pointer">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/50" data-alt="A small circular avatar profile picture of a rugged jiu-jitsu instructor wearing a black gi, in a dark gritty gym environment, dramatic cinematic lighting, deep shadows and sharp contrast, hyper-realistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnHlWoE2WDjAdQptUEBOfiuOJGuRGvaQaZzjpnGZZithNGhgcge67yz00Fpukfctf8xP4O-faF86DkRPVmui2c3FMGSymRLZgoh_rn3gcPjmRhc7rGD7g4keQH65y9w3mp2_tOLpmxHMGGgQhueipJcaXzcHl_SNVG1x2MYcqhmyU2C4_y6FstJ-DMXbM202KIpSTBGyrUAWAHx11oOrK-RFRM8V8ui3hL2z5e2bnqvxJSqsJYETaC">
+</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary italic uppercase">FORJA</h1>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform rounded-full hover:bg-surface-bright">
+<span class="material-symbols-outlined" data-icon="notifications" data-weight="fill" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-8 flex flex-col gap-6">
+<!-- Team Selector -->
+<div class="relative group mt-4">
+<button class="w-full md:w-auto flex items-center justify-between gap-3 bg-surface-container-low border border-outline-variant/50 rounded-xl px-4 py-3 hover:border-outline-variant transition-colors group-hover:bg-surface-container">
+<div class="flex items-center gap-2">
+<span class="text-xl">🥋</span>
+<div class="flex flex-col items-start">
+<span class="font-label-bold text-label-bold text-on-surface-variant">Equipe</span>
+<span class="font-headline-md text-headline-md text-on-surface">Equipe Adulto Noite</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">expand_more</span>
+</button>
+</div>
+<!-- Controls Section -->
+<section class="flex flex-col gap-5 bg-surface-container/30 p-4 rounded-xl border border-outline-variant/20">
+<!-- Search & Actions -->
+<div class="flex flex-col md:flex-row gap-4 items-center justify-between w-full">
+<div class="relative w-full md:max-w-md group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="w-full bg-background border border-outline-variant/50 rounded-lg pl-10 pr-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder-on-surface-variant/50" placeholder="Buscar por nome..." type="text">
+</div>
+<div class="flex w-full md:w-auto gap-3">
+<button class="flex-1 md:flex-none flex items-center justify-center gap-2 border-2 border-primary text-primary font-label-bold text-label-bold px-4 py-3 rounded-lg hover:bg-primary/10 transition-colors">
+                        Aprovar Solicitantes
+                    </button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-2 bg-primary-container text-on-primary-container font-label-bold text-label-bold px-4 py-3 rounded-lg hover:bg-inverse-primary transition-colors hover:shadow-[0_0_12px_rgba(185,28,28,0.5)]">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                        Novo Aluno
+                    </button>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex flex-col gap-3">
+<!-- Belts -->
+<div class="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-1 -mx-4 px-4 md:mx-0 md:px-0">
+<span class="font-label-bold text-label-bold text-on-surface-variant whitespace-nowrap hidden md:block">Faixa:</span>
+<button class="px-4 py-1.5 rounded-full bg-surface-bright border border-outline-variant text-on-surface font-label-bold text-label-bold whitespace-nowrap hover:border-primary transition-colors">Todas</button>
+<button class="px-4 py-1.5 rounded-full bg-white border border-white text-black font-label-bold text-label-bold whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity">Branca</button>
+<button class="px-4 py-1.5 rounded-full bg-blue-600 border border-blue-600 text-white font-label-bold text-label-bold whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity">Azul</button>
+<button class="px-4 py-1.5 rounded-full bg-purple-600 border border-purple-600 text-white font-label-bold text-label-bold whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity">Roxa</button>
+<button class="px-4 py-1.5 rounded-full bg-amber-900 border border-amber-900 text-white font-label-bold text-label-bold whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity">Marrom</button>
+<button class="px-4 py-1.5 rounded-full bg-black border border-white/20 text-white font-label-bold text-label-bold whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity">Preta</button>
+</div>
+<!-- Status -->
+<div class="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-1 -mx-4 px-4 md:mx-0 md:px-0">
+<span class="font-label-bold text-label-bold text-on-surface-variant whitespace-nowrap hidden md:block">Status:</span>
+<button class="px-4 py-1.5 rounded-full bg-primary-container/20 border border-primary text-primary font-label-bold text-label-bold whitespace-nowrap">Todos</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-bright border border-outline-variant/50 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:text-on-surface transition-colors">Ativo</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-bright border border-outline-variant/50 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:text-on-surface transition-colors">Pendente</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-bright border border-outline-variant/50 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:text-on-surface transition-colors">Inativo</button>
+</div>
+</div>
+</section>
+<!-- Student List -->
+<section class="flex flex-col gap-3">
+<!-- Card 1 -->
+<div class="bg-surface border border-outline-variant/50 rounded-xl p-4 flex items-center justify-between hover:border-outline-variant transition-colors group cursor-pointer">
+<div class="flex items-center gap-4">
+<img class="w-12 h-12 rounded-full object-cover border-2 border-surface-bright" data-alt="Close up portrait of a young male brazilian jiu-jitsu athlete sweating after training, wearing a white gi, shot in a moody dark gym with sharp red rim lighting emphasizing focus and determination, ultra realistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClHaZ_Y6JQK_NiL4-Izn_LGXozQZXClicKtp5Nvtg3zKjenmzKCKO2K1WRUd63C4sPtJ41TXGczp66_KOj614MzT4vpodKPAmshg-L01e592OMG-4cYInPzIYSJBeUwWc3DfLtd4f0O4nE9t3SfUWXoUIw4fmns43JHBdAztL0oAR6RzD_FKTJmy64MwpVFwqe2NmC7f9OwsYWiX0_DHfJQxUxSKLstnytG7n6TUhqXzjFlYG7zl_W">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-body-lg text-body-lg text-on-surface font-bold">Lucas Mendes</span>
+<a class="text-green-500 hover:text-green-400 transition-colors" href="#" title="WhatsApp">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+</a>
+</div>
+<!-- Belt Badge -->
+<div class="flex items-center w-32 h-4 bg-purple-600 rounded-sm relative overflow-hidden border border-black/20 shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-8 bg-black"></div>
+<!-- 3 Degrees -->
+<div class="absolute left-2 top-0 bottom-0 w-6 belt-stripes opacity-80"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-end text-right">
+<span class="font-label-bold text-label-bold text-on-surface-variant">Venc: 10/11</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
+<span class="text-xs text-on-surface-variant font-medium">Pago</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface border border-outline-variant/50 rounded-xl p-4 flex items-center justify-between hover:border-outline-variant transition-colors group cursor-pointer border-l-4 border-l-error">
+<div class="flex items-center gap-4">
+<img class="w-12 h-12 rounded-full object-cover border-2 border-surface-bright" data-alt="A profile picture of a tough female jiu-jitsu practitioner with braided hair, intense gaze, wearing a blue gi, dark textured background with subtle neon red fill light on the side of her face, highly detailed." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5Oo1vU0tej0g-wQ_JYgRcFaErQ7qmKOvi8wMYrYx7V6Aak6QBpsUQqCny4H2C0fyovgZJDAb1kvANBgtqn1P-5sfJfVZYV64sHd7jTIAD2hgb2F7-qtzyPMQq-Ra2rXXRhaJEpGhp3NZzLg18fz2Y53sVVXb0x5ymNrQrdgENU1igIVI78-SVqyDdMJJhe1g2jX61TygBIyloMkoJuKr-aVbmn3xVCeVeafXsM1sg8UpVmy70VuXj">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-body-lg text-body-lg text-on-surface font-bold">Mariana Costa</span>
+<a class="text-green-500 hover:text-green-400 transition-colors" href="#" title="WhatsApp">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+</a>
+</div>
+<!-- Belt Badge -->
+<div class="flex items-center w-32 h-4 bg-blue-600 rounded-sm relative overflow-hidden border border-black/20 shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-8 bg-black"></div>
+<!-- 1 Degree -->
+<div class="absolute left-2 top-0 bottom-0 w-1 bg-white opacity-80"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-end text-right">
+<span class="font-label-bold text-label-bold text-error">Venc: 05/11</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_rgba(255,180,171,0.5)]"></div>
+<span class="text-xs text-error font-medium">Atrasado</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface/40 backdrop-blur-xl dark:bg-surface/40 border-t border-outline-variant/30 flex justify-around items-center h-20 pb-safe w-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-bold text-label-bold text-xs mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group" data-weight="fill" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-bold text-label-bold text-xs mt-1">Students</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-bold text-label-bold text-xs mt-1">Finance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-bold text-label-bold text-xs mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

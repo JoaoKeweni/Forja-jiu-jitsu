@@ -1,0 +1,333 @@
+<!DOCTYPE html><html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>FORJA - Dashboard Principal do Professor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,900;1,900&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#ffcdc7",
+                        "tertiary": "#ffb95f",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-bright": "#3a3939",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed": "#410004",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed": "#ffdad7",
+                        "primary-container": "#b91c1c",
+                        "background": "#131313",
+                        "secondary-container": "#a40217",
+                        "outline": "#ab8985",
+                        "error-container": "#93000a",
+                        "surface-dim": "#131313",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-error": "#690005",
+                        "tertiary-container": "#855300",
+                        "primary": "#ffb4ab",
+                        "on-background": "#e5e2e1",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-tint": "#ffb4ab",
+                        "tertiary-fixed": "#ffddb8",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#93000b",
+                        "on-primary": "#690005",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-tertiary-container": "#ffd099",
+                        "secondary-fixed-dim": "#ffb3ad",
+                        "inverse-on-surface": "#313030",
+                        "surface-container": "#201f1f",
+                        "surface-variant": "#353534",
+                        "surface": "#131313",
+                        "inverse-primary": "#b91c1c",
+                        "outline-variant": "#5b403d",
+                        "on-primary-fixed": "#410002",
+                        "on-secondary-fixed-variant": "#930013",
+                        "primary-fixed": "#ffdad6",
+                        "surface-container-highest": "#353534",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-secondary": "#68000a",
+                        "secondary": "#ffb3ad",
+                        "on-surface-variant": "#e4beb9",
+                        "on-tertiary": "#472a00",
+                        "primary-fixed-dim": "#ffb4ab",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-container": "#ffaea8",
+                        "surface-container-lowest": "#0e0e0e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max-width": "1280px",
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "label-bold": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "900" }],
+                        "label-bold": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "900" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0A0A; /* Deep Black Canvas */
+        }
+    </style>
+</head>
+<body class="text-on-background min-h-screen flex flex-col font-body-md text-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 border-b border-outline-variant/30 bg-surface/40 backdrop-blur-xl dark:bg-surface/40 flex justify-between items-center px-gutter h-16 transition-all duration-300">
+<div class="flex items-center gap-4">
+<div class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary italic uppercase leading-none mt-1">
+                FORJA
+            </div>
+<!-- Team Selector Dropdown -->
+<div class="relative ml-8 hidden md:block">
+<button class="flex items-center gap-2 bg-surface-container-high border border-outline-variant rounded-full px-4 py-1.5 text-on-surface hover:text-primary transition-colors text-label-bold font-label-bold">
+<span class="material-symbols-outlined text-[18px]">sports_martial_arts</span>
+                    Equipe Adulto Noite
+                    <span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
+</button>
+</div>
+</div>
+<!-- Navigation - Desktop -->
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-primary font-bold font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="#">Students</a>
+<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="#">Finance</a>
+<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 relative p-2">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-primary rounded-full animate-pulse"></span>
+</button>
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover ml-2" data-alt="Close-up portrait of a highly focused Brazilian Jiu-Jitsu black belt instructor with short hair and a neatly trimmed beard. He is wearing a black gi with subtle red stitching, standing in a dimly lit dojo with dramatic high-contrast lighting emphasizing his intense expression. Modern, dark, and gritty athletic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9pywuhRmEAu-cw0r_iWddjzTtbmME8vAzMnRII1SWBlv8HSV90JMYv3dw9vgErjm8VZKi4s_XA0QMdyHlYhQzD7QZmKOhAPLBy5ig4UmCWR9HBo8sg3vAwEkTY8v8fIrW9he2gXRbINyHftffOeOMonTSNZtyQHCD_e0sILl4ye10glpruJZETiPofGYcSVpP1420L1Ubs-sBwVdm5uvDRN9BAfz1C7ohh4bxJEu66HxfCVIO8MTy">
+</div>
+</header>
+<!-- NavigationDrawer Overlay (Mobile only, hidden by default) -->
+<div class="fixed inset-0 bg-black/60 z-40 hidden" id="mobile-nav-overlay">
+<!-- NavigationDrawer -->
+<nav class="h-full w-80 rounded-r-xl border-r border-outline-variant shadow-xl bg-surface-container-low dark:bg-surface-container-low flex flex-col py-8 absolute left-0 top-0 transform -translate-x-full transition-transform duration-300" id="mobile-nav-drawer">
+<!-- Content mapping from JSON to be handled by JS or manual expansion if needed, but per instructions, focus on main view. Skipping full drawer implementation for brevity as TopAppBar handles primary nav on Web, and BottomNavBar on Mobile -->
+</nav>
+</div>
+<!-- Main Content Area -->
+<main class="flex-grow pt-24 pb-32 md:pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto w-full flex flex-col gap-8">
+<!-- Moderation Banner -->
+<div class="bg-error-container/20 border border-error-container rounded-xl p-4 flex items-center justify-between shadow-[0_0_15px_rgba(185,28,28,0.1)]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+<p class="font-body-md text-body-md text-on-surface">Existem <strong class="text-primary font-bold">3 novos alunos</strong> aguardando aprovação.</p>
+</div>
+<button class="bg-primary text-on-primary font-label-bold text-label-bold px-6 py-2 rounded hover:bg-surface-tint transition-colors uppercase tracking-wider">
+                Ver Fila
+            </button>
+</div>
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-surface-variant pb-4 mt-4">
+<div>
+<h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface tracking-tight mb-2">Visão Geral</h1>
+<p class="text-on-surface-variant font-body-lg text-body-lg">Acompanhe a performance e saúde financeira da sua academia.</p>
+</div>
+<!-- Mobile Team Selector -->
+<div class="w-full md:hidden">
+<select class="w-full bg-surface-container border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary appearance-none font-label-bold text-label-bold">
+<option>🥋 Equipe Adulto Noite</option>
+<option>🥋 Kids Manhã</option>
+<option>🥋 Competição</option>
+</select>
+</div>
+</div>
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- KPI 1 -->
+<div class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+<h3 class="text-on-surface-variant font-label-bold text-label-bold uppercase tracking-widest mb-2">Alunos Ativos</h3>
+<div class="flex items-end gap-3">
+<span class="font-display-lg text-display-lg text-on-surface leading-none">142</span>
+<span class="text-[#4ade80] font-label-bold text-label-bold flex items-center mb-1">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span> 12%
+                    </span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors border-t-2 border-t-tertiary">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-tertiary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+</div>
+<h3 class="text-on-surface-variant font-label-bold text-label-bold uppercase tracking-widest mb-2">Adimplência</h3>
+<div class="flex items-end gap-3">
+<span class="font-display-lg text-display-lg text-tertiary leading-none">94%</span>
+<span class="text-on-surface-variant font-label-bold text-label-bold mb-1">Ótimo</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-error transition-colors border-l-2 border-l-error">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<h3 class="text-on-surface-variant font-label-bold text-label-bold uppercase tracking-widest mb-2">Mensalidades Atrasadas</h3>
+<div class="flex items-end gap-3">
+<span class="font-display-lg text-display-lg text-error leading-none">8</span>
+<span class="text-on-surface-variant font-body-md text-body-md mb-1">R$ 1.240,00</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<h3 class="text-on-surface-variant font-label-bold text-label-bold uppercase tracking-widest mb-2">Próx. Campeonatos</h3>
+<div class="flex items-end gap-3">
+<span class="font-display-lg text-display-lg text-on-surface leading-none">2</span>
+<span class="text-on-surface-variant font-body-md text-body-md mb-1">Inscrições abertas</span>
+</div>
+</div>
+</div>
+<!-- Weekly Payments Table -->
+<div class="mt-8">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Vencimentos da Semana</h2>
+<button class="border-2 border-primary text-primary font-label-bold text-label-bold px-4 py-2 rounded hover:bg-primary/10 transition-colors uppercase tracking-wider">
+                    Ver Todos
+                </button>
+</div>
+<div class="bg-surface-container border border-surface-variant rounded-xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high border-b border-surface-variant">
+<th class="p-4 font-label-bold text-label-bold text-on-surface-variant uppercase">Aluno</th>
+<th class="p-4 font-label-bold text-label-bold text-on-surface-variant uppercase">Plano</th>
+<th class="p-4 font-label-bold text-label-bold text-on-surface-variant uppercase">Vencimento</th>
+<th class="p-4 font-label-bold text-label-bold text-on-surface-variant uppercase">Status</th>
+<th class="p-4 font-label-bold text-label-bold text-on-surface-variant uppercase text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-bright/50 transition-colors">
+<td class="p-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">LM</div>
+<span class="font-body-md text-body-md text-on-surface font-bold">Lucas Moraes</span>
+</td>
+<td class="p-4 text-on-surface-variant">Anual Ouro</td>
+<td class="p-4 text-on-surface">Hoje</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2 py-1 rounded bg-tertiary/20 text-tertiary text-xs font-bold uppercase tracking-wider">
+                                        Pendente
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 rounded hover:bg-surface-variant text-on-surface-variant transition-colors" title="Enviar Mensagem">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+</button>
+<button class="p-2 rounded bg-primary/10 text-primary hover:bg-primary/20 transition-colors" title="Registrar Pagamento">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-bright/50 transition-colors">
+<td class="p-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface">AS</div>
+<span class="font-body-md text-body-md text-on-surface font-bold">Amanda Silva</span>
+</td>
+<td class="p-4 text-on-surface-variant">Mensal</td>
+<td class="p-4 text-error font-bold">Atrasado (2 dias)</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2 py-1 rounded bg-error/20 text-error text-xs font-bold uppercase tracking-wider border border-error/50">
+                                        Atrasado
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 rounded hover:bg-surface-variant text-[#25D366] transition-colors" title="Cobrar via WhatsApp">
+<span class="material-symbols-outlined text-[20px]">forum</span>
+</button>
+<button class="p-2 rounded bg-primary/10 text-primary hover:bg-primary/20 transition-colors" title="Registrar Pagamento">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">payments</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-bright/50 transition-colors">
+<td class="p-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface">RC</div>
+<span class="font-body-md text-body-md text-on-surface font-bold">Rafael Costa</span>
+</td>
+<td class="p-4 text-on-surface-variant">Semestral Prata</td>
+<td class="p-4 text-on-surface-variant">Em 3 dias</td>
+<td class="p-4">
+<span class="inline-flex items-center px-2 py-1 rounded bg-surface-variant text-on-surface-variant text-xs font-bold uppercase tracking-wider">
+                                        A Vencer
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 rounded hover:bg-surface-variant text-on-surface-variant transition-colors" title="Enviar Lembrete">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 border-t border-outline-variant/30 bg-surface/40 backdrop-blur-xl dark:bg-surface/40 flex justify-around items-center h-20 pb-safe transition-transform duration-300">
+<a class="flex flex-col items-center justify-center text-primary hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px]">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="#">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="text-[10px]">Students</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="#">
+<span class="material-symbols-outlined mb-1">payments</span>
+<span class="text-[10px]">Finance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="text-[10px]">Settings</span>
+</a>
+</nav>
+<!-- Background Pattern Effect -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-20" style="background-image: radial-gradient(#374151 1px, transparent 1px); background-size: 24px 24px;"></div>
+</body></html>
