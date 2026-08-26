@@ -108,35 +108,46 @@
             </div>
 <!-- Team Selector Dropdown -->
 <div class="relative ml-8 hidden md:block">
-<button class="flex items-center gap-2 bg-surface-container-high border border-outline-variant rounded-full px-4 py-1.5 text-on-surface hover:text-primary transition-colors text-label-bold font-label-bold">
+<button onclick="toggleTeamDropdown()" class="flex items-center gap-2 bg-surface-container-high border border-outline-variant rounded-full px-4 py-1.5 text-on-surface hover:text-primary transition-colors text-label-bold font-label-bold cursor-pointer">
 <span class="material-symbols-outlined text-[18px]">sports_martial_arts</span>
-                    Equipe Adulto Noite
+                    <span id="selected-team-text">Equipe Adulto Noite</span>
                     <span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
 </button>
+<div id="team-dropdown-menu" class="hidden absolute top-10 left-0 bg-surface-container border border-outline-variant rounded-xl p-2 shadow-2xl w-56 z-50">
+    <button onclick="selectTeam('Equipe Adulto Noite')" class="w-full text-left px-3 py-2 text-xs font-label-bold text-on-surface hover:bg-surface-bright rounded-lg flex items-center justify-between">
+        Equipe Adulto Noite <span class="text-primary">✓</span>
+    </button>
+    <button onclick="selectTeam('Kids & Juvenil Manhã')" class="w-full text-left px-3 py-2 text-xs font-label-bold text-on-surface-variant hover:bg-surface-bright rounded-lg">
+        Kids &amp; Juvenil Manhã
+    </button>
+    <button onclick="selectTeam('Competição Matutino')" class="w-full text-left px-3 py-2 text-xs font-label-bold text-on-surface-variant hover:bg-surface-bright rounded-lg">
+        Competição Matutino
+    </button>
+</div>
 </div>
 </div>
 <!-- Navigation - Desktop -->
 <nav class="hidden md:flex gap-8 items-center">
-<a class="text-primary font-bold font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="#">Dashboard</a>
-<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="#">Students</a>
-<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="#">Finance</a>
-<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="#">Settings</a>
+<a class="text-primary font-bold font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="dashboard.html">Dashboard</a>
+<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="gestaoAlunos.html">Alunos</a>
+<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="financeiro.html">Financeiro</a>
+<a class="text-on-surface-variant font-headline-md text-headline-md active:scale-95 transition-transform hover:text-primary transition-colors duration-200" href="gestaoCampeonatos.html">Torneios</a>
 </nav>
 <div class="flex items-center gap-4">
-<button class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 relative p-2">
+<button onclick="window.location.href='aprovacaoAluno.html'" class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 relative p-2" title="Fila de Aprovação">
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
 <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-primary rounded-full animate-pulse"></span>
 </button>
-<img class="w-10 h-10 rounded-full border border-outline-variant object-cover ml-2" data-alt="Close-up portrait of a highly focused Brazilian Jiu-Jitsu black belt instructor with short hair and a neatly trimmed beard. He is wearing a black gi with subtle red stitching, standing in a dimly lit dojo with dramatic high-contrast lighting emphasizing his intense expression. Modern, dark, and gritty athletic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9pywuhRmEAu-cw0r_iWddjzTtbmME8vAzMnRII1SWBlv8HSV90JMYv3dw9vgErjm8VZKi4s_XA0QMdyHlYhQzD7QZmKOhAPLBy5ig4UmCWR9HBo8sg3vAwEkTY8v8fIrW9he2gXRbINyHftffOeOMonTSNZtyQHCD_e0sILl4ye10glpruJZETiPofGYcSVpP1420L1Ubs-sBwVdm5uvDRN9BAfz1C7ohh4bxJEu66HxfCVIO8MTy">
+<img onclick="window.location.href='../Aluno/perfil.html'" class="w-10 h-10 rounded-full border border-outline-variant object-cover ml-2 cursor-pointer hover:border-primary transition-all" title="Ver Perfil" data-alt="Close-up portrait of a highly focused BJJ black belt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9pywuhRmEAu-cw0r_iWddjzTtbmME8vAzMnRII1SWBlv8HSV90JMYv3dw9vgErjm8VZKi4s_XA0QMdyHlYhQzD7QZmKOhAPLBy5ig4UmCWR9HBo8sg3vAwEkTY8v8fIrW9he2gXRbINyHftffOeOMonTSNZtyQHCD_e0sILl4ye10glpruJZETiPofGYcSVpP1420L1Ubs-sBwVdm5uvDRN9BAfz1C7ohh4bxJEu66HxfCVIO8MTy">
 </div>
 </header>
-<!-- NavigationDrawer Overlay (Mobile only, hidden by default) -->
-<div class="fixed inset-0 bg-black/60 z-40 hidden" id="mobile-nav-overlay">
-<!-- NavigationDrawer -->
-<nav class="h-full w-80 rounded-r-xl border-r border-outline-variant shadow-xl bg-surface-container-low dark:bg-surface-container-low flex flex-col py-8 absolute left-0 top-0 transform -translate-x-full transition-transform duration-300" id="mobile-nav-drawer">
-<!-- Content mapping from JSON to be handled by JS or manual expansion if needed, but per instructions, focus on main view. Skipping full drawer implementation for brevity as TopAppBar handles primary nav on Web, and BottomNavBar on Mobile -->
-</nav>
+
+<!-- Toast Container -->
+<div id="toast" class="fixed top-20 right-4 z-[9999] hidden bg-primary-container text-white px-4 py-3 rounded-lg shadow-2xl font-label-bold text-sm flex items-center gap-2 border border-primary/50 animate-bounce">
+    <span class="material-symbols-outlined text-lg">check_circle</span>
+    <span id="toast-message">Ação realizada com sucesso!</span>
 </div>
+
 <!-- Main Content Area -->
 <main class="flex-grow pt-24 pb-32 md:pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto w-full flex flex-col gap-8">
 <!-- Moderation Banner -->
@@ -145,7 +156,7 @@
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
 <p class="font-body-md text-body-md text-on-surface">Existem <strong class="text-primary font-bold">3 novos alunos</strong> aguardando aprovação.</p>
 </div>
-<button class="bg-primary text-on-primary font-label-bold text-label-bold px-6 py-2 rounded hover:bg-surface-tint transition-colors uppercase tracking-wider">
+<button onclick="window.location.href='aprovacaoAluno.html'" class="bg-primary text-on-primary font-label-bold text-label-bold px-6 py-2 rounded hover:bg-surface-tint transition-colors uppercase tracking-wider cursor-pointer">
                 Ver Fila
             </button>
 </div>
@@ -157,17 +168,17 @@
 </div>
 <!-- Mobile Team Selector -->
 <div class="w-full md:hidden">
-<select class="w-full bg-surface-container border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary appearance-none font-label-bold text-label-bold">
+<select onchange="selectTeam(this.value)" class="w-full bg-surface-container border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary appearance-none font-label-bold text-label-bold">
 <option>🥋 Equipe Adulto Noite</option>
-<option>🥋 Kids Manhã</option>
-<option>🥋 Competição</option>
+<option>🥋 Kids &amp; Juvenil Manhã</option>
+<option>🥋 Competição Matutino</option>
 </select>
 </div>
 </div>
 <!-- KPI Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 <!-- KPI 1 -->
-<div class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors">
+<div onclick="window.location.href='gestaoAlunos.html'" class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors cursor-pointer">
 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-6xl text-primary" style="font-variation-settings: 'FILL' 1;">groups</span>
 </div>
@@ -180,7 +191,7 @@
 </div>
 </div>
 <!-- KPI 2 -->
-<div class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors border-t-2 border-t-tertiary">
+<div onclick="window.location.href='financeiro.html'" class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors border-t-2 border-t-tertiary cursor-pointer">
 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-6xl text-tertiary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
 </div>
@@ -191,7 +202,7 @@
 </div>
 </div>
 <!-- KPI 3 -->
-<div class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-error transition-colors border-l-2 border-l-error">
+<div onclick="window.location.href='financeiro.html'" class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-error transition-colors border-l-2 border-l-error cursor-pointer">
 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-6xl text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
 </div>
@@ -202,7 +213,7 @@
 </div>
 </div>
 <!-- KPI 4 -->
-<div class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors">
+<div onclick="window.location.href='gestaoCampeonatos.html'" class="bg-surface-container border border-surface-variant rounded-xl p-6 relative overflow-hidden group hover:border-outline-variant transition-colors cursor-pointer">
 <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-6xl text-primary" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
 </div>
@@ -213,11 +224,12 @@
 </div>
 </div>
 </div>
+
 <!-- Weekly Payments Table -->
 <div class="mt-8">
 <div class="flex justify-between items-center mb-6">
 <h2 class="font-headline-md text-headline-md text-on-surface">Vencimentos da Semana</h2>
-<button class="border-2 border-primary text-primary font-label-bold text-label-bold px-4 py-2 rounded hover:bg-primary/10 transition-colors uppercase tracking-wider">
+<button onclick="window.location.href='financeiro.html'" class="border-2 border-primary text-primary font-label-bold text-label-bold px-4 py-2 rounded hover:bg-primary/10 transition-colors uppercase tracking-wider cursor-pointer">
                     Ver Todos
                 </button>
 </div>
@@ -233,72 +245,75 @@
 <th class="p-4 font-label-bold text-label-bold text-on-surface-variant uppercase text-right">Ações</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-surface-variant">
+<tbody class="divide-y divide-surface-variant" id="weekly-table-body">
 <!-- Row 1 -->
-<tr class="hover:bg-surface-bright/50 transition-colors">
+<tr class="hover:bg-surface-bright/50 transition-colors" id="row-lucas">
 <td class="p-4 flex items-center gap-3">
 <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">LM</div>
 <span class="font-body-md text-body-md text-on-surface font-bold">Lucas Moraes</span>
 </td>
 <td class="p-4 text-on-surface-variant">Anual Ouro</td>
 <td class="p-4 text-on-surface">Hoje</td>
-<td class="p-4">
+<td class="p-4" id="status-lucas">
 <span class="inline-flex items-center px-2 py-1 rounded bg-tertiary/20 text-tertiary text-xs font-bold uppercase tracking-wider">
                                         Pendente
                                     </span>
 </td>
 <td class="p-4 text-right">
 <div class="flex justify-end gap-2">
-<button class="p-2 rounded hover:bg-surface-variant text-on-surface-variant transition-colors" title="Enviar Mensagem">
+<button onclick="sendWhatsApp('Lucas Moraes')" class="p-2 rounded hover:bg-surface-variant text-[#25D366] transition-colors" title="Enviar Lembrete WhatsApp">
 <span class="material-symbols-outlined text-[20px]">chat</span>
 </button>
-<button class="p-2 rounded bg-primary/10 text-primary hover:bg-primary/20 transition-colors" title="Registrar Pagamento">
+<button onclick="markPaymentPaid('row-lucas', 'status-lucas', 'Lucas Moraes')" class="p-2 rounded bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer" title="Registrar Pagamento">
 <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">payments</span>
 </button>
 </div>
 </td>
 </tr>
 <!-- Row 2 -->
-<tr class="hover:bg-surface-bright/50 transition-colors">
+<tr class="hover:bg-surface-bright/50 transition-colors" id="row-amanda">
 <td class="p-4 flex items-center gap-3">
 <div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface">AS</div>
 <span class="font-body-md text-body-md text-on-surface font-bold">Amanda Silva</span>
 </td>
 <td class="p-4 text-on-surface-variant">Mensal</td>
 <td class="p-4 text-error font-bold">Atrasado (2 dias)</td>
-<td class="p-4">
+<td class="p-4" id="status-amanda">
 <span class="inline-flex items-center px-2 py-1 rounded bg-error/20 text-error text-xs font-bold uppercase tracking-wider border border-error/50">
                                         Atrasado
                                     </span>
 </td>
 <td class="p-4 text-right">
 <div class="flex justify-end gap-2">
-<button class="p-2 rounded hover:bg-surface-variant text-[#25D366] transition-colors" title="Cobrar via WhatsApp">
+<button onclick="sendWhatsApp('Amanda Silva')" class="p-2 rounded hover:bg-surface-variant text-[#25D366] transition-colors" title="Cobrar via WhatsApp">
 <span class="material-symbols-outlined text-[20px]">forum</span>
 </button>
-<button class="p-2 rounded bg-primary/10 text-primary hover:bg-primary/20 transition-colors" title="Registrar Pagamento">
+<button onclick="markPaymentPaid('row-amanda', 'status-amanda', 'Amanda Silva')" class="p-2 rounded bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer" title="Registrar Pagamento">
 <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">payments</span>
 </button>
 </div>
 </td>
 </tr>
 <!-- Row 3 -->
-<tr class="hover:bg-surface-bright/50 transition-colors">
+<tr class="hover:bg-surface-bright/50 transition-colors" id="row-rafael">
 <td class="p-4 flex items-center gap-3">
 <div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface">RC</div>
 <span class="font-body-md text-body-md text-on-surface font-bold">Rafael Costa</span>
 </td>
 <td class="p-4 text-on-surface-variant">Semestral Prata</td>
 <td class="p-4 text-on-surface-variant">Em 3 dias</td>
-<td class="p-4">
+<td class="p-4" id="status-rafael">
 <span class="inline-flex items-center px-2 py-1 rounded bg-surface-variant text-on-surface-variant text-xs font-bold uppercase tracking-wider">
                                         A Vencer
                                     </span>
 </td>
 <td class="p-4 text-right">
 <div class="flex justify-end gap-2">
-<button class="p-2 rounded hover:bg-surface-variant text-on-surface-variant transition-colors" title="Enviar Lembrete">
+<button onclick="sendWhatsApp('Rafael Costa')" class="p-2 rounded hover:bg-surface-variant text-[#25D366] transition-colors" title="Enviar Lembrete WhatsApp">
 <span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button onclick="markPaymentPaid('row-rafael', 'status-rafael', 'Rafael Costa')" class="p-2 rounded bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer" title="Registrar Pagamento">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">payments</span>
 </button>
 </div>
 </td>
@@ -309,25 +324,81 @@
 </div>
 </div>
 </main>
+
 <!-- BottomNavBar (Mobile Only) -->
 <nav class="md:hidden fixed bottom-0 w-full z-50 border-t border-outline-variant/30 bg-surface/40 backdrop-blur-xl dark:bg-surface/40 flex justify-around items-center h-20 pb-safe transition-transform duration-300">
-<a class="flex flex-col items-center justify-center text-primary hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="#">
+<a class="flex flex-col items-center justify-center text-primary hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="dashboard.html">
 <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">dashboard</span>
 <span class="text-[10px]">Dashboard</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="gestaoAlunos.html">
 <span class="material-symbols-outlined mb-1">group</span>
-<span class="text-[10px]">Students</span>
+<span class="text-[10px]">Alunos</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="financeiro.html">
 <span class="material-symbols-outlined mb-1">payments</span>
-<span class="text-[10px]">Finance</span>
+<span class="text-[10px]">Financeiro</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="#">
-<span class="material-symbols-outlined mb-1">settings</span>
-<span class="text-[10px]">Settings</span>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all font-label-bold text-label-bold w-1/4" href="gestaoCampeonatos.html">
+<span class="material-symbols-outlined mb-1">emoji_events</span>
+<span class="text-[10px]">Torneios</span>
 </a>
 </nav>
-<!-- Background Pattern Effect -->
-<div class="fixed inset-0 pointer-events-none z-[-1] opacity-20" style="background-image: radial-gradient(#374151 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+<!-- FORJA DEMO QUICK SWITCHER -->
+<div id="demo-switcher" class="fixed bottom-4 right-4 z-[9999] bg-[#1F2937]/95 border border-[#b91c1c]/50 backdrop-blur-md px-3 py-2 rounded-full shadow-2xl flex items-center gap-2 text-xs font-mono text-on-surface">
+    <span class="flex items-center gap-1 font-bold text-[#ffb4ab] px-2"><span class="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse"></span> DEMO SWITCHER</span>
+    <select onchange="if(this.value) window.location.href=this.value" class="bg-[#0A0A0A] border border-[#374151] text-on-surface text-xs rounded-full px-3 py-1 focus:outline-none focus:border-[#b91c1c] cursor-pointer">
+        <optgroup label="⚡ Geral">
+            <option value="../Geral/login.html">🔑 Login</option>
+            <option value="../Geral/cadastro.html">📝 Cadastro Aluno</option>
+            <option value="../Geral/campeonato.html">🏆 Campeonato Bracket Live</option>
+        </optgroup>
+        <optgroup label="🥋 Professor / Admin Academia">
+            <option value="dashboard.html" selected>📊 Dashboard Professor</option>
+            <option value="aprovacaoAluno.html">⏳ Moderação Alunos (Pendente)</option>
+            <option value="gestaoAlunos.html">👥 Gestão de Alunos</option>
+            <option value="financeiro.html">💵 Planilha Financeira</option>
+            <option value="gestaoCampeonatos.html">🥇 Lista de Campeonatos</option>
+            <option value="criacaoEvento.html">⚙️ Config. Evento / Pesagem</option>
+        </optgroup>
+        <optgroup label="👑 Super Admin (SaaS)">
+            <option value="../Admin/dashboard.html">🌐 Dashboard Super Admin</option>
+        </optgroup>
+        <optgroup label="🥋 Aluno">
+            <option value="../Aluno/perfil.html">🪪 Perfil & Carteirinha</option>
+            <option value="../Aluno/pagamentos.html">💳 Histórico & PIX</option>
+        </optgroup>
+    </select>
+</div>
+
+<script>
+    function toggleTeamDropdown() {
+        const menu = document.getElementById('team-dropdown-menu');
+        menu.classList.toggle('hidden');
+    }
+
+    function selectTeam(teamName) {
+        document.getElementById('selected-team-text').innerText = teamName;
+        document.getElementById('team-dropdown-menu').classList.add('hidden');
+        showToast(`Equipe alterada para: ${teamName}`);
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').innerText = msg;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2500);
+    }
+
+    function markPaymentPaid(rowId, statusId, name) {
+        const statusEl = document.getElementById(statusId);
+        statusEl.innerHTML = `<span class="inline-flex items-center px-2 py-1 rounded bg-[#10B981]/20 text-[#10B981] text-xs font-bold uppercase tracking-wider">PAGO ✓</span>`;
+        showToast(`Pagamento de ${name} baixado com sucesso!`);
+    }
+
+    function sendWhatsApp(name) {
+        showToast(`Abrindo cobrança via WhatsApp para ${name}...`);
+    }
+</script>
 </body></html>

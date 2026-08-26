@@ -169,27 +169,28 @@
 </div>
 </div>
 <div>
-<label class="block font-label-bold text-label-bold text-on-surface-variant mb-1" for="academy">Selecione sua Academia</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">domain</span>
-<select class="w-full bg-surface-dim border border-surface-variant rounded-lg py-3 pl-10 pr-10 text-on-surface focus:outline-none focus:ring-0 input-glow transition-colors appearance-none" id="academy" name="academy">
-<option disabled="" selected="" value="">Escolha a academia</option>
-<option value="1">Gracie Barra Matriz</option>
-<option value="2">Alliance São Paulo</option>
-<option value="3">Checkmat Sede</option>
-</select>
-<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-1">Academia Vinculada</label>
+<div class="bg-primary-container/15 border border-primary-container/40 rounded-lg p-3 flex items-center justify-between text-on-surface">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">domain</span>
+<div>
+<div class="font-bold text-sm text-on-surface">Gracie Barra Matriz</div>
+<div class="text-xs text-on-surface-variant">Identificado via URL exclusiva</div>
+</div>
+</div>
+<span class="text-xs bg-primary-container/30 text-primary font-mono px-2 py-1 rounded border border-primary-container/40">Pré-selecionado</span>
 </div>
 </div>
 <div>
-<label class="block font-label-bold text-label-bold text-on-surface-variant mb-1" for="team">Equipe / Horário</label>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-1" for="team">Selecione sua Equipe / Horário</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">schedule</span>
 <select class="w-full bg-surface-dim border border-surface-variant rounded-lg py-3 pl-10 pr-10 text-on-surface focus:outline-none focus:ring-0 input-glow transition-colors appearance-none" id="team" name="team">
-<option disabled="" selected="" value="">Escolha o horário</option>
-<option value="1">Iniciantes - Seg/Qua/Sex 19:00</option>
-<option value="2">Avançado - Ter/Qui 20:00</option>
-<option value="3">Competição - Sábado 10:00</option>
+<option disabled="" selected="" value="">Escolha a sua turma</option>
+<option value="1">Equipe Adulto Noite - Seg/Qua/Sex 19:00 (Prof. Marcus)</option>
+<option value="2">Equipe Manhã - Ter/Qui 08:00 (Prof. Carlos)</option>
+<option value="3">Equipe Infantil - Ter/Qui 17:00 (Profª. Ana)</option>
+<option value="4">Equipe Competição - Sábado 10:00</option>
 </select>
 <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
 </div>
@@ -205,11 +206,60 @@
 </div>
 </div>
 </form>
+<!-- Modal de Sucesso -->
+<div id="success-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+    <div class="bg-surface-container border border-primary-container/50 p-8 rounded-xl max-w-md w-full text-center space-y-4 shadow-2xl animate-fade-in">
+        <div class="w-16 h-16 bg-primary-container/20 text-primary-container rounded-full flex items-center justify-center mx-auto border border-primary-container/40">
+            <span class="material-symbols-outlined text-4xl">hourglass_top</span>
+        </div>
+        <h3 class="font-headline-md text-xl text-on-surface">Cadastro Solicitado!</h3>
+        <p class="font-body-md text-sm text-on-surface-variant">
+            Seus dados foram enviados com sucesso. O professor da academia selecionada precisa aprovar seu acesso no painel de moderação.
+        </p>
+        <div class="pt-4 flex flex-col gap-2">
+            <button onclick="window.location.href='../Professor/aprovacaoAluno.html'" class="w-full bg-primary-container text-white py-3 rounded-lg font-label-bold hover:bg-secondary-container transition-all">
+                👀 Ver Tela de Aprovação (Visão Professor)
+            </button>
+            <button onclick="window.location.href='login.html'" class="w-full bg-surface border border-outline-variant text-on-surface py-3 rounded-lg font-label-bold hover:bg-surface-bright transition-all">
+                🔑 Voltar para Login
+            </button>
+        </div>
+    </div>
+</div>
+
 <div class="mt-8 text-center">
-<p class="font-body-md text-body-md text-on-surface-variant">Já possui uma conta? <a class="text-primary hover:text-tertiary transition-colors underline" href="#">Faça login</a></p>
+<p class="font-body-md text-body-md text-on-surface-variant">Já possui uma conta? <a class="text-primary hover:text-tertiary transition-colors underline" href="login.html">Faça login</a></p>
 </div>
 </div>
 </main>
+
+<!-- FORJA DEMO QUICK SWITCHER -->
+<div id="demo-switcher" class="fixed bottom-4 right-4 z-[9999] bg-[#1F2937]/95 border border-[#b91c1c]/50 backdrop-blur-md px-3 py-2 rounded-full shadow-2xl flex items-center gap-2 text-xs font-mono text-on-surface">
+    <span class="flex items-center gap-1 font-bold text-[#ffb4ab] px-2"><span class="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse"></span> DEMO SWITCHER</span>
+    <select onchange="if(this.value) window.location.href=this.value" class="bg-[#0A0A0A] border border-[#374151] text-on-surface text-xs rounded-full px-3 py-1 focus:outline-none focus:border-[#b91c1c] cursor-pointer">
+        <optgroup label="⚡ Geral">
+            <option value="login.html">🔑 Login</option>
+            <option value="cadastro.html" selected>📝 Cadastro Aluno</option>
+            <option value="campeonato.html">🏆 Campeonato Bracket Live</option>
+        </optgroup>
+        <optgroup label="🥋 Professor / Admin Academia">
+            <option value="../Professor/dashboard.html">📊 Dashboard Professor</option>
+            <option value="../Professor/aprovacaoAluno.html">⏳ Moderação Alunos (Pendente)</option>
+            <option value="../Professor/gestaoAlunos.html">👥 Gestão de Alunos</option>
+            <option value="../Professor/financeiro.html">💵 Planilha Financeira</option>
+            <option value="../Professor/gestaoCampeonatos.html">🥇 Lista de Campeonatos</option>
+            <option value="../Professor/criacaoEvento.html">⚙️ Config. Evento / Pesagem</option>
+        </optgroup>
+        <optgroup label="👑 Super Admin (SaaS)">
+            <option value="../Admin/dashboard.html">🌐 Dashboard Super Admin</option>
+        </optgroup>
+        <optgroup label="🥋 Aluno">
+            <option value="../Aluno/perfil.html">🪪 Perfil & Carteirinha</option>
+            <option value="../Aluno/pagamentos.html">💳 Histórico & PIX</option>
+        </optgroup>
+    </select>
+</div>
+
 <script>
         function nextStep() {
             const step1 = document.getElementById('step-1');
@@ -251,8 +301,7 @@
 
         document.getElementById('signup-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Implement submission logic
-            console.log('Form submitted');
+            document.getElementById('success-modal').classList.remove('hidden');
         });
     </script>
 </body></html>

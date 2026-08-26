@@ -59,8 +59,10 @@ sequenceDiagram
 
 ## 4. Módulos do Sistema e Funcionalidades
 
-### 4.1. Módulo de Autenticação e Multi-Equipe
-* **Login Único**: Tela de login padrão para todas as roles (Super Admin, Professor e Aluno). O sistema redireciona automaticamente para o painel correspondente à credencial.
+### 4.1. Módulo de Autenticação e Multi-Equipe (URL Única por Academia)
+* **URL Única e Ecossistema da Academia (Multi-Tenant Slug)**: O Super Admin gera uma URL exclusiva para cada academia (ex: `forja.app/gracie-barra-matriz`). Ao acessar esse link, o usuário entra no ambiente exclusivo daquela academia.
+* **Login Específico da Academia**: A tela de login da URL da academia é destinada **exclusivamente a Alunos e Professores** daquela unidade. O Super Admin possui um portal de acesso SaaS separado.
+* **Cadastro com Academia Pré-selecionada**: Ao realizar o cadastro acessando o link da academia, a academia é **automaticamente selecionada e vinculada**, restando ao aluno apenas informar seus dados e escolher sua **Equipe/Turma** (ex: *Equipe Adulto Noite*).
 * **Seletor de Equipe no Topo (Visão Professor)**: Dropdown fixo no cabeçalho permitindo ao professor alternar instantaneamente entre suas equipes (ex: "Equipe Adulto Noite", "Equipe Manhã", "Todas as Equipes"). Todo o financeiro, lista de alunos e chamada são filtrados com base nessa seleção.
 
 ### 4.2. Módulo de Gestão de Alunos e Aprovações
@@ -83,7 +85,7 @@ sequenceDiagram
 * **Chaveamento e Súmula**: Árvore de mata-mata com controle de lutas, resultado (pontos/finalização) e pódio interno de medalhas.
 
 ### 4.5. Módulo Super Admin (Gestão SaaS)
-* Cadastro de Academias (Nome, Endereço, Responsável).
+* Cadastro de Academias (Nome, Endereço, Responsável, Geração da URL/Slug Exclusiva).
 * Cadastro de Equipes por Academia.
 * Gestão de Professores e permissões de acesso às equipes.
 
@@ -92,10 +94,11 @@ sequenceDiagram
 ## 5. Regras de Negócio (RN)
 
 * **RN-01 (Aprovação Obrigatória)**: Alunos recém-cadastrados não possuem acesso ao painel do atleta até que o Professor da equipe correspondente aprove o cadastro.
-* **RN-02 (Escopo por Equipe)**: Ao selecionar uma Equipe no topo, o Professor visualiza apenas os alunos, mensalidades e relatórios daquela equipe específica (ou de todas, se selecionar "Todas").
+* **RN-02 (Escopo por Equipe)**: Ao selecionar uma Equipe no topo, o Professor visualiza apenas os alunos, mensalidades e relatórios daquela equipe específica (or de todas, se selecionar "Todas").
 * **RN-03 (Vínculo de Professor)**: Um professor só pode gerenciar e dar baixa em alunos pertencentes às equipes onde ele possui vínculo autorizado pelo Super Admin.
 * **RN-04 (Baixa Financeira)**: Apenas o perfil de Professor (da respetiva equipe) ou Super Admin pode alterar o status de pagamento de uma parcela.
 * **RN-05 (Campeonato Interno)**: Somente alunos devidamente matriculados e ativos nas equipes da academia podem ser inscritos ou participar dos campeonatos internos promovidos pelo Professor.
+* **RN-06 (URL Única & Ecossistema Fechado)**: O Super Admin gera uma URL única para cada academia. Alunos e Professores logam exclusivamente através dessa página dedicada. No cadastro de aluno via URL única, a academia é pre-selecionada automaticamente.
 
 ---
 
@@ -112,6 +115,7 @@ erDiagram
     ACADEMIA {
         string id PK
         string nome_fantasia
+        string slug_url
         string endereco
         string telefone
     }

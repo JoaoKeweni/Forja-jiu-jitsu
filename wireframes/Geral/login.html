@@ -125,12 +125,28 @@
 <div class="relative z-10 w-full max-w-md px-margin-mobile md:px-0">
 <div class="glass-panel rounded-xl p-8 md:p-10 shadow-2xl flex flex-col items-center">
 <!-- Logo -->
-<div class="mb-10 text-center">
+<div class="mb-8 text-center">
 <h1 class="font-display-lg text-display-lg tracking-tighter text-primary italic uppercase drop-shadow-md">FORJA</h1>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2">The heat, pressure, and precision.</p>
+<div class="mt-2 inline-flex items-center gap-1.5 bg-primary-container/20 border border-primary-container/40 text-primary px-3 py-1 rounded-full text-xs font-mono">
+    <span class="material-symbols-outlined text-sm">domain</span>
+    <span>Gracie Barra Matriz</span>
+</div>
+<p class="font-body-md text-xs text-on-surface-variant mt-2">Área de Acesso da Academia</p>
 </div>
 <!-- Login Form -->
-<form class="w-full space-y-6">
+<form class="w-full space-y-6" id="login-form">
+<!-- Role Selector (Professor & Aluno) -->
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface mb-2">Entrar como:</label>
+<div class="grid grid-cols-2 gap-3">
+<button type="button" onclick="setRole('professor')" id="btn-prof" class="role-btn active-role py-2.5 px-3 text-xs font-label-bold rounded-lg border border-primary-container bg-primary-container text-white text-center transition-all flex items-center justify-center gap-1">
+    🥋 Professor
+</button>
+<button type="button" onclick="setRole('aluno')" id="btn-aluno" class="role-btn py-2.5 px-3 text-xs font-label-bold rounded-lg border border-[#374151] bg-[#0A0A0A] text-on-surface-variant text-center hover:border-primary transition-all flex items-center justify-center gap-1">
+    🥋 Aluno
+</button>
+</div>
+</div>
 <!-- Email Field -->
 <div>
 <label class="block font-label-bold text-label-bold text-on-surface mb-2" for="email">E-mail</label>
@@ -138,7 +154,7 @@
 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 <span class="material-symbols-outlined text-outline-variant">mail</span>
 </div>
-<input class="w-full bg-[#0A0A0A] border border-[#374151] rounded-lg py-3 pl-10 pr-3 font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container input-glow transition-all outline-none placeholder-outline-variant" id="email" placeholder="seu@email.com" required="" type="email">
+<input class="w-full bg-[#0A0A0A] border border-[#374151] rounded-lg py-3 pl-10 pr-3 font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container input-glow transition-all outline-none placeholder-outline-variant" id="email" value="professor@forja.com" required="" type="email">
 </div>
 </div>
 <!-- Password Field -->
@@ -148,33 +164,121 @@
 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 <span class="material-symbols-outlined text-outline-variant">lock</span>
 </div>
-<input class="w-full bg-[#0A0A0A] border border-[#374151] rounded-lg py-3 pl-10 pr-10 font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container input-glow transition-all outline-none placeholder-outline-variant" id="password" placeholder="••••••••" required="" type="password">
-<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline-variant hover:text-primary transition-colors focus:outline-none" type="button">
-<span class="material-symbols-outlined">visibility</span>
+<input class="w-full bg-[#0A0A0A] border border-[#374151] rounded-lg py-3 pl-10 pr-10 font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container input-glow transition-all outline-none placeholder-outline-variant" id="password" value="12345678" required="" type="password">
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline-variant hover:text-primary transition-colors focus:outline-none" type="button" onclick="togglePassword()">
+<span class="material-symbols-outlined" id="eye-icon">visibility</span>
 </button>
 </div>
 </div>
 <!-- Remember Me & Forgot Password -->
 <div class="flex items-center justify-between mt-4">
 <label class="flex items-center cursor-pointer group">
-<input class="form-checkbox bg-[#0A0A0A] border-[#374151] text-primary-container rounded focus:ring-primary-container focus:ring-offset-0 focus:ring-offset-transparent" type="checkbox">
+<input checked class="form-checkbox bg-[#0A0A0A] border-[#374151] text-primary-container rounded focus:ring-primary-container focus:ring-offset-0 focus:ring-offset-transparent" type="checkbox">
 <span class="ml-2 font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Lembrar de mim</span>
 </label>
 <a class="font-label-bold text-label-bold text-tertiary hover:text-tertiary-fixed transition-colors" href="#">Esqueceu a senha?</a>
 </div>
 <!-- Submit Button -->
-<button class="w-full bg-primary-container text-on-primary-container font-label-bold text-label-bold py-4 rounded-lg mt-8 btn-glow transition-all active:scale-95 flex justify-center items-center gap-2" type="submit">
-                    Entrar na Plataforma
+<button class="w-full bg-primary-container text-on-primary-container font-label-bold text-label-bold py-4 rounded-lg mt-8 btn-glow transition-all active:scale-95 flex justify-center items-center gap-2 cursor-pointer" type="submit">
+                    <span id="btn-text">Entrar como Professor</span>
                     <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
 </button>
 </form>
-<!-- Register Link -->
-<div class="mt-8 text-center w-full border-t border-outline-variant/30 pt-6">
+<!-- Register Link & Super Admin Link -->
+<div class="mt-8 text-center w-full border-t border-outline-variant/30 pt-6 space-y-2">
 <p class="font-body-md text-body-md text-on-surface-variant">
                     Novo aluno? 
-                    <a class="font-label-bold text-label-bold text-primary hover:text-primary-fixed transition-colors ml-1" href="#">Crie sua conta</a>
+                    <a class="font-label-bold text-label-bold text-primary hover:text-primary-fixed transition-colors ml-1" href="cadastro.html">Crie sua conta na academia</a>
+</p>
+<p class="text-xs text-on-surface-variant/60">
+    É Super Admin da plataforma? <a class="text-on-surface hover:text-primary underline cursor-pointer" onclick="setRole('admin'); document.getElementById('login-form').dispatchEvent(new Event('submit'));">Acessar Painel SaaS</a>
 </p>
 </div>
 </div>
 </div>
+
+<!-- FORJA DEMO QUICK SWITCHER -->
+<div id="demo-switcher" class="fixed bottom-4 right-4 z-[9999] bg-[#1F2937]/95 border border-[#b91c1c]/50 backdrop-blur-md px-3 py-2 rounded-full shadow-2xl flex items-center gap-2 text-xs font-mono text-on-surface">
+    <span class="flex items-center gap-1 font-bold text-[#ffb4ab] px-2"><span class="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse"></span> DEMO SWITCHER</span>
+    <select onchange="if(this.value) window.location.href=this.value" class="bg-[#0A0A0A] border border-[#374151] text-on-surface text-xs rounded-full px-3 py-1 focus:outline-none focus:border-[#b91c1c] cursor-pointer">
+        <optgroup label="⚡ Geral">
+            <option value="login.html" selected>🔑 Login</option>
+            <option value="cadastro.html">📝 Cadastro Aluno</option>
+            <option value="campeonato.html">🏆 Campeonato Bracket Live</option>
+        </optgroup>
+        <optgroup label="🥋 Professor / Admin Academia">
+            <option value="../Professor/dashboard.html">📊 Dashboard Professor</option>
+            <option value="../Professor/aprovacaoAluno.html">⏳ Moderação Alunos (Pendente)</option>
+            <option value="../Professor/gestaoAlunos.html">👥 Gestão de Alunos</option>
+            <option value="../Professor/financeiro.html">💵 Planilha Financeira</option>
+            <option value="../Professor/gestaoCampeonatos.html">🥇 Lista de Campeonatos</option>
+            <option value="../Professor/criacaoEvento.html">⚙️ Config. Evento / Pesagem</option>
+        </optgroup>
+        <optgroup label="👑 Super Admin (SaaS)">
+            <option value="../Admin/dashboard.html">🌐 Dashboard Super Admin</option>
+        </optgroup>
+        <optgroup label="🥋 Aluno">
+            <option value="../Aluno/perfil.html">🪪 Perfil & Carteirinha</option>
+            <option value="../Aluno/pagamentos.html">💳 Histórico & PIX</option>
+        </optgroup>
+    </select>
+</div>
+
+<script>
+    let currentRole = 'professor';
+
+    function setRole(role) {
+        currentRole = role;
+        const btnProf = document.getElementById('btn-prof');
+        const btnAluno = document.getElementById('btn-aluno');
+        const btnAdmin = document.getElementById('btn-admin');
+        const emailInput = document.getElementById('email');
+        const btnText = document.getElementById('btn-text');
+
+        [btnProf, btnAluno, btnAdmin].forEach(b => {
+            b.className = "role-btn py-2 px-3 text-xs font-label-bold rounded-lg border border-[#374151] bg-[#0A0A0A] text-on-surface-variant text-center hover:border-primary transition-all";
+        });
+
+        if (role === 'professor') {
+            btnProf.className = "role-btn py-2 px-3 text-xs font-label-bold rounded-lg border border-primary-container bg-primary-container text-white text-center transition-all";
+            emailInput.value = "professor@forja.com";
+            btnText.innerText = "Entrar como Professor";
+        } else if (role === 'aluno') {
+            btnAluno.className = "role-btn py-2 px-3 text-xs font-label-bold rounded-lg border border-primary-container bg-primary-container text-white text-center transition-all";
+            emailInput.value = "aluno@forja.com";
+            btnText.innerText = "Entrar como Aluno";
+        } else if (role === 'admin') {
+            btnAdmin.className = "role-btn py-2 px-3 text-xs font-label-bold rounded-lg border border-primary-container bg-primary-container text-white text-center transition-all";
+            emailInput.value = "superadmin@forja.com";
+            btnText.innerText = "Entrar como Super Admin";
+        }
+    }
+
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerText = 'visibility_off';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerText = 'visibility';
+        }
+    }
+
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const btnText = document.getElementById('btn-text');
+        btnText.innerText = "Autenticando...";
+        setTimeout(() => {
+            if (currentRole === 'professor') {
+                window.location.href = '../Professor/dashboard.html';
+            } else if (currentRole === 'aluno') {
+                window.location.href = '../Aluno/perfil.html';
+            } else {
+                window.location.href = '../Admin/dashboard.html';
+            }
+        }, 500);
+    });
+</script>
 </body></html>

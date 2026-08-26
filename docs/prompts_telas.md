@@ -35,24 +35,25 @@ Este documento contém a especificação detalhada e os **prompts de UI/UX compl
 
 ## 🔑 Prompts de Autenticação & Onboarding
 
-### AUTH-01: Tela de Login Única
-* **Objetivo**: Ponto de entrada único para todos os perfis. O sistema direciona automaticamente o usuário com base na sua credencial.
-* **Layout**: Card centralizado moderno em fundo escuro com branding da Forja Jiu-Jitsu.
+### AUTH-01: Tela de Login da Academia (Alunos & Professores)
+* **Objetivo**: Ponto de entrada exclusivo para Alunos e Professores da academia referente à URL acessada (ex: `forja.app/gracie-barra-matriz`). O Super Admin loga por um portal SaaS separado.
+* **Layout**: Card centralizado moderno em fundo escuro com branding da Forja Jiu-Jitsu e indicação da academia acessada.
 * **Prompt para Geração/UI**:
-> "Crie uma tela de Login ultra moderna em Dark Mode para a plataforma 'Forja Jiu-Jitsu'. 
-> **Centro**: Card central com efeito glassmorphism (vidro fosco), contendo o logo em destaque com detalhes dourados (#F59E0B) e fundo preto profundo. 
+> "Crie uma tela de Login ultra moderna em Dark Mode para a plataforma 'Forja Jiu-Jitsu' personalizada para o ecossistema de uma academia específica (ex: Gracie Barra Matriz). 
+> **Centro**: Card central com efeito glassmorphism (vidro fosco), contendo o logo em destaque com detalhes vermelhos/dourados (#b91c1c), fundo preto profundo e badge indicando a unidade/academia acessada. 
+> **Seletor de Perfil**: Alternância rápida entre '🥋 Professor' e '🥋 Aluno' (exclusivo para os perfis da academia). 
 > **Campos**: Campo de E-mail/Usuário com ícone de envelope, campo de Senha com alternância de visibilidade (ícone de olho), checkbox 'Lembrar de mim', link 'Esqueceu a senha?'. 
-> **Botões**: Botão principal dourado 'Entrar na Plataforma' e link destacado abaixo: 'Novo aluno? Crie sua conta e solicite entrada na sua equipe'."
+> **Botões**: Botão principal 'Entrar na Plataforma' e link destacado abaixo: 'Novo aluno? Crie sua conta e solicite entrada na sua equipe'."
 
 ---
 
-### AUTH-02: Cadastro Simplificado do Aluno
-* **Objetivo**: Permitir que um novo aluno crie sua conta e solicite entrada em sua academia e equipe.
-* **Layout**: Formulário em etapas simples (Dados Pessoais -> Escolha da Academia e Equipe).
+### AUTH-02: Cadastro Simplificado do Aluno (URL Única da Academia)
+* **Objetivo**: Permitir que um novo aluno crie sua conta diretamente pelo link exclusivo encaminhado por sua academia (Academia já pré-selecionada automaticamente).
+* **Layout**: Formulário em etapas simples (Dados Pessoais -> Escolha da Equipe/Horário).
 * **Prompt para Geração/UI**:
-> "Desenvolva uma tela de cadastro de aluno mobile-first simples e intuitiva. 
+> "Desenvolva uma tela de cadastro de aluno mobile-first simples e intuitiva acessada via link único da academia. 
 > **Etapa 1 (Seus Dados)**: Nome Completo, E-mail, Telefone (WhatsApp) e criação de Senha. 
-> **Etapa 2 (Sua Equipe)**: Dropdown 1 'Selecione sua Academia' (busca rápida), Dropdown 2 'Selecione sua Equipe/Horário' (ex: 'Equipe Adulto Noite - Prof. Marcus'), Upload opcional de foto de perfil. 
+> **Etapa 2 (Sua Equipe)**: Bloco informativo indicando a Academia Pré-selecionada ('Academia: Gracie Barra Matriz - Link Exclusivo'), Dropdown 'Selecione sua Equipe/Horário' (ex: 'Equipe Adulto Noite - Prof. Marcus'), Upload opcional de foto de perfil. 
 > **Ação**: Botão principal 'Finalizar Cadastro e Solicitar Aprovação'."
 
 ---

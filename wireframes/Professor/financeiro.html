@@ -205,23 +205,29 @@
 <body class="font-body-md text-body-md antialiased pb-24 md:pb-0 pt-20 selection:bg-primary-container selection:text-on-primary-container bg-surface-container-low">
 <!-- TopAppBar -->
 <header class="fixed top-0 w-full z-50 backdrop-blur-xl dark:bg-surface/80 border-b border-surface-variant flex justify-between items-center px-margin-mobile md:px-gutter h-16 shadow-md bg-surface-container-high">
-<div class="flex items-center gap-3">
-<img class="w-9 h-9 rounded-full object-cover border-2 border-primary" data-alt="A striking digital profile image of a fierce Brazilian Jiu-Jitsu instructor in a dark gym environment. High contrast lighting highlights intense facial features and a weathered black belt resting over a dark gi. The background is a moody, blurred academy setting with subtle red neon accents, conveying discipline and high performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBtw0FX3Bw28Zed90QAQtGhjyr2vDRepJt9g59dPaqmnfCgpLbEGCchM7GvZaOXLmAw7U1-GtduqTJQyxMynmv7GG1Hg6m6mzrFjGaYRhTWyzA7uEtu3SrsCEQN_WOwN9feYCDgVZJdzs3TR55g4cNIHDR9fnbn7L9XBAkwHOhVXToWnLqcb3Rhzquuljss0X0OQHd0ZpJjhQMa_Zfba5RvhIF8vJUbtjY9utMPsxDb0CxczsbIZaL">
+<div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='dashboard.html'">
 <h1 class="font-display-lg-mobile text-[24px] tracking-tighter text-primary italic uppercase">FORJA</h1>
 </div>
-<div class="flex items-center">
-<!-- Team Selector Dropdown -->
-<button class="flex items-center gap-2 bg-surface-container hover:bg-surface-container-high px-4 py-2 rounded-full border border-surface-variant transition-colors shadow-sm">
-<span class="font-label-bold text-[13px] text-on-surface">Equipe Adulto Noite</span>
-<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="arrow_drop_down">arrow_drop_down</span>
-</button>
-</div>
-<div class="hidden md:flex items-center gap-4">
-<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform">
+<nav class="hidden md:flex gap-6 font-label-bold text-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="dashboard.html">Dashboard</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="gestaoAlunos.html">Alunos</a>
+<a class="text-primary font-bold hover:text-primary transition-colors duration-200" href="financeiro.html">Financeiro</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="gestaoCampeonatos.html">Torneios</a>
+</nav>
+<div class="flex items-center gap-4">
+<button onclick="window.location.href='aprovacaoAluno.html'" class="text-on-surface-variant hover:text-primary transition-colors duration-200 active:scale-95 transition-transform relative p-2" title="Aprovações Pendentes">
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse"></span>
 </button>
 </div>
 </header>
+
+<!-- Toast -->
+<div id="toast" class="fixed top-20 right-4 z-[9999] hidden bg-primary-container text-white px-4 py-3 rounded-lg shadow-2xl font-label-bold text-sm flex items-center gap-2 border border-primary/50">
+    <span class="material-symbols-outlined text-lg">check_circle</span>
+    <span id="toast-message">Pagamento registrado com sucesso!</span>
+</div>
+
 <!-- Main Content -->
 <main class="max-w-[1280px] mx-auto px-margin-mobile md:px-gutter pt-4">
 <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -234,11 +240,11 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
 <div class="border border-surface-variant rounded-xl p-4 flex flex-col justify-center items-start shadow-sm bg-surface-container">
 <p class="text-xs text-on-surface-variant font-label-bold uppercase tracking-wider mb-1">Adimplência</p>
-<p class="text-2xl font-display-lg-mobile text-[#22c55e]">85%</p>
+<p id="adimplencia-val" class="text-2xl font-display-lg-mobile text-[#22c55e]">85%</p>
 </div>
 <div class="border border-surface-variant rounded-xl p-4 flex flex-col justify-center items-start shadow-sm bg-surface-container">
 <p class="text-xs text-on-surface-variant font-label-bold uppercase tracking-wider mb-1">Recebimentos</p>
-<p class="text-2xl font-display-lg-mobile text-on-surface">R$ 4.2k</p>
+<p id="recebimentos-val" class="text-2xl font-display-lg-mobile text-on-surface">R$ 4.200,00</p>
 </div>
 <div class="border border-surface-variant rounded-xl p-4 flex flex-col justify-center items-start shadow-sm col-span-2 md:col-span-2 bg-surface-container">
 <p class="text-xs text-on-surface-variant font-label-bold uppercase tracking-wider mb-1">Pendências (Abril)</p>
@@ -247,7 +253,7 @@
 <img alt="Atleta pendente" class="w-8 h-8 rounded-full border-2 border-surface-container-low" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6jhOKBIACzBwKMnOco9nOawem3_3QUGvdHcpryFelnO-068cbnzmtAdGRscqivEW4uZ1N8XnKCNXA_ULcYFjxho1zk9JNX-gJGaWAUS2oZAEHWUv-WMpSztsG0gN3VguEKBqLhfO4dnS9i4NA0MWnzT-NJa9r6zDO_5Au-zzcLqsCKZAgr-gX7Lj7QmntpX_3Ypf2sdX5qOnptFmngQCSBxdaiykFfgmd5nv-oYFZRDDLWoWpGVfX">
 <div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-surface-variant flex items-center justify-center text-xs font-bold">L</div>
 </div>
-<p class="text-sm font-bold text-[#ef4444]">2 alunos em atraso</p>
+<p id="pendencias-count" class="text-sm font-bold text-[#ef4444]">2 alunos em atraso</p>
 </div>
 </div>
 </div>
@@ -299,7 +305,7 @@
 <div class="w-16 shrink-0 flex justify-center"><div class="status-badge bg-[#22c55e]/20 border border-[#22c55e]/50"><div class="w-3 h-3 rounded-full bg-[#22c55e]"></div></div></div>
 <div class="w-16 shrink-0 flex justify-center"><div class="status-badge bg-[#22c55e]/20 border border-[#22c55e]/50"><div class="w-3 h-3 rounded-full bg-[#22c55e]"></div></div></div>
 <div class="w-16 shrink-0 flex justify-center"><div class="status-badge bg-[#22c55e]/20 border border-[#22c55e]/50"><div class="w-3 h-3 rounded-full bg-[#22c55e]"></div></div></div>
-<div class="w-16 shrink-0 flex justify-center bg-primary/5 h-full items-center">
+<div class="w-16 shrink-0 flex justify-center bg-primary/5 h-full items-center" id="carlos-abr-cell">
 <button class="status-badge bg-[#ef4444]/20 border border-[#ef4444] ring-2 ring-[#ef4444]/30 animate-pulse cursor-pointer shadow-[0_0_12px_rgba(239,68,68,0.5)]" id="trigger-modal"><div class="w-3 h-3 rounded-full bg-[#ef4444]"></div></button>
 </div>
 <div class="w-16 shrink-0 flex justify-center"><div class="w-2 h-2 rounded-full bg-surface-variant"></div></div>
@@ -364,29 +370,53 @@
 </main>
 <!-- BottomNavBar (Mobile Only) -->
 <nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface-container border-t border-surface-variant flex justify-around items-center h-20 pb-safe w-full shadow-[0_-4px_20px_rgba(0,0,0,0.2)]">
-<!-- Dashboard (Inactive) -->
-<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="dashboard.html">
 <span class="material-symbols-outlined text-[24px]" data-icon="dashboard">dashboard</span>
 <span class="font-label-bold text-label-bold mt-1 text-[10px]">Dashboard</span>
-</button>
-<!-- Students (Inactive) -->
-<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all">
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="gestaoAlunos.html">
 <span class="material-symbols-outlined text-[24px]" data-icon="group">group</span>
-<span class="font-label-bold text-label-bold mt-1 text-[10px]">Students</span>
-</button>
-<!-- Finance (Active) -->
-<button class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-all">
+<span class="font-label-bold text-label-bold mt-1 text-[10px]">Alunos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-all" href="financeiro.html">
 <div class="bg-primary/10 px-4 py-1 rounded-full mb-1">
 <span class="material-symbols-outlined text-[24px]" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
 </div>
-<span class="font-label-bold text-label-bold text-[10px]">Finance</span>
-</button>
-<!-- Settings (Inactive) -->
-<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all">
-<span class="material-symbols-outlined text-[24px]" data-icon="settings">settings</span>
-<span class="font-label-bold text-label-bold mt-1 text-[10px]">Settings</span>
-</button>
+<span class="font-label-bold text-label-bold text-[10px]">Financeiro</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="gestaoCampeonatos.html">
+<span class="material-symbols-outlined text-[24px]" data-icon="settings">emoji_events</span>
+<span class="font-label-bold text-label-bold mt-1 text-[10px]">Torneios</span>
+</a>
 </nav>
+
+<!-- FORJA DEMO QUICK SWITCHER -->
+<div id="demo-switcher" class="fixed bottom-4 right-4 z-[9999] bg-[#1F2937]/95 border border-[#b91c1c]/50 backdrop-blur-md px-3 py-2 rounded-full shadow-2xl flex items-center gap-2 text-xs font-mono text-on-surface">
+    <span class="flex items-center gap-1 font-bold text-[#ffb4ab] px-2"><span class="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse"></span> DEMO SWITCHER</span>
+    <select onchange="if(this.value) window.location.href=this.value" class="bg-[#0A0A0A] border border-[#374151] text-on-surface text-xs rounded-full px-3 py-1 focus:outline-none focus:border-[#b91c1c] cursor-pointer">
+        <optgroup label="⚡ Geral">
+            <option value="../Geral/login.html">🔑 Login</option>
+            <option value="../Geral/cadastro.html">📝 Cadastro Aluno</option>
+            <option value="../Geral/campeonato.html">🏆 Campeonato Bracket Live</option>
+        </optgroup>
+        <optgroup label="🥋 Professor / Admin Academia">
+            <option value="dashboard.html">📊 Dashboard Professor</option>
+            <option value="aprovacaoAluno.html">⏳ Moderação Alunos (Pendente)</option>
+            <option value="gestaoAlunos.html">👥 Gestão de Alunos</option>
+            <option value="financeiro.html" selected>💵 Planilha Financeira</option>
+            <option value="gestaoCampeonatos.html">🥇 Lista de Campeonatos</option>
+            <option value="criacaoEvento.html">⚙️ Config. Evento / Pesagem</option>
+        </optgroup>
+        <optgroup label="👑 Super Admin (SaaS)">
+            <option value="../Admin/dashboard.html">🌐 Dashboard Super Admin</option>
+        </optgroup>
+        <optgroup label="🥋 Aluno">
+            <option value="../Aluno/perfil.html">🪪 Perfil & Carteirinha</option>
+            <option value="../Aluno/pagamentos.html">💳 Histórico & PIX</option>
+        </optgroup>
+    </select>
+</div>
+
 <!-- Payment Confirmation Mini-Modal Overlay -->
 <div class="fixed inset-0 z-[60] flex items-center justify-center hidden modal-backdrop" id="payment-modal">
 <div class="bg-surface-container-high border border-surface-variant rounded-2xl shadow-2xl w-11/12 max-w-sm p-6 transform scale-95 opacity-0 transition-all duration-300" id="modal-content">
@@ -395,7 +425,7 @@
 <h3 class="font-headline-md text-headline-md text-on-surface text-lg">Resolução de Pendência</h3>
 <p class="text-on-surface-variant text-sm mt-1">Carlos Silva - Mensalidade Abril</p>
 </div>
-<button class="text-on-surface-variant hover:text-primary transition-colors bg-surface-container p-2 rounded-full" id="close-modal">
+<button class="text-on-surface-variant hover:text-primary transition-colors bg-surface-container p-2 rounded-full cursor-pointer" id="close-modal">
 <span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
 </button>
 </div>
@@ -411,17 +441,17 @@
 <div class="space-y-5">
 <!-- Action 1: Manual Baixa -->
 <div>
-<p class="font-label-bold text-label-bold text-on-surface-variant mb-3 text-xs uppercase tracking-wider">Baixa Manual</p>
+<p class="font-label-bold text-label-bold text-on-surface-variant mb-3 text-xs uppercase tracking-wider">Dar Baixa Manual</p>
 <div class="grid grid-cols-3 gap-3">
-<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container border border-surface-variant hover:border-primary hover:text-primary transition-all text-on-surface group">
+<button onclick="confirmBaixa('PIX')" class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container border border-surface-variant hover:border-primary hover:text-primary transition-all text-on-surface group cursor-pointer">
 <span class="material-symbols-outlined mb-2 text-[24px] group-hover:scale-110 transition-transform" data-icon="qr_code_scanner">qr_code_scanner</span>
 <span class="text-xs font-medium">PIX</span>
 </button>
-<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container border border-surface-variant hover:border-primary hover:text-primary transition-all text-on-surface group">
+<button onclick="confirmBaixa('Dinheiro')" class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container border border-surface-variant hover:border-primary hover:text-primary transition-all text-on-surface group cursor-pointer">
 <span class="material-symbols-outlined mb-2 text-[24px] group-hover:scale-110 transition-transform" data-icon="payments">payments</span>
 <span class="text-xs font-medium">Dinheiro</span>
 </button>
-<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container border border-surface-variant hover:border-primary hover:text-primary transition-all text-on-surface group">
+<button onclick="confirmBaixa('Cartão')" class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container border border-surface-variant hover:border-primary hover:text-primary transition-all text-on-surface group cursor-pointer">
 <span class="material-symbols-outlined mb-2 text-[24px] group-hover:scale-110 transition-transform" data-icon="credit_card">credit_card</span>
 <span class="text-xs font-medium">Cartão</span>
 </button>
@@ -429,7 +459,7 @@
 </div>
 <!-- Action 2: WhatsApp -->
 <div class="pt-5 border-t border-surface-variant">
-<button class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#25D366]/20">
+<button onclick="openWhatsAppCobrança()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#25D366]/20 cursor-pointer">
 <span class="material-symbols-outlined" data-icon="chat">chat</span>
                         WhatsApp Cobrança
                     </button>
@@ -438,67 +468,62 @@
 </div>
 </div>
 </div>
+
 <script>
-        // Simple modal interaction logic
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('payment-modal');
             const modalContent = document.getElementById('modal-content');
             const trigger = document.getElementById('trigger-modal');
             const closeBtn = document.getElementById('close-modal');
 
-            function openModal() {
+            window.openModal = function() {
                 modal.classList.remove('hidden');
-                // Small delay to allow display block to apply before animating opacity/transform
                 setTimeout(() => {
                     modalContent.classList.remove('scale-95', 'opacity-0');
                     modalContent.classList.add('scale-100', 'opacity-100');
                 }, 10);
             }
 
-            function closeModal() {
+            window.closeModal = function() {
                 modalContent.classList.remove('scale-100', 'opacity-100');
                 modalContent.classList.add('scale-95', 'opacity-0');
-                // Wait for transition to finish before hiding
                 setTimeout(() => {
                     modal.classList.add('hidden');
                 }, 300);
             }
 
-            // Sync scrolling of header and body
-            const spreadsheetContainers = document.querySelectorAll('.spreadsheet-container');
-            if (spreadsheetContainers.length > 1) {
-                const headerContainer = spreadsheetContainers[0];
-                const rows = Array.from(spreadsheetContainers).slice(1);
-                
-                headerContainer.addEventListener('scroll', (e) => {
-                    rows.forEach(row => {
-                        if (row !== e.target) row.scrollLeft = e.target.scrollLeft;
-                    });
-                });
-                
-                rows.forEach(row => {
-                    row.addEventListener('scroll', (e) => {
-                        headerContainer.scrollLeft = e.target.scrollLeft;
-                        rows.forEach(r => {
-                            if (r !== e.target) r.scrollLeft = e.target.scrollLeft;
-                        });
-                    });
-                });
-            }
-
             if(trigger) trigger.addEventListener('click', openModal);
             if(closeBtn) closeBtn.addEventListener('click', closeModal);
-            
-            // Close on backdrop click
+
             if(modal) {
                 modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        closeModal();
-                    }
+                    if (e.target === modal) closeModal();
                 });
             }
         });
-    </script>
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        function confirmBaixa(method) {
+            closeModal();
+            const cell = document.getElementById('carlos-abr-cell');
+            cell.innerHTML = `<div class="status-badge bg-[#22c55e]/20 border border-[#22c55e]/50"><div class="w-3 h-3 rounded-full bg-[#22c55e]"></div></div>`;
+            document.getElementById('adimplencia-val').innerText = '92%';
+            document.getElementById('recebimentos-val').innerText = 'R$ 4.350,00';
+            document.getElementById('pendencias-count').innerText = '1 aluno em atraso';
+            showToast(`✅ Baixa de R$ 150,00 via ${method} realizada para Carlos Silva!`);
+        }
+
+        function openWhatsAppCobrança() {
+            window.open("https://wa.me/5511999999999?text=Olá%20Carlos!%20Sua%20mensalidade%20da%20Forja%20Jiu-Jitsu%20(R$%20150,00)%20venceu%20recente.%20Chave%20PIX:%20forja@jiujitsu.com", "_blank");
+        }
+</script>
+</body></html>
 
 
 </body></html>

@@ -98,38 +98,51 @@
 <!-- TopAppBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/40 backdrop-blur-xl dark:bg-surface/40 border-b border-outline-variant/30 hidden md:flex justify-between items-center px-gutter h-16 transition-transform">
 <div class="flex items-center gap-4">
-<img class="w-8 h-8 rounded-full object-cover" data-alt="A small, stylized profile avatar of a Brazilian Jiu-Jitsu instructor wearing a dark gi, intense studio lighting, dark modern aesthetic, deep red accents, highly detailed, photorealistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfWDZk7llGw9oxUNNtLnLoRbN6znV9MATm96zqmJtQ1Zzfy1LWlP8lh0NJ6mBoj-s7qJBS0GujvI-T_9KcmYU_4qxtKDYgHRP6L8LvX5yujkOBHePCozDYM2ExxAXwI7nNgXY1OFCQzA_OYMGXIpk6xjV67kEukyoZHWZSWwKHoVk2EVcpqxGyT4wt8Fk57SM4sLwPTv-7yUhZ3pDarqivZqVOcpCd6THbp9dTOSdEjU9rAcp9W3pt">
-<h1 class="font-display-lg tracking-tighter text-primary italic uppercase text-2xl">FORJA</h1>
+<h1 class="font-display-lg tracking-tighter text-primary italic uppercase text-2xl cursor-pointer" onclick="window.location.href='dashboard.html'">FORJA</h1>
 </div>
-<nav class="flex gap-6">
-<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Dashboard</a>
-<a class="text-primary font-bold hover:text-primary transition-colors duration-200" href="#">Students</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Finance</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Settings</a>
+<nav class="flex gap-6 font-label-bold text-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="dashboard.html">Dashboard</a>
+<a class="text-primary font-bold hover:text-primary transition-colors duration-200" href="gestaoAlunos.html">Alunos</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="financeiro.html">Financeiro</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="gestaoCampeonatos.html">Torneios</a>
 </nav>
-<button class="text-primary dark:text-primary hover:text-primary transition-colors duration-200 active:scale-95">
+<button onclick="window.location.href='aprovacaoAluno.html'" class="text-primary hover:text-primary transition-colors duration-200 active:scale-95 relative p-2" title="Aprovações Pendentes">
 <span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-primary rounded-full animate-pulse"></span>
 </button>
 </header>
+
 <!-- Mobile TopAppBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/40 backdrop-blur-xl dark:bg-surface/40 border-b border-outline-variant/30 flex md:hidden justify-between items-center px-gutter h-16">
-<img class="w-8 h-8 rounded-full object-cover" data-alt="A small, stylized profile avatar of a Brazilian Jiu-Jitsu instructor wearing a dark gi, intense studio lighting, dark modern aesthetic, deep red accents, highly detailed, photorealistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbVAR9pCFygyNI4w6C3p_Cabk0xcIG9Kx6DpakfdFRZnh7fLh85Rc0wKMevcF_O521sQ0PufTMppdkLLIL0LMEKVPN66Z1Jvw6WGt0YQVKtbNJdH2X_iF0IzxInpPWqbM1E8aMSQrf_JE-_e_P2o5gPhjUjHrg0BmwmKdNxnqpnpoAYss9ro9LK7GSni_QvLLmWjqJSh5O0wYuxdUmlj736VHM6fWvOKtx8PYK9ygm18VQOBy9Zl1v">
-<h1 class="font-display-lg-mobile tracking-tighter text-primary italic uppercase">FORJA</h1>
-<button class="text-primary dark:text-primary active:scale-95 transition-transform">
+<h1 class="font-display-lg-mobile tracking-tighter text-primary italic uppercase" onclick="window.location.href='dashboard.html'">FORJA</h1>
+<button onclick="window.location.href='aprovacaoAluno.html'" class="text-primary active:scale-95 transition-transform p-2">
 <span class="material-symbols-outlined">notifications</span>
 </button>
 </header>
+
+<!-- Toast Container -->
+<div id="toast" class="fixed top-20 right-4 z-[9999] hidden bg-primary-container text-white px-4 py-3 rounded-lg shadow-2xl font-label-bold text-sm flex items-center gap-2 border border-primary/50">
+    <span class="material-symbols-outlined text-lg">check_circle</span>
+    <span id="toast-message">Aluno aprovado com sucesso!</span>
+</div>
+
 <main class="max-w-container-max-width mx-auto px-margin-mobile md:px-gutter mt-8 md:mt-16">
-<div class="mb-10">
+<div class="mb-10 flex justify-between items-end">
+<div>
 <h2 class="font-display-lg text-primary mb-2">Fila de Aprovação</h2>
 <p class="font-body-lg text-on-surface-variant">Avalie e aprove novos alunos para a academia.</p>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<span id="pending-count-badge" class="bg-primary-container text-white font-label-bold text-xs px-3 py-1 rounded-full">
+    2 Alunos Pendentes
+</span>
+</div>
+
+<div id="approval-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 <!-- Card 1 -->
-<article class="bg-surface-container border border-surface-variant rounded-xl overflow-hidden shadow-lg transition-transform hover:-translate-y-1 duration-300 group">
+<article id="card-lucas" class="bg-surface-container border border-surface-variant rounded-xl overflow-hidden shadow-lg transition-all duration-300 group">
 <div class="p-6 flex flex-col gap-4">
 <div class="flex items-center gap-4">
-<img class="w-16 h-16 rounded-full object-cover border-2 border-surface-variant group-hover:border-primary transition-colors" data-alt="Portrait of a determined young male athlete looking at the camera, wearing athletic gear, dark gym background with dramatic lighting, deep shadows and crisp details, intense mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAVMkdOmZUpIiN-IriXAn_MPT3Tb8Pn8VG7eN8jCldmIeTdjjZPchr8DPbFWt-e2YgElyWE3S-WjqfUmwLoCZwmItMmG9qfqJbdKPmBj2IYSAbs5fN6g940k8BYsAuamZdYS6MZayXRpJesG_rjFOKavkA8M1oJsFW7qCKp_eUCO17pypb-0F0Ewc7NE9eJrw0qzOBK1ni4hTbgT2BTt88v6gwIWuJo2i5V2lPKLmRV8j_5I7XyKGo">
+<img class="w-16 h-16 rounded-full object-cover border-2 border-surface-variant group-hover:border-primary transition-colors" data-alt="Portrait of a determined young male athlete" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAVMkdOmZUpIiN-IriXAn_MPT3Tb8Pn8VG7eN8jCldmIeTdjjZPchr8DPbFWt-e2YgElyWE3S-WjqfUmwLoCZwmItMmG9qfqJbdKPmBj2IYSAbs5fN6g940k8BYsAuamZdYS6MZayXRpJesG_rjFOKavkA8M1oJsFW7qCKp_eUCO17pypb-0F0Ewc7NE9eJrw0qzOBK1ni4hTbgT2BTt88v6gwIWuJo2i5V2lPKLmRV8j_5I7XyKGo">
 <div>
 <h3 class="font-headline-md text-on-surface">Lucas Moura</h3>
 <p class="font-body-md text-on-surface-variant flex items-center gap-1">
@@ -137,7 +150,7 @@
                             </p>
 </div>
 </div>
-<a class="flex items-center gap-2 text-tertiary hover:text-primary transition-colors text-sm w-fit font-label-bold" href="https://wa.me/5511999999999" target="_blank">
+<a class="flex items-center gap-2 text-[#25D366] hover:underline transition-colors text-sm w-fit font-label-bold" href="https://wa.me/5511999999999" target="_blank">
 <span class="material-symbols-outlined">forum</span> Contatar via WhatsApp
                     </a>
 <div class="h-px w-full bg-surface-variant my-2"></div>
@@ -161,20 +174,21 @@
 </div>
 </div>
 <div class="flex gap-3 mt-4">
-<button class="flex-1 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary font-label-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 active:scale-95">
+<button onclick="approveStudent('card-lucas', 'Lucas Moura')" class="flex-1 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary font-label-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
 <span class="material-symbols-outlined">check_circle</span> Aprovar
                         </button>
-<button class="px-4 border-2 border-surface-variant text-on-surface hover:border-error hover:text-error font-label-bold rounded-lg transition-colors flex items-center justify-center active:scale-95">
+<button onclick="rejectStudent('card-lucas', 'Lucas Moura')" class="px-4 border-2 border-surface-variant text-on-surface hover:border-error hover:text-error font-label-bold rounded-lg transition-colors flex items-center justify-center active:scale-95 cursor-pointer" title="Recusar Cadastro">
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
 </div>
 </article>
+
 <!-- Card 2 -->
-<article class="bg-surface-container border border-surface-variant rounded-xl overflow-hidden shadow-lg transition-transform hover:-translate-y-1 duration-300 group">
+<article id="card-mariana" class="bg-surface-container border border-surface-variant rounded-xl overflow-hidden shadow-lg transition-all duration-300 group">
 <div class="p-6 flex flex-col gap-4">
 <div class="flex items-center gap-4">
-<img class="w-16 h-16 rounded-full object-cover border-2 border-surface-variant group-hover:border-primary transition-colors" data-alt="Portrait of a focused female martial artist looking off-camera, wearing a casual dark t-shirt, set in a dimly lit training facility, cinematic lighting with strong contrast, deep blacks and crisp white highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAh3rVuOcIb9dKxmmxZEXrfcO6-irV4pkNObnOanhUaxjNgxE-dzfzgd0HZQNcGMuIiXIh-iipsD7O08TkiPS2sJPQVZbL9gup8YIQNMM1aRXv6sQeSMSn3VyKZm1HoJ4E35fotseUX5SVpoYQRKJiXoi_37wmk-VIiO-ZoGaZIs87FtHfGdHFrCquskhfOS2numVCv0UcSb2QmYg1TZIhpTdXWL679MpMYudjLEhAVEwLDYApYQVAI">
+<img class="w-16 h-16 rounded-full object-cover border-2 border-surface-variant group-hover:border-primary transition-colors" data-alt="Portrait of a focused female martial artist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAh3rVuOcIb9dKxmmxZEXrfcO6-irV4pkNObnOanhUaxjNgxE-dzfzgd0HZQNcGMuIiXIh-iipsD7O08TkiPS2sJPQVZbL9gup8YIQNMM1aRXv6sQeSMSn3VyKZm1HoJ4E35fotseUX5SVpoYQRKJiXoi_37wmk-VIiO-ZoGaZIs87FtHfGdHFrCquskhfOS2numVCv0UcSb2QmYg1TZIhpTdXWL679MpMYudjLEhAVEwLDYApYQVAI">
 <div>
 <h3 class="font-headline-md text-on-surface">Mariana Costa</h3>
 <p class="font-body-md text-on-surface-variant flex items-center gap-1">
@@ -182,7 +196,7 @@
                             </p>
 </div>
 </div>
-<a class="flex items-center gap-2 text-tertiary hover:text-primary transition-colors text-sm w-fit font-label-bold" href="#">
+<a class="flex items-center gap-2 text-[#25D366] hover:underline transition-colors text-sm w-fit font-label-bold" href="https://wa.me/5511988888888" target="_blank">
 <span class="material-symbols-outlined">forum</span> Contatar via WhatsApp
                     </a>
 <div class="h-px w-full bg-surface-variant my-2"></div>
@@ -191,7 +205,7 @@
 <label class="block font-label-bold text-on-surface-variant mb-1 text-xs uppercase">Faixa Inicial</label>
 <select class="w-full bg-background border border-outline-variant rounded-lg p-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors">
 <option>Branca</option>
-<option>Azul</option>
+<option selected>Azul</option>
 </select>
 </div>
 <div>
@@ -203,34 +217,117 @@
 </div>
 </div>
 <div class="flex gap-3 mt-4">
-<button class="flex-1 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary font-label-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 active:scale-95">
+<button onclick="approveStudent('card-mariana', 'Mariana Costa')" class="flex-1 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary font-label-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
 <span class="material-symbols-outlined">check_circle</span> Aprovar
                         </button>
-<button class="px-4 border-2 border-surface-variant text-on-surface hover:border-error hover:text-error font-label-bold rounded-lg transition-colors flex items-center justify-center active:scale-95">
+<button onclick="rejectStudent('card-mariana', 'Mariana Costa')" class="px-4 border-2 border-surface-variant text-on-surface hover:border-error hover:text-error font-label-bold rounded-lg transition-colors flex items-center justify-center active:scale-95 cursor-pointer" title="Recusar Cadastro">
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
 </div>
 </article>
 </div>
+
+<!-- Empty state container when all approved -->
+<div id="empty-state" class="hidden text-center py-16 bg-surface-container rounded-xl border border-surface-variant">
+    <span class="material-symbols-outlined text-6xl text-[#10B981] mb-4">task_alt</span>
+    <h3 class="font-headline-md text-xl text-on-surface mb-2">Tudo em dia!</h3>
+    <p class="font-body-md text-on-surface-variant mb-6">Não há nenhum aluno pendente de aprovação no momento.</p>
+    <button onclick="window.location.href='gestaoAlunos.html'" class="bg-primary-container text-white font-label-bold px-6 py-3 rounded-lg hover:bg-secondary-container transition-all">
+        Ir para Gestão de Alunos
+    </button>
+</div>
 </main>
+
 <!-- BottomNavBar -->
 <nav class="fixed bottom-0 w-full z-50 bg-surface/40 backdrop-blur-xl dark:bg-surface/40 border-t border-outline-variant/30 flex md:hidden justify-around items-center h-20 pb-safe">
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="dashboard.html">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="font-label-bold text-[10px] mt-1">Dashboard</span>
 </a>
-<a class="flex flex-col items-center justify-center text-primary hover:text-on-surface active:scale-90 transition-all" href="#">
+<a class="flex flex-col items-center justify-center text-primary hover:text-on-surface active:scale-90 transition-all" href="gestaoAlunos.html">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
-<span class="font-label-bold text-[10px] mt-1">Students</span>
+<span class="font-label-bold text-[10px] mt-1">Alunos</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="financeiro.html">
 <span class="material-symbols-outlined">payments</span>
-<span class="font-label-bold text-[10px] mt-1">Finance</span>
+<span class="font-label-bold text-[10px] mt-1">Financeiro</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-label-bold text-[10px] mt-1">Settings</span>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all" href="gestaoCampeonatos.html">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="font-label-bold text-[10px] mt-1">Torneios</span>
 </a>
 </nav>
+
+<!-- FORJA DEMO QUICK SWITCHER -->
+<div id="demo-switcher" class="fixed bottom-4 right-4 z-[9999] bg-[#1F2937]/95 border border-[#b91c1c]/50 backdrop-blur-md px-3 py-2 rounded-full shadow-2xl flex items-center gap-2 text-xs font-mono text-on-surface">
+    <span class="flex items-center gap-1 font-bold text-[#ffb4ab] px-2"><span class="w-2 h-2 rounded-full bg-[#b91c1c] animate-pulse"></span> DEMO SWITCHER</span>
+    <select onchange="if(this.value) window.location.href=this.value" class="bg-[#0A0A0A] border border-[#374151] text-on-surface text-xs rounded-full px-3 py-1 focus:outline-none focus:border-[#b91c1c] cursor-pointer">
+        <optgroup label="⚡ Geral">
+            <option value="../Geral/login.html">🔑 Login</option>
+            <option value="../Geral/cadastro.html">📝 Cadastro Aluno</option>
+            <option value="../Geral/campeonato.html">🏆 Campeonato Bracket Live</option>
+        </optgroup>
+        <optgroup label="🥋 Professor / Admin Academia">
+            <option value="dashboard.html">📊 Dashboard Professor</option>
+            <option value="aprovacaoAluno.html" selected>⏳ Moderação Alunos (Pendente)</option>
+            <option value="gestaoAlunos.html">👥 Gestão de Alunos</option>
+            <option value="financeiro.html">💵 Planilha Financeira</option>
+            <option value="gestaoCampeonatos.html">🥇 Lista de Campeonatos</option>
+            <option value="criacaoEvento.html">⚙️ Config. Evento / Pesagem</option>
+        </optgroup>
+        <optgroup label="👑 Super Admin (SaaS)">
+            <option value="../Admin/dashboard.html">🌐 Dashboard Super Admin</option>
+        </optgroup>
+        <optgroup label="🥋 Aluno">
+            <option value="../Aluno/perfil.html">🪪 Perfil & Carteirinha</option>
+            <option value="../Aluno/pagamentos.html">💳 Histórico & PIX</option>
+        </optgroup>
+    </select>
+</div>
+
+<script>
+    let remaining = 2;
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').innerText = message;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2500);
+    }
+
+    function updateCounter() {
+        remaining--;
+        const badge = document.getElementById('pending-count-badge');
+        if (remaining > 0) {
+            badge.innerText = `${remaining} Alunos Pendentes`;
+        } else {
+            badge.classList.add('hidden');
+            document.getElementById('approval-grid').classList.add('hidden');
+            document.getElementById('empty-state').classList.remove('hidden');
+        }
+    }
+
+    function approveStudent(cardId, studentName) {
+        const card = document.getElementById(cardId);
+        card.style.transform = 'scale(0.95)';
+        card.style.opacity = '0';
+        setTimeout(() => {
+            card.remove();
+            showToast(`✅ ${studentName} foi aprovado com sucesso!`);
+            updateCounter();
+        }, 300);
+    }
+
+    function rejectStudent(cardId, studentName) {
+        const card = document.getElementById(cardId);
+        card.style.transform = 'scale(0.95)';
+        card.style.opacity = '0';
+        setTimeout(() => {
+            card.remove();
+            showToast(`❌ Cadastro de ${studentName} foi recusado.`);
+            updateCounter();
+        }, 300);
+    }
+</script>
 </body></html>
