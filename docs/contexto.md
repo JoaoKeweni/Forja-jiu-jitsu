@@ -1,179 +1,153 @@
-# 🥋 Documento de Contexto do Sistema — Forja Jiu-Jitsu
+# Contexto do produto — Forja Jiu-Jitsu
 
-## 1. Visão Geral do Projeto
-O **Forja Jiu-Jitsu** é uma plataforma SaaS desenvolvida para a gestão simplificada e eficiente de academias de Jiu-Jitsu. O sistema atende desde o **Super Admin (Admin Geral)** que gerencia a rede de academias, até os **Professores/Gestores de Academia** que dão aula para múltiplos times e gerenciam alunos e campeonatos internos, e os **Alunos (Atletas)**.
+## 1. Propósito
 
----
+O Forja Jiu-Jitsu é uma plataforma SaaS para simplificar a operação de academias de Jiu-Jitsu. O produto reúne gestão de unidades e turmas, cadastro e graduação de atletas, controle manual de mensalidades e organização de campeonatos internos.
 
-## 2. Hierarquia e Perfis de Usuários (Roles & Permissões)
+O sistema é multi-tenant: cada academia representa um ambiente de dados isolado. Uma instalação atende várias academias, mas usuários de uma academia não podem consultar ou alterar dados de outra sem autorização explícita da plataforma.
 
-### 2.1. Super Admin (Admin Geral / Gestor da Plataforma)
-* Nível mais alto do sistema.
-* Cadastro e gestão de **Academias** (Matrizes e Filiais).
-* Cadastro e gestão de **Equipes/Times** (ex: Equipe Adulto Noite, Equipe Infantil, Equipe Competição).
-* Cadastro de **Professores/Admins de Academia** e vinculação aos seus respetivos times/academias.
-* Visão global de métricas da plataforma.
+## 2. Objetivos do produto
 
-### 2.2. Professor / Admin de Academia (Gestor da Equipe)
-* Responsável por uma ou mais equipes/times dentro de uma ou mais academias.
-* **Seletor de Equipe no Topo**: Altera o contexto da plataforma para gerenciar a equipe onde está dando aula no momento (ou visão consolidada).
-* **Aprovação de Alunos**: Modera e aprova/rejeita os cadastros de novos alunos que solicitaram entrada no seu time.
-* Gestão de alunos cadastrados e aprovados.
-* **Baixa manual de pagamentos** (marcar parcelas como "Pago" / "Pendente" / "Atrasado") estilo planilha.
-* **Campeonatos Internos**: Criação e gerenciamento completo de campeonatos internos da academia exclusivamente para os alunos matriculados nas equipes.
+- Reduzir controles paralelos em planilhas e mensagens.
+- Dar ao professor uma visão rápida da turma que está administrando.
+- Permitir que o aluno acompanhe cadastro, perfil, mensalidades e eventos.
+- Manter a operação financeira simples, sem processar pagamentos no MVP.
+- Garantir isolamento entre academias e rastreabilidade de ações sensíveis.
 
-### 2.3. Aluno (Atleta)
-* **Cadastro Simplificado**: Cria a conta informando dados básicos, escolhe a sua **Academia** e a sua **Equipe/Time**.
-* **Status Inicial (`Pendente de Aprovação`)**: Fica em tela de espera aguardando a liberação do seu Professor.
-* **Após Aprovação**: Acesso ao perfil (carteirinha digital com foto, faixa e graus), consulta de parcelas/mensalidades e participação/acompanhamento nos campeonatos internos da sua academia.
+## 3. Escopo do MVP
 
----
+### Incluído
 
-## 3. Fluxo de Autenticação e Cadastro (Onboarding)
+- autenticação e recuperação de acesso;
+- gestão de academias, turmas e vínculos de professores;
+- URL pública identificada pelo slug da academia;
+- cadastro de aluno sujeito à aprovação;
+- perfil, faixa, graus e histórico de graduação;
+- mensalidades com baixa manual;
+- consulta de inadimplência e atalho de cobrança por WhatsApp;
+- campeonatos internos, categorias, inscrições, chaves e resultados;
+- dashboards operacionais por perfil.
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Aluno
-    actor Professor
-    actor SuperAdmin
-    participant Sistema
+### Fora do escopo inicial
 
-    Note over SuperAdmin, Sistema: 1. Gestão Geral
-    SuperAdmin->>Sistema: Cadastra Nova Academia & Equipe
-    SuperAdmin->>Sistema: Cadastra Professor e vincula à Equipe
+- gateway de pagamento e conciliação bancária;
+- emissão fiscal ou contabilidade;
+- marketplace e inscrições de atletas externos;
+- gestão completa de aulas, presença e planos de treino;
+- aplicativo móvel nativo;
+- comunicação automática por WhatsApp ou e-mail.
 
-    Note over Aluno, Sistema: 2. Cadastro do Aluno
-    Aluno->>Sistema: Acessa Tela de Cadastro Simplificado
-    Aluno->>Sistema: Preenche dados + Seleciona Academia e Equipe
-    Sistema-->>Aluno: Registra conta com status 'PENDENTE_APROVACAO'
+Esses itens podem ser avaliados depois do MVP, sem serem assumidos pela arquitetura inicial.
 
-    Note over Professor, Sistema: 3. Moderação do Professor
-    Professor->>Sistema: Faz Login e escolhe a Equipe no topo
-    Professor->>Sistema: Visualiza notificação "Novo Aluno Solicitando Entrada"
-    Professor->>Sistema: Aprova aluno (define vencimento e faixa)
-    Sistema-->>Aluno: Status muda para 'ATIVO' (Acesso liberado)
-```
+## 4. Perfis e responsabilidades
 
----
+### Super Admin
 
-## 4. Módulos do Sistema e Funcionalidades
+Administra a plataforma. Pode cadastrar e desativar academias, criar turmas, cadastrar professores, definir vínculos e visualizar métricas globais. Seu acesso ocorre por uma área administrativa separada do portal de cada academia.
 
-### 4.1. Módulo de Autenticação e Multi-Equipe (URL Única por Academia)
-* **URL Única e Ecossistema da Academia (Multi-Tenant Slug)**: O Super Admin gera uma URL exclusiva para cada academia (ex: `forja.app/gracie-barra-matriz`). Ao acessar esse link, o usuário entra no ambiente exclusivo daquela academia.
-* **Login Específico da Academia**: A tela de login da URL da academia é destinada **exclusivamente a Alunos e Professores** daquela unidade. O Super Admin possui um portal de acesso SaaS separado.
-* **Cadastro com Academia Pré-selecionada**: Ao realizar o cadastro acessando o link da academia, a academia é **automaticamente selecionada e vinculada**, restando ao aluno apenas informar seus dados e escolher sua **Equipe/Turma** (ex: *Equipe Adulto Noite*).
-* **Seletor de Equipe no Topo (Visão Professor)**: Dropdown fixo no cabeçalho permitindo ao professor alternar instantaneamente entre suas equipes (ex: "Equipe Adulto Noite", "Equipe Manhã", "Todas as Equipes"). Todo o financeiro, lista de alunos e chamada são filtrados com base nessa seleção.
+### Professor ou gestor da academia
 
-### 4.2. Módulo de Gestão de Alunos e Aprovações
-* **Fila de Aprovação**: Aba exclusiva onde o professor vê solicitações de novos alunos pendentes, podendo conferir a foto/dados e aprovar com 1 clique.
-* **Perfil do Aluno**: Nome, Telefone/WhatsApp, Foto de perfil, Faixa atual, Quantidade de Graus (0 a 4), Histórico de graduação, e Dia de Vencimento fixo.
+Administra somente as academias e turmas às quais está vinculado. Pode aprovar alunos, atualizar dados esportivos, controlar mensalidades e administrar campeonatos internos. Quando possuir mais de um vínculo, escolhe uma turma ou uma visão consolidada dentro do seu escopo autorizado.
 
-### 4.3. Módulo Financeiro (Controle Manual / Planilha Inteligente)
-> **Premissa fundamental**: Sem gateway de pagamento. Pagamento presencial (PIX direto, Dinheiro, Maquineta) com baixa manual pelo Professor.
+### Aluno
 
-* **Visão em Grade / Planilha**: Tabela filtrada por equipe contendo alunos x meses.
-* **Badges Visuais**: 🟢 Pago, 🟡 A Vencer, 🔴 Atrasado, ⚪ Isento.
-* **Cobrança Rápida via WhatsApp**: Atalho para envio de mensagem pré-formatada.
+Solicita entrada em uma turma, acompanha o estado da aprovação e, quando ativo, acessa seu perfil, graduação, mensalidades e campeonatos da academia. Não possui acesso administrativo.
 
-### 4.4. Módulo de Campeonatos Internos (Exclusivo para Alunos Matriculados)
-> **Premissa fundamental**: Os campeonatos são realizados **dentro da própria academia** e envolvem exclusivamente os **alunos matriculados** nas equipes. Não há inscrições de atletas externos.
+## 5. Conceitos do domínio
 
-* **Gerenciamento do Evento**: Criado e iniciado pelo Professor para integrar e testar os alunos da academia.
-* **Montagem de Categorias Internas**: Divisão por Faixa (ex: Branca, Azul, Roxa), Peso e Idade.
-* **Inscrição Direta**: O professor seleciona os alunos ativos das equipes ou os próprios alunos confirmam participação pelo app.
-* **Chaveamento e Súmula**: Árvore de mata-mata com controle de lutas, resultado (pontos/finalização) e pódio interno de medalhas.
+- **Academia:** tenant e principal fronteira de isolamento dos dados. Possui nome, slug único, estado e informações de contato.
+- **Turma:** grupo ou horário pertencente a uma academia. Uma academia possui uma ou mais turmas.
+- **Usuário:** identidade de acesso. Pode receber papéis e vínculos compatíveis com suas responsabilidades.
+- **Vínculo do professor:** autorização de um professor para administrar determinada turma.
+- **Aluno:** perfil esportivo de um usuário em uma academia, associado inicialmente a uma turma.
+- **Graduação:** registro histórico de faixa, graus, data e responsável pela alteração.
+- **Mensalidade:** obrigação financeira de um aluno em uma competência, com vencimento, valor e estado.
+- **Campeonato interno:** evento restrito aos alunos ativos da própria academia.
+- **Categoria:** agrupamento do campeonato por critérios como faixa, idade, gênero e peso.
+- **Inscrição:** participação de um aluno em uma categoria.
+- **Luta:** confronto do chaveamento, com competidores, fase, resultado e vencedor.
 
-### 4.5. Módulo Super Admin (Gestão SaaS)
-* Cadastro de Academias (Nome, Endereço, Responsável, Geração da URL/Slug Exclusiva).
-* Cadastro de Equipes por Academia.
-* Gestão de Professores e permissões de acesso às equipes.
+## 6. Jornadas principais
 
----
+### Entrada de um novo aluno
 
-## 5. Regras de Negócio (RN)
+1. O aluno acessa a URL pública da academia pelo slug.
+2. Informa seus dados e escolhe uma turma disponível.
+3. O sistema cria a solicitação com estado `Pendente`.
+4. Um professor autorizado para a turma analisa a solicitação.
+5. Ao aprovar, o professor define dados iniciais como graduação, vencimento e valor da mensalidade.
+6. O aluno passa ao estado `Ativo` e recebe acesso às áreas permitidas.
 
-* **RN-01 (Aprovação Obrigatória)**: Alunos recém-cadastrados não possuem acesso ao painel do atleta até que o Professor da equipe correspondente aprove o cadastro.
-* **RN-02 (Escopo por Equipe)**: Ao selecionar uma Equipe no topo, o Professor visualiza apenas os alunos, mensalidades e relatórios daquela equipe específica (or de todas, se selecionar "Todas").
-* **RN-03 (Vínculo de Professor)**: Um professor só pode gerenciar e dar baixa em alunos pertencentes às equipes onde ele possui vínculo autorizado pelo Super Admin.
-* **RN-04 (Baixa Financeira)**: Apenas o perfil de Professor (da respetiva equipe) ou Super Admin pode alterar o status de pagamento de uma parcela.
-* **RN-05 (Campeonato Interno)**: Somente alunos devidamente matriculados e ativos nas equipes da academia podem ser inscritos ou participar dos campeonatos internos promovidos pelo Professor.
-* **RN-06 (URL Única & Ecossistema Fechado)**: O Super Admin gera uma URL única para cada academia. Alunos e Professores logam exclusivamente através dessa página dedicada. No cadastro de aluno via URL única, a academia é pre-selecionada automaticamente.
+### Controle de mensalidade
 
----
+1. O sistema apresenta as competências do aluno e calcula a situação exibida a partir do estado e do vencimento.
+2. O professor registra manualmente o recebimento e a forma de pagamento.
+3. A baixa guarda data, usuário responsável e eventual observação.
+4. O aluno consulta o histórico, mas não altera pagamentos.
 
-## 6. Modelo de Dados Conceitual (Entidades)
+### Campeonato interno
 
-```mermaid
-erDiagram
-    SUPER_ADMIN {
-        string id PK
-        string nome
-        string email
-    }
+1. O professor cria um evento em rascunho e configura suas categorias.
+2. Alunos ativos da academia são inscritos nas categorias elegíveis.
+3. O professor publica e gera o chaveamento.
+4. Durante o evento, resultados são registrados e vencedores avançam.
+5. Ao final, o evento é encerrado e seus resultados ficam disponíveis para consulta.
 
-    ACADEMIA {
-        string id PK
-        string nome_fantasia
-        string slug_url
-        string endereco
-        string telefone
-    }
+## 7. Regras de negócio
 
-    EQUIPE {
-        string id PK
-        string academia_id FK
-        string nome_equipe
-        string horario
-    }
+- **RN-01 — Aprovação obrigatória:** o cadastro não concede automaticamente acesso de aluno ativo.
+- **RN-02 — Isolamento por academia:** toda operação de domínio deve estar limitada à academia do contexto autenticado, exceto ações globais do Super Admin.
+- **RN-03 — Escopo do professor:** o professor só administra turmas com vínculo ativo.
+- **RN-04 — Visão consolidada:** “todas as turmas” agrega somente turmas autorizadas; não amplia permissões.
+- **RN-05 — Slug único:** cada academia ativa possui um slug público único e estável. Alterações devem evitar quebra de links existentes.
+- **RN-06 — Estados do aluno:** a transição mínima é `Pendente -> Ativo` ou `Pendente -> Rejeitado`; alunos ativos podem ser inativados sem apagar o histórico.
+- **RN-07 — Graduação válida:** graus variam de 0 a 4 e mudanças de faixa ou grau geram histórico auditável.
+- **RN-08 — Competência única:** um aluno não pode ter duas mensalidades para a mesma competência mensal.
+- **RN-09 — Baixa financeira:** somente professor autorizado ou Super Admin registra, corrige ou cancela uma baixa.
+- **RN-10 — Estado financeiro:** `Pago` e `Isento` são estados persistidos; `A vencer` e `Atrasado` podem ser derivados do vencimento de uma mensalidade pendente.
+- **RN-11 — Sem processamento financeiro:** o MVP apenas registra pagamentos realizados fora da plataforma.
+- **RN-12 — Campeonato interno:** somente alunos ativos da academia do evento podem participar.
+- **RN-13 — Integridade da categoria:** um aluno não pode aparecer duas vezes na mesma categoria.
+- **RN-14 — Resultado de luta:** uma luta finalizada deve possuir vencedor válido e registro do responsável pela alteração.
+- **RN-15 — Exclusão lógica:** academias, usuários e registros operacionais com histórico devem ser inativados, não apagados definitivamente pelo fluxo comum.
 
-    PROFESSOR {
-        string id PK
-        string nome
-        string email
-        string telefone
-    }
+## 8. Estados relevantes
 
-    PROFESSOR_EQUIPE {
-        string professor_id FK
-        string equipe_id FK
-    }
+| Conceito | Estados mínimos |
+| --- | --- |
+| Academia | Ativa, Inativa |
+| Aluno | Pendente, Ativo, Rejeitado, Inativo |
+| Mensalidade | Pendente, Paga, Isenta, Cancelada |
+| Campeonato | Rascunho, Inscrições abertas, Chaveamento pronto, Em andamento, Concluído, Cancelado |
+| Luta | Agendada, Em andamento, Finalizada, Cancelada |
 
-    USUARIO_ALUNO {
-        string id PK
-        string equipe_id FK
-        string nome
-        string telefone
-        string foto_url
-        string faixa
-        int graus
-        int dia_vencimento
-        string status_aprovacao
-    }
+## 9. Requisitos não funcionais
 
-    MENSALIDADE {
-        string id PK
-        string aluno_id FK
-        int mes_referencia
-        int ano_referencia
-        date data_vencimento
-        date data_pagamento
-        float valor
-        string status_pagamento
-    }
+- autorização validada no backend em todas as operações protegidas;
+- isolamento multi-tenant testado automaticamente;
+- senhas armazenadas somente por provedor/implementação segura de identidade;
+- trilha de auditoria para aprovações, graduações, baixas e resultados;
+- validação de entrada e respostas de erro consistentes;
+- interface responsiva, com prioridade para uso em celular pelo aluno;
+- observabilidade com logs estruturados, correlação de requisições e métricas básicas;
+- backups e migrations reproduzíveis antes da entrada em produção;
+- conformidade com a LGPD, incluindo minimização de dados e controle de acesso.
 
-    CAMPEONATO_INTERNO {
-        string id PK
-        string academia_id FK
-        string titulo
-        date data_evento
-        string status
-    }
+## 10. Critérios de sucesso do MVP
 
-    ACADEMIA ||--o{ EQUIPE : "possui"
-    PROFESSOR ||--o{ PROFESSOR_EQUIPE : "atua em"
-    EQUIPE ||--o{ PROFESSOR_EQUIPE : "recebe"
-    EQUIPE ||--o{ USUARIO_ALUNO : "contém"
-    USUARIO_ALUNO ||--o{ MENSALIDADE : "possui"
-    ACADEMIA ||--o{ CAMPEONATO_INTERNO : "promove"
-```
+- Um Super Admin consegue configurar uma academia, suas turmas e um professor.
+- Um aluno consegue solicitar entrada usando o slug correto.
+- Um professor vê e administra apenas suas turmas e aprova o aluno.
+- O professor registra uma mensalidade e o aluno consulta o resultado.
+- Um campeonato completo pode ir de rascunho a concluído com participantes internos.
+- Testes demonstram que um tenant não acessa dados de outro.
+
+## 11. Questões pendentes de produto
+
+- Um aluno poderá estar simultaneamente em mais de uma turma?
+- Uma academia poderá ter filiais como tenants independentes ou como unidades do mesmo tenant?
+- Quem pode corrigir uma baixa financeira já confirmada e por quanto tempo?
+- O aluno confirma a própria inscrição em campeonato ou somente o professor inscreve?
+- Qual provedor de envio será usado quando notificações automáticas entrarem no escopo?
+
+Essas decisões devem ser resolvidas antes dos módulos afetados. A arquitetura técnica de referência está em [arquitetura.md](arquitetura.md).

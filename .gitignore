@@ -1,30 +1,38 @@
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Environment and secrets
+.env
+.env.*
+!.env.example
+appsettings.*.json
+!appsettings.Development.json
 
-# testing
-/coverage
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# debug
+# React / Node tooling
+**/node_modules/
+**/dist/
+**/.vite/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# local env files
-.env*.local
-.env
+# IDE and OS
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Local tooling
+*.log
+*.tmp
