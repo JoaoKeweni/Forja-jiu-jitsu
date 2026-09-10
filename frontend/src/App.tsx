@@ -1,64 +1,58 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { useAuth } from "./auth/AuthContext";
-
-// Placeholders — serão substituídos pelas telas completas na próxima etapa.
-function Placeholder({ title }: { title: string }) {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-pattern">
-      <div className="glass-panel rounded-2xl p-8 text-center">
-        <h1 className="font-display text-2xl font-bold text-primary">{title}</h1>
-        <p className="mt-2 text-on-surface-variant">Tela em construção.</p>
-      </div>
-    </div>
-  );
-}
+import AcademyLogin from "./pages/AcademyLogin";
+import AcademyRegister from "./pages/AcademyRegister";
+import AdminLogin from "./pages/AdminLogin";
+import AdminArea from "./pages/AdminArea";
+import ProfessorArea from "./pages/ProfessorArea";
+import StudentArea from "./pages/StudentArea";
 
 function Landing() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center text-on-surface-variant">
+        Carregando...
+      </div>
+    );
+  }
   if (user?.role === "SuperAdmin") return <Navigate to="/admin" replace />;
   if (user?.role === "Professor") return <Navigate to="/professor" replace />;
   if (user?.role === "Student") return <Navigate to="/aluno" replace />;
-  return <Placeholder title="Forja Jiu-Jitsu" />;
+
+  // Sem sessão: landing simples com acesso ao portal admin.
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-pattern p-4 text-center">
+      <h1 className="font-display text-5xl font-black text-primary-container">FORJA</h1>
+      <p className="mt-2 uppercase tracking-[0.3em] text-on-surface-variant">Jiu-Jitsu</p>
+      <p className="mt-6 max-w-md text-on-surface-variant">
+        Acesse pela URL exclusiva da sua academia (ex.: <code>/gracie-barra-matriz/login</code>).
+      </p>
+      <a href="/admin/login" className="mt-6 text-sm text-primary font-semibold">Portal Super Admin →</a>
+    </div>
+  );
 }
 
 export default function App() {
   return (
     <Routes>
-      {/* Público */}
       <Route path="/" element={<Landing />} />
-      <Route path="/admin/login" element={<Placeholder title="Login Super Admin" />} />
-      <Route path="/:slug/login" element={<Placeholder title="Login da Academia" />} />
-      <Route path="/:slug/cadastro" element={<Placeholder title="Cadastro de Aluno" />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/:slug/login" element={<AcademyLogin />} />
+      <Route path="/:slug/cadastro" element={<AcademyRegister />} />
 
-      {/* Super Admin */}
       <Route
-        path="/admin/*"
-        element={
-          <ProtectedRoute roles={["SuperAdmin"]}>
-            <Placeholder title="Painel Super Admin" />
-          </ProtectedRoute>
-        }
+        path="/admin"
+        element={<ProtectedRoute roles={["SuperAdmin"]}><AdminArea /></ProtectedRoute>}
       />
-
-      {/* Professor */}
       <Route
-        path="/professor/*"
-        element={
-          <ProtectedRoute roles={["Professor"]}>
-            <Placeholder title="Painel do Professor" />
-          </ProtectedRoute>
-        }
+        path="/professor"
+        element={<ProtectedRoute roles={["Professor"]}><ProfessorArea /></ProtectedRoute>}
       />
-
-      {/* Aluno */}
       <Route
-        path="/aluno/*"
-        element={
-          <ProtectedRoute roles={["Student"]}>
-            <Placeholder title="Painel do Aluno" />
-          </ProtectedRoute>
-        }
+        path="/aluno"
+        element={<ProtectedRoute roles={["Student"]}><StudentArea /></ProtectedRoute>}
       />
 
       <Route path="*" element={<Navigate to="/" replace />} />
