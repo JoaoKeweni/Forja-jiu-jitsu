@@ -29,6 +29,8 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 // ── Serviços de aplicação ──
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITeamScopeService, TeamScopeService>();
+builder.Services.AddScoped<ITournamentService, TournamentService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
