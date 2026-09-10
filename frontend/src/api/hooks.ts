@@ -2,8 +2,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "./client";
 import type {
   StudentDto, FinanceRowDto, TournamentDto, CategoryDto, MatchDto,
-  PaymentDto, BeltType, PaymentStatus, PaymentMethod,
+  PaymentDto, BeltType, PaymentStatus, PaymentMethod, TeamDto,
 } from "./types";
+
+// ── Equipes do professor (seletor de equipe) ──
+export function useMyTeams() {
+  return useQuery({
+    queryKey: ["professor", "teams"],
+    queryFn: async () => (await api.get<TeamDto[]>(`/professor/teams`)).data,
+  });
+}
 
 // ── Alunos (professor) ──
 export function useStudents(teamId?: string, status?: string) {

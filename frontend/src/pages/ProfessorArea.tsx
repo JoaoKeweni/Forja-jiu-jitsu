@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import {
   useStudents, usePendingStudents, useApproveStudent, useRejectStudent,
-  useFinanceGrid, useSettlePayment, useTournaments, useCreateTournament,
+  useFinanceGrid, useSettlePayment, useTournaments, useCreateTournament, useMyTeams,
 } from "../api/hooks";
 import { apiError } from "../api/client";
 import { Button, Card, Input } from "../components/ui";
@@ -11,12 +11,12 @@ import type { BeltType, PaymentStatus, StudentDto } from "../api/types";
 type Tab = "alunos" | "aprovacao" | "financeiro" | "campeonatos";
 
 export default function ProfessorArea() {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const [tab, setTab] = useState<Tab>("alunos");
   // Seletor de equipe (RN-02): "" = todas as equipes do professor.
   const [teamId, setTeamId] = useState<string>("");
 
-  const teamIds = user?.teamIds ?? [];
+  const { data: teams } = useMyTeams();
 
   return (
     <div className="mx-auto max-w-5xl p-4">
@@ -30,8 +30,8 @@ export default function ProfessorArea() {
             onChange={(e) => setTeamId(e.target.value)}
           >
             <option value="">Todas as Equipes</option>
-            {teamIds.map((id) => (
-              <option key={id} value={id}>Equipe {id.slice(0, 8)}</option>
+            {teams?.map((t) => (
+              <option key={t.id} value={t.id}>{t.name}</option>
             ))}
           </select>
           <Button variant="ghost" onClick={logout}>Sair</Button>
@@ -86,34 +86,79 @@ function StudentCard({ s }: { s: StudentDto }) {
 }
 
 // ── Aprovação (ADM-08, RN-01) ──
+const BELTS: BeltType[] = ["Branca", "Cinza", "Amarela", "Laranja", "Verde", "Azul", "Roxa", "Marrom", "Preta"];
+const DUE_DAYS = [5, 10, 15, 20];
+
 function ApprovalTab() {
   const { data: pending, isLoading } = usePendingStudents();
-  const approve = useApproveStudent();
-  const reject = useRejectStudent();
-
   if (isLoading) return <p className="text-on-surface-variant">Carregando...</p>;
   if (pending?.length === 0) return <p className="text-on-surface-variant">Nenhuma solicitação pendente.</p>;
 
   return (
     <div className="grid gap-3 sm:grid-cols-2">
-      {pending?.map((s) => (
-        <Card key={s.id}>
-          <p className="font-medium">{s.fullName}</p>
-          <p className="text-sm text-on-surface-variant">{s.email} · {s.phone}</p>
-          <div className="mt-3 flex gap-2">
-            <Button
-              onClick={() => approve.mutate({ id: s.id, belt: "Branca" as BeltType, degrees: 0, dueDay: 10 })}
-              disabled={approve.isPending}
-            >
-              🟢 Aprovar
-            </Button>
-            <Button variant="danger" onClick={() => reject.mutate(s.id)} disabled={reject.isPending}>
-              🔴 Recusar
-            </Button>
-          </div>
-        </Card>
-      ))}
+      {pending?.map((s) => <ApprovalCard key={s.id} student={s} />)}
     </div>
+  );
+}
+
+function ApprovalCard({ student }: { student: StudentDto }) {
+  const approve = useApproveStudent();
+  const reject = useRejectStudent();
+  const [belt, setBelt] = useState<BeltType>("Branca");
+  const [degrees, setDegrees] = useState(0);
+  const [dueDay, setDueDay] = useState(10);
+  const [error, setError] = useState("");
+
+  async function onApprove() {
+    setError("");
+    try {
+      await approve.mutateAsync({ id: student.id, belt, degrees, dueDay });
+    } catch (err) {
+      setError(apiError(err));
+    }
+  }
+
+  const selectCls =
+    "rounded-lg bg-surface-container-low border border-outline-variant px-2 py-1.5 text-sm";
+
+  return (
+    <Card>
+      <p className="font-medium">{student.fullName}</p>
+      <p className="text-sm text-on-surface-variant">{student.email} · {student.phone}</p>
+
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        <label className="text-xs text-on-surface-variant">
+          Faixa
+          <select className={`mt-1 w-full ${selectCls}`} value={belt}
+            onChange={(e) => setBelt(e.target.value as BeltType)}>
+            {BELTS.map((b) => <option key={b} value={b}>{b}</option>)}
+          </select>
+        </label>
+        <label className="text-xs text-on-surface-variant">
+          Graus
+          <select className={`mt-1 w-full ${selectCls}`} value={degrees}
+            onChange={(e) => setDegrees(Number(e.target.value))}>
+            {[0, 1, 2, 3, 4].map((g) => <option key={g} value={g}>{g}</option>)}
+          </select>
+        </label>
+        <label className="text-xs text-on-surface-variant">
+          Vencimento
+          <select className={`mt-1 w-full ${selectCls}`} value={dueDay}
+            onChange={(e) => setDueDay(Number(e.target.value))}>
+            {DUE_DAYS.map((d) => <option key={d} value={d}>dia {d}</option>)}
+          </select>
+        </label>
+      </div>
+
+      {error && <p className="mt-2 text-sm text-error">{error}</p>}
+
+      <div className="mt-3 flex gap-2">
+        <Button onClick={onApprove} disabled={approve.isPending}>🟢 Aprovar</Button>
+        <Button variant="danger" onClick={() => reject.mutate(student.id)} disabled={reject.isPending}>
+          🔴 Recusar
+        </Button>
+      </div>
+    </Card>
   );
 }
 
