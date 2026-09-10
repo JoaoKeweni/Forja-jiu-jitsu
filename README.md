@@ -1,5 +1,7 @@
 # 🥋 Forja Jiu-Jitsu
 
+![CI](https://github.com/JoaoKeweni/Forja-jiu-jitsu/actions/workflows/ci.yml/badge.svg)
+
 Plataforma SaaS multi-tenant para gestão de academias de Jiu-Jitsu (academias, equipes, alunos, mensalidades e campeonatos internos).
 
 ## 🏗️ Arquitetura
@@ -30,3 +32,9 @@ Aplicação **cliente-servidor**:
 ## 🚀 Como executar
 
 Consulte a seção [Como Executar](docs/arquitetura.md#7-como-executar-desenvolvimento) da documentação de arquitetura.
+
+## ✅ Testes e CI
+
+- Testes do backend: `dotnet test backend/Forja.Api.Tests`
+- Build do frontend: `cd frontend && npm run build`
+- CI (GitHub Actions): a cada push/PR na `main`, roda build+testes do backend e build do frontend (`.github/workflows/ci.yml`).
