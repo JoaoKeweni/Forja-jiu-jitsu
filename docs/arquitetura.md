@@ -131,11 +131,36 @@ cd backend/Forja.Api
 # configurar connection string do Supabase (uma vez, via user-secrets)
 dotnet user-secrets init
 dotnet user-secrets set "ConnectionStrings:ForjaDb" "<connection string do Supabase>"
-# aplicar migrations
+# (opcional) aplicar migrations manualmente
 dotnet ef database update
-# rodar
+# rodar (aplica migrations e roda o seed automaticamente na inicialização)
 dotnet run
 ```
+
+> **Migração e seed automáticos**: ao iniciar, a API aplica as migrations pendentes
+> e executa o seed demo (idempotente). Se o banco estiver inacessível, um aviso é
+> logado e a API sobe mesmo assim (útil antes de configurar o Supabase).
+
+#### Connection string do Supabase
+No painel do Supabase: **Project Settings → Database → Connection string**.
+- **Migrations**: use a *direct connection* (porta 5432).
+- **Runtime**: recomendado o *connection pooler / Supavisor* (porta 6543).
+
+Formato Npgsql:
+```
+Host=<host>;Port=5432;Database=postgres;Username=postgres;Password=<senha>;SSL Mode=Require;Trust Server Certificate=true
+```
+
+#### Dados demo (seed)
+Senha de todos os usuários demo: **`forja123`** (apenas desenvolvimento).
+
+| Perfil | E-mail | Acesso |
+|---|---|---|
+| Super Admin | `superadmin@forja.com` | `POST /api/admin/login` |
+| Professor | `professor@forja.com` | `POST /api/academies/gracie-barra-matriz/login` |
+| Aluno | `aluno@forja.com` | `POST /api/academies/gracie-barra-matriz/login` |
+
+Academias demo: `gracie-barra-matriz`, `alliance-sp`.
 
 ### Frontend
 ```bash

@@ -55,6 +55,28 @@ builder.Services.AddCors(o => o.AddPolicy("frontend", p =>
 
 var app = builder.Build();
 
+// ── Migrations + seed na inicialização ──
+// Se o banco não estiver acessível (ex.: connection string ainda não configurada),
+// loga um aviso em vez de derrubar a aplicação.
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        var db = services.GetRequiredService<ForjaDbContext>();
+        await db.Database.MigrateAsync();
+        await DbSeeder.SeedAsync(db);
+        logger.LogInformation("Banco migrado e populado com sucesso.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogWarning(ex,
+            "Não foi possível migrar/popular o banco na inicialização. " +
+            "Verifique a connection string 'ForjaDb' (Supabase).");
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
