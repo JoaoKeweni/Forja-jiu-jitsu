@@ -170,3 +170,9 @@ npm run dev   # http://localhost:5173
 ```
 
 O CORS do backend já libera a origem `http://localhost:5173` (configurável em `appsettings.json`, seção `Cors:AllowedOrigins`).
+
+### Integração frontend ↔ backend
+
+- O backend roda em `http://localhost:5063` (perfil `http` em `Properties/launchSettings.json`).
+- O frontend consome a API via `VITE_API_URL` (default `http://localhost:5063/api`). Copie `frontend/.env.example` para `frontend/.env` para customizar.
+- Fluxo de desenvolvimento: rode o backend (`dotnet run`) e, em outro terminal, o frontend (`npm run dev`).
