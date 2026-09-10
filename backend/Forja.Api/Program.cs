@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Forja.Api.Auth;
 using Forja.Api.Data;
+using Forja.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +26,9 @@ var jwtSection = builder.Configuration.GetSection("Jwt");
 builder.Services.Configure<JwtOptions>(jwtSection);
 var jwtOptions = jwtSection.Get<JwtOptions>()!;
 builder.Services.AddScoped<ITokenService, TokenService>();
+
+// ── Serviços de aplicação ──
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -57,6 +61,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors("frontend");
 app.UseAuthentication();
 app.UseAuthorization();
