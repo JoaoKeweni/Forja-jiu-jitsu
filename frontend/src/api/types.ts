@@ -56,6 +56,14 @@ export interface AcademyDto {
   studentCount: number;
 }
 
+export interface ProfessorDto {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string | null;
+  teamIds: string[];
+}
+
 export interface StudentDto {
   id: string;
   fullName: string;
