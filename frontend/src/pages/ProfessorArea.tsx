@@ -6,7 +6,8 @@ import {
 } from "../api/hooks";
 import { apiError } from "../api/client";
 import { Button, Card, Input } from "../components/ui";
-import type { BeltType, PaymentStatus, StudentDto } from "../api/types";
+import type { BeltType, PaymentStatus, StudentDto, TournamentDto } from "../api/types";
+import TournamentDetail from "./TournamentDetail";
 
 type Tab = "alunos" | "aprovacao" | "financeiro" | "campeonatos";
 
@@ -221,6 +222,7 @@ function TournamentsTab() {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
+  const [selected, setSelected] = useState<TournamentDto | null>(null);
 
   async function onCreate() {
     setError("");
@@ -256,10 +258,15 @@ function TournamentsTab() {
             <span className="mt-2 inline-block rounded-full bg-surface-container-high px-2 py-0.5 text-xs">
               {t.status}
             </span>
+            <Button variant="ghost" className="mt-3 w-full py-1.5 text-sm" onClick={() => setSelected(t)}>
+              Gerenciar Categorias e Chaves
+            </Button>
           </Card>
         ))}
         {tournaments?.length === 0 && <p className="text-on-surface-variant">Nenhum campeonato.</p>}
       </div>
+
+      {selected && <TournamentDetail tournament={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }

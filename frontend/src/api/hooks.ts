@@ -108,11 +108,51 @@ export function useCategories(tournamentId: string | undefined) {
   });
 }
 
+export function useCreateCategory(tournamentId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: {
+      title: string; belt: BeltType; ageGroup: string; gender: string; maxWeight?: number;
+    }) => (await api.post<CategoryDto>(`/tournaments/${tournamentId}/categories`, body)).data,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["categories", tournamentId] }),
+  });
+}
+
+export function useEnrollStudent(categoryId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (studentId: string) =>
+      api.post(`/tournaments/categories/${categoryId}/enroll`, { studentId }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["categories"] });
+      qc.invalidateQueries({ queryKey: ["matches", categoryId] });
+    },
+  });
+}
+
+export function useGenerateBracket(categoryId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async () => api.post(`/tournaments/categories/${categoryId}/bracket`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["matches", categoryId] }),
+  });
+}
+
 export function useMatches(categoryId: string | undefined) {
   return useQuery({
     queryKey: ["matches", categoryId],
     queryFn: async () => (await api.get<MatchDto[]>(`/tournaments/categories/${categoryId}/matches`)).data,
     enabled: !!categoryId,
+  });
+}
+
+export function useRecordResult(categoryId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ matchId, winnerId, score, victoryType }:
+      { matchId: string; winnerId: string; score?: string; victoryType?: string }) =>
+      api.post(`/tournaments/matches/${matchId}/result`, { winnerId, score, victoryType }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["matches", categoryId] }),
   });
 }
 
