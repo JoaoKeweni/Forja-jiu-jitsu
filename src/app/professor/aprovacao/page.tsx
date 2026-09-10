@@ -2,143 +2,128 @@
 
 import { useState } from "react";
 import Header from "@/components/ui/Header";
+import BottomNav from "@/components/ui/BottomNav";
 import Toast from "@/components/ui/Toast";
 import DemoSwitcher from "@/components/ui/DemoSwitcher";
-import Link from "next/link";
 
-export default function StudentApprovalPage() {
-  const [requests, setRequests] = useState([
+interface PendingStudent {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  team: string;
+  requestDate: string;
+  photo: string;
+}
+
+export default function AprovacaoPage() {
+  const [toastMessage, setToastMessage] = useState("");
+  const [students, setStudents] = useState<PendingStudent[]>([
     {
-      id: "1",
-      name: "Gabriel Santos",
-      email: "gabriel.santos@email.com",
-      phone: "(11) 98765-4321",
-      team: "Equipe Adulto Noite",
-      requestedAt: "Hoje, 14:30",
-      belt: "branca",
-      degrees: 0,
-      dueDay: 10,
+      id: "1", name: "João Pedro Nascimento", email: "joao.pedro@email.com",
+      phone: "(11) 98765-4321", team: "Equipe Adulto Noite",
+      requestDate: "Há 2 horas",
+      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuB6jhOKBIACzBwKMnOco9nOawem3_3QUGvdHcpryFelnO-068cbnzmtAdGRscqivEW4uZ1N8XnKCNXA_ULcYFjxho1zk9JNX-gJGaWAUS2oZAEHWUv-WMpSztsG0gN3VguEKBqLhfO4dnS9i4NA0MWnzT-NJa9r6zDO_5Au-zzcLqsCKZAgr-gX7Lj7QmntpX_3Ypf2sdX5qOnptFmngQCSBxdaiykFfgmd5nv-oYFZRDDLWoWpGVfX",
     },
     {
-      id: "2",
-      name: "Mariana Oliveira",
-      email: "mariana.oli@email.com",
-      phone: "(11) 97654-3210",
-      team: "Equipe Adulto Noite",
-      requestedAt: "Hoje, 11:15",
-      belt: "azul",
-      degrees: 1,
-      dueDay: 5,
+      id: "2", name: "Maria Clara Souza", email: "maria.clara@email.com",
+      phone: "(11) 91234-5678", team: "Equipe Adulto Noite",
+      requestDate: "Há 5 horas",
+      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAk4es2gSXHw7QQvFi2p61Migy3K8w8L4u5ShK3TNP3KNFYqnH2om5mZgtaMc5ZXeSsmcfP_-ZAqwHzpL5vak6EoFn2RBX2jc2B0_gyYlyNE02nKymvUjmZXZUSUQ763yxNC_3HRW1MGOEoXAIr0UMMNbrQCuMAxHvEJZOH-ozGgUYWFcV7bQpoKWLz8ZPcSRRtmt6evPmOF9Prp3Op9gauh7teF1oP4QcX-kNDbuhMzXm0iOrSRYuuI",
+    },
+    {
+      id: "3", name: "Thiago Oliveira", email: "thiago.oli@email.com",
+      phone: "(21) 99876-5432", team: "Kids & Juvenil Manhã",
+      requestDate: "Ontem",
+      photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAmpEw0-EjzCL14-rPPv-5QgsgL5XoJ1EZtGmGJSNpO6q4InhzGzvKzLMud7kaO03mSKm522B0Wsab7X5Hu3fni0DQSvYqA2XD5e2iv58k-kt2GR02TqsDJbO_a7xyKphxBKc08xvviQZ52ZH_RutrUaVgRnEP5ArMyKUbJZo3kmdYUSla9bBKJSkPXHPPCDfQU6NLpj-JBsZLn7Lyy2RrjEpofCQiZxL3Vwn5lK7DqSsUJQ7dUIXJ8",
     },
   ]);
 
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState<"success" | "warning" | "error">("success");
-
-  const handleApprove = (id: string, name: string) => {
-    setRequests(requests.filter((r) => r.id !== id));
-    setToastType("success");
-    setToastMessage(`✅ Aluno '${name}' aprovado com sucesso!`);
+  const approve = (id: string, name: string) => {
+    setStudents((prev) => prev.filter((s) => s.id !== id));
+    setToastMessage(`✅ ${name} aprovado com sucesso! Acesso liberado.`);
   };
 
-  const handleReject = (id: string, name: string) => {
-    setRequests(requests.filter((r) => r.id !== id));
-    setToastType("warning");
-    setToastMessage(`🔴 Solicitação de '${name}' recusada.`);
+  const reject = (id: string, name: string) => {
+    setStudents((prev) => prev.filter((s) => s.id !== id));
+    setToastMessage(`❌ Solicitação de ${name} recusada.`);
   };
 
   return (
-    <main className="min-h-screen bg-background text-on-surface pb-16 pt-20">
-      <Header pendingCount={requests.length} />
+    <main className="min-h-screen bg-[#0A0A0A] text-on-background font-body-md text-body-md pt-20 pb-32 md:pb-12">
+      <Header pendingCount={students.length} />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-on-surface-variant my-4">
-          <Link href="/professor/dashboard" className="hover:text-primary transition-colors">
-            Dashboard
-          </Link>
-          <span>/</span>
-          <span className="text-on-surface font-bold">Moderação de Alunos</span>
+      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-gutter">
+        <div className="mb-8 mt-4">
+          <h1 className="font-headline-md text-headline-md text-on-surface mb-1">Fila de Moderação</h1>
+          <p className="text-on-surface-variant text-sm">
+            {students.length > 0
+              ? `${students.length} solicitação(ões) aguardando sua aprovação`
+              : "Nenhuma solicitação pendente 🎉"}
+          </p>
         </div>
 
-        <div className="mb-6 flex justify-between items-center">
-          <div>
-            <h1 className="font-display font-bold text-2xl text-on-surface">Fila de Moderação</h1>
-            <p className="text-xs text-on-surface-variant">
-              Examine e autorize a entrada de novos praticantes na sua equipe.
-            </p>
-          </div>
-          <span className="bg-primary-container/20 text-primary border border-primary-container/40 text-xs font-mono font-bold px-3 py-1 rounded-full">
-            {requests.length} solicitações pendentes
-          </span>
-        </div>
-
-        {requests.length === 0 ? (
-          <div className="bg-surface-container border border-outline-variant/30 rounded-2xl p-12 text-center space-y-3 shadow-xl">
-            <span className="material-symbols-outlined text-emerald-400 text-5xl">task_alt</span>
-            <h3 className="font-display font-bold text-lg text-on-surface">Fila Vazia!</h3>
-            <p className="text-xs text-on-surface-variant">Não há nenhuma solicitação pendente no momento.</p>
-            <Link
-              href="/professor/dashboard"
-              className="inline-flex items-center gap-1 text-xs bg-primary-container text-white px-4 py-2 rounded-lg font-bold hover:bg-secondary-container transition-all mt-2"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {students.map((student) => (
+            <div
+              key={student.id}
+              className="bg-surface-container border border-surface-variant rounded-xl p-5 shadow-lg hover:border-outline-variant transition-colors animate-fade-in"
             >
-              <span>Voltar ao Dashboard</span>
-            </Link>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {requests.map((req) => (
-              <div
-                key={req.id}
-                className="bg-surface-container border border-outline-variant/40 rounded-xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 animate-fade-in"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-full bg-surface-dim border border-outline-variant/50 flex items-center justify-center text-on-surface-variant font-bold text-lg flex-shrink-0">
-                    {req.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-base text-on-surface">{req.name}</h3>
-                    <p className="text-xs text-on-surface-variant flex items-center gap-1 mt-0.5">
-                      <span className="material-symbols-outlined text-sm">mail</span> {req.email}
-                    </p>
-                    <p className="text-xs text-on-surface-variant flex items-center gap-1 mt-0.5">
-                      <span className="material-symbols-outlined text-sm text-emerald-400">phone</span> {req.phone}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-[11px] bg-surface-dim border border-outline-variant/40 text-on-surface-variant px-2.5 py-0.5 rounded font-mono">
-                        Solicitado em: {req.requestedAt}
-                      </span>
-                      <span className="text-[11px] bg-primary-container/20 text-primary border border-primary-container/40 px-2 py-0.5 rounded font-mono font-bold">
-                        {req.team}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Controls & Actions */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto border-t md:border-t-0 border-outline-variant/30 pt-4 md:pt-0">
-                  <button
-                    onClick={() => handleApprove(req.id, req.name)}
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all shadow-md cursor-pointer"
-                  >
-                    <span className="material-symbols-outlined text-sm">check_circle</span>
-                    <span>Aprovar Matrícula</span>
-                  </button>
-                  <button
-                    onClick={() => handleReject(req.id, req.name)}
-                    className="bg-surface border border-error-container/50 text-error hover:bg-error-container/20 font-bold text-xs px-4 py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    <span className="material-symbols-outlined text-sm">cancel</span>
-                    <span>Recusar</span>
-                  </button>
+              <div className="flex items-start gap-4 mb-4">
+                <img
+                  src={student.photo}
+                  alt={student.name}
+                  className="w-14 h-14 rounded-full object-cover border-2 border-outline-variant shadow-md"
+                />
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-on-surface text-sm truncate">{student.name}</h3>
+                  <p className="text-xs text-on-surface-variant truncate">{student.email}</p>
+                  <p className="text-xs text-on-surface-variant">{student.phone}</p>
                 </div>
               </div>
-            ))}
+
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="material-symbols-outlined text-[16px] text-primary">sports_martial_arts</span>
+                  <span className="text-on-surface-variant">{student.team}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="material-symbols-outlined text-[16px] text-tertiary">schedule</span>
+                  <span className="text-on-surface-variant">{student.requestDate}</span>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => approve(student.id, student.name)}
+                  className="flex-1 bg-[#22c55e]/20 text-[#22c55e] border border-[#22c55e]/40 font-label-bold text-xs py-2.5 rounded-lg hover:bg-[#22c55e]/30 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                  Aprovar
+                </button>
+                <button
+                  onClick={() => reject(student.id, student.name)}
+                  className="flex-1 bg-error/10 text-error border border-error/30 font-label-bold text-xs py-2.5 rounded-lg hover:bg-error/20 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">cancel</span>
+                  Recusar
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {students.length === 0 && (
+          <div className="text-center py-20 text-on-surface-variant">
+            <span className="material-symbols-outlined text-6xl mb-4 opacity-30">verified</span>
+            <p className="text-lg font-bold">Tudo limpo!</p>
+            <p className="text-sm">Nenhum aluno aguardando aprovação no momento.</p>
           </div>
         )}
       </div>
 
-      <Toast message={toastMessage} isOpen={!!toastMessage} onClose={() => setToastMessage("")} type={toastType} />
+      <BottomNav />
+      <Toast message={toastMessage} isOpen={!!toastMessage} onClose={() => setToastMessage("")} />
       <DemoSwitcher />
     </main>
   );

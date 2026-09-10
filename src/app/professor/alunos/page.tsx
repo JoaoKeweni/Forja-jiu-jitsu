@@ -2,194 +2,136 @@
 
 import { useState } from "react";
 import Header from "@/components/ui/Header";
-import TeamSelector from "@/components/ui/TeamSelector";
+import BottomNav from "@/components/ui/BottomNav";
+import Toast from "@/components/ui/Toast";
 import DemoSwitcher from "@/components/ui/DemoSwitcher";
-import Link from "next/link";
 
-export default function StudentManagementPage() {
+const beltColors: Record<string, string> = {
+  Branca: "#e5e7eb",
+  Azul: "#3b82f6",
+  Roxa: "#a855f7",
+  Marrom: "#92400e",
+  Preta: "#1f2937",
+};
+
+const mockStudents = [
+  { id: "1", name: "Carlos Silva", belt: "Azul", degrees: 2, team: "Adulto Noite", phone: "(11) 99999-1111", photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuB6jhOKBIACzBwKMnOco9nOawem3_3QUGvdHcpryFelnO-068cbnzmtAdGRscqivEW4uZ1N8XnKCNXA_ULcYFjxho1zk9JNX-gJGaWAUS2oZAEHWUv-WMpSztsG0gN3VguEKBqLhfO4dnS9i4NA0MWnzT-NJa9r6zDO_5Au-zzcLqsCKZAgr-gX7Lj7QmntpX_3Ypf2sdX5qOnptFmngQCSBxdaiykFfgmd5nv-oYFZRDDLWoWpGVfX" },
+  { id: "2", name: "Ana Paula Santos", belt: "Roxa", degrees: 1, team: "Adulto Noite", phone: "(11) 99999-2222", photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAk4es2gSXHw7QQvFi2p61Migy3K8w8L4u5ShK3TNP3KNFYqnH2om5mZgtaMc5ZXeSsmcfP_-ZAqwHzpL5vak6EoFn2RBX2jc2B0_gyYlyNE02nKymvUjmZXZUSUQ763yxNC_3HRW1MGOEoXAIr0UMMNbrQCuMAxHvEJZOH-ozGgUYWFcV7bQpoKWLz8ZPcSRRtmt6evPmOF9Prp3Op9gauh7teF1oP4QcX-kNDbuhMzXm0iOrSRYuuI" },
+  { id: "3", name: "Lucas Mendes", belt: "Branca", degrees: 4, team: "Adulto Noite", phone: "(11) 99999-3333" },
+  { id: "4", name: "Roberto Almeida", belt: "Marrom", degrees: 3, team: "Competição Matutino", phone: "(11) 99999-4444", photo: "https://lh3.googleusercontent.com/aida-public/AB6AXuAmpEw0-EjzCL14-rPPv-5QgsgL5XoJ1EZtGmGJSNpO6q4InhzGzvKzLMud7kaO03mSKm522B0Wsab7X5Hu3fni0DQSvYqA2XD5e2iv58k-kt2GR02TqsDJbO_a7xyKphxBKc08xvviQZ52ZH_RutrUaVgRnEP5ArMyKUbJZo3kmdYUSla9bBKJSkPXHPPCDfQU6NLpj-JBsZLn7Lyy2RrjEpofCQiZxL3Vwn5lK7DqSsUJQ7dUIXJ8" },
+  { id: "5", name: "Fernanda Costa", belt: "Azul", degrees: 0, team: "Kids & Juvenil", phone: "(11) 99999-5555" },
+  { id: "6", name: "Thiago Oliveira", belt: "Branca", degrees: 2, team: "Adulto Noite", phone: "(11) 99999-6666" },
+];
+
+export default function GestaoAlunosPage() {
   const [search, setSearch] = useState("");
-  const [selectedBelt, setSelectedBelt] = useState("all");
-  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [filterBelt, setFilterBelt] = useState("Todas");
+  const [toastMessage, setToastMessage] = useState("");
 
-  const [students] = useState([
-    {
-      id: "1",
-      name: "Lucas Almeida Silva",
-      belt: "azul",
-      degrees: 2,
-      phone: "(11) 97777-2222",
-      dueDay: 10,
-      paymentStatus: "paid",
-      status: "active",
-    },
-    {
-      id: "2",
-      name: "Matheus Henrique",
-      belt: "branca",
-      degrees: 4,
-      phone: "(11) 96666-3333",
-      dueDay: 15,
-      paymentStatus: "paid",
-      status: "active",
-    },
-    {
-      id: "3",
-      name: "Rafael Costa",
-      belt: "roxa",
-      degrees: 1,
-      phone: "(11) 95555-4444",
-      dueDay: 10,
-      paymentStatus: "overdue",
-      status: "active",
-    },
-    {
-      id: "4",
-      name: "Bruno Lima",
-      belt: "preta",
-      degrees: 2,
-      phone: "(11) 94444-5555",
-      dueDay: 5,
-      paymentStatus: "paid",
-      status: "active",
-    },
-  ]);
-
-  const beltColors: Record<string, { bg: string; text: string; border: string }> = {
-    branca: { bg: "bg-stone-200", text: "text-stone-900", border: "border-stone-400" },
-    azul: { bg: "bg-blue-600", text: "text-white", border: "border-blue-400" },
-    roxa: { bg: "bg-purple-600", text: "text-white", border: "border-purple-400" },
-    marrom: { bg: "bg-amber-900", text: "text-amber-100", border: "border-amber-700" },
-    preta: { bg: "bg-stone-950", text: "text-red-500", border: "border-red-600" },
-  };
-
-  const filteredStudents = students.filter((s) => {
+  const filtered = mockStudents.filter((s) => {
     const matchesSearch = s.name.toLowerCase().includes(search.toLowerCase());
-    const matchesBelt = selectedBelt === "all" || s.belt === selectedBelt;
-    const matchesStatus = selectedStatus === "all" || s.status === selectedStatus;
-    return matchesSearch && matchesBelt && matchesStatus;
+    const matchesBelt = filterBelt === "Todas" || s.belt === filterBelt;
+    return matchesSearch && matchesBelt;
   });
 
   return (
-    <main className="min-h-screen bg-background text-on-surface pb-16 pt-20">
-      <Header />
+    <main className="min-h-screen bg-[#0A0A0A] text-on-background font-body-md text-body-md pt-20 pb-32 md:pb-12">
+      <Header pendingCount={3} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 text-xs text-on-surface-variant my-4">
-          <Link href="/professor/dashboard" className="hover:text-primary transition-colors">
-            Dashboard
-          </Link>
-          <span>/</span>
-          <span className="text-on-surface font-bold">Gestão de Alunos</span>
-        </div>
-
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-          <div>
-            <h1 className="font-display font-bold text-2xl text-on-surface">Gestão de Alunos</h1>
-            <p className="text-xs text-on-surface-variant">Listagem e graduação dos atletas da equipe.</p>
-          </div>
-          <TeamSelector />
+      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-gutter">
+        <div className="mb-6 mt-4">
+          <h1 className="font-headline-md text-headline-md text-on-surface mb-1">Gestão de Alunos</h1>
+          <p className="text-on-surface-variant text-sm">{filtered.length} aluno(s) encontrado(s)</p>
         </div>
 
         {/* Filters */}
-        <div className="bg-surface-container border border-outline-variant/40 rounded-xl p-4 mb-6 flex flex-col md:flex-row gap-3">
-          <div className="flex-1 relative">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-lg">
-              search
-            </span>
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
+          <div className="relative flex-1">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
             <input
               type="text"
-              placeholder="Buscar aluno por nome..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-surface-dim border border-outline-variant/40 rounded-lg py-2 pl-10 pr-3 text-xs text-on-surface outline-none focus:border-primary-container"
+              placeholder="Buscar aluno..."
+              className="w-full bg-surface-container border border-surface-variant rounded-lg py-3 pl-10 pr-4 text-on-surface focus:outline-none input-glow transition-colors placeholder-on-surface-variant/50"
             />
           </div>
-
-          <div className="flex gap-2">
-            <select
-              value={selectedBelt}
-              onChange={(e) => setSelectedBelt(e.target.value)}
-              className="bg-surface-dim border border-outline-variant/40 rounded-lg py-2 px-3 text-xs text-on-surface outline-none cursor-pointer"
-            >
-              <option value="all">Todas as Faixas</option>
-              <option value="branca">Faixa Branca</option>
-              <option value="azul">Faixa Azul</option>
-              <option value="roxa">Faixa Roxa</option>
-              <option value="marrom">Faixa Marrom</option>
-              <option value="preta">Faixa Preta</option>
-            </select>
-
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="bg-surface-dim border border-outline-variant/40 rounded-lg py-2 px-3 text-xs text-on-surface outline-none cursor-pointer"
-            >
-              <option value="all">Todos os Status</option>
-              <option value="active">Ativo</option>
-              <option value="pending">Pendente</option>
-            </select>
-          </div>
+          <select
+            value={filterBelt}
+            onChange={(e) => setFilterBelt(e.target.value)}
+            className="bg-surface-container border border-surface-variant rounded-lg py-3 px-4 text-on-surface focus:outline-none appearance-none font-label-bold text-label-bold min-w-[160px]"
+          >
+            <option value="Todas">🥋 Todas as Faixas</option>
+            <option value="Branca">⬜ Faixa Branca</option>
+            <option value="Azul">🟦 Faixa Azul</option>
+            <option value="Roxa">🟪 Faixa Roxa</option>
+            <option value="Marrom">🟫 Faixa Marrom</option>
+            <option value="Preta">⬛ Faixa Preta</option>
+          </select>
         </div>
 
-        {/* Student Cards Grid */}
+        {/* Student Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredStudents.map((s) => {
-            const beltStyle = beltColors[s.belt] || beltColors.branca;
-            return (
-              <div
-                key={s.id}
-                className="bg-surface-container border border-outline-variant/40 rounded-xl p-5 shadow-lg flex flex-col justify-between hover:border-primary/50 transition-all"
-              >
-                <div>
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-surface-dim border border-outline-variant/50 flex items-center justify-center font-bold text-on-surface">
-                        {s.name.charAt(0)}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-sm text-on-surface">{s.name}</h3>
-                        <p className="text-xs text-on-surface-variant">{s.phone}</p>
-                      </div>
-                    </div>
+          {filtered.map((student) => (
+            <div
+              key={student.id}
+              className="bg-surface-container border border-surface-variant rounded-xl p-4 shadow-lg hover:border-outline-variant transition-colors group"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                {student.photo ? (
+                  <img src={student.photo} alt={student.name} className="w-12 h-12 rounded-full object-cover border border-outline-variant" />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-surface-variant border border-outline-variant flex items-center justify-center text-on-surface font-bold">
+                    {student.name.charAt(0)}
                   </div>
-
-                  {/* Belt Badge */}
-                  <div className="mt-2 flex items-center justify-between">
-                    <div
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wider ${beltStyle.bg} ${beltStyle.text} ${beltStyle.border}`}
-                    >
-                      <span>Faixa {s.belt}</span>
-                      <span className="text-[10px] opacity-80">({s.degrees} Graus)</span>
-                    </div>
-
-                    <span className="text-xs text-on-surface-variant font-mono">
-                      Venc. dia {s.dueDay}
+                )}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-sm text-on-surface truncate">{student.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="w-3 h-3 rounded-full border border-white/30"
+                      style={{ backgroundColor: beltColors[student.belt] }}
+                    />
+                    <span className="text-xs" style={{ color: beltColors[student.belt] }}>
+                      {student.belt} ({student.degrees} graus)
                     </span>
                   </div>
                 </div>
+              </div>
 
-                <div className="mt-4 pt-3 border-t border-outline-variant/30 flex justify-between items-center text-xs">
-                  <span
-                    className={`px-2 py-0.5 rounded font-bold ${
-                      s.paymentStatus === "paid"
-                        ? "bg-emerald-500/20 text-emerald-400"
-                        : "bg-red-500/20 text-red-400"
-                    }`}
-                  >
-                    {s.paymentStatus === "paid" ? "🟢 Adimplente" : "🔴 Mensalidade Pendente"}
-                  </span>
-
-                  <button className="text-primary hover:underline font-bold flex items-center gap-0.5">
-                    <span>Editar Aluno</span>
-                    <span className="material-symbols-outlined text-sm">edit</span>
-                  </button>
+              <div className="space-y-1 text-xs text-on-surface-variant mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[14px]">sports_martial_arts</span>
+                  {student.team}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[14px]">phone</span>
+                  {student.phone}
                 </div>
               </div>
-            );
-          })}
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setToastMessage(`Abrindo WhatsApp para ${student.name}...`)}
+                  className="flex-1 bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/30 text-xs py-2 rounded-lg hover:bg-[#25D366]/20 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">chat</span>
+                  WhatsApp
+                </button>
+                <button
+                  className="flex-1 bg-primary/10 text-primary border border-primary/30 text-xs py-2 rounded-lg hover:bg-primary/20 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[16px]">edit</span>
+                  Editar
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
+      <BottomNav />
+      <Toast message={toastMessage} isOpen={!!toastMessage} onClose={() => setToastMessage("")} />
       <DemoSwitcher />
     </main>
   );

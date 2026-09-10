@@ -1,43 +1,36 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ToastProps {
   message: string;
   isOpen: boolean;
   onClose: () => void;
-  type?: "success" | "warning" | "error";
 }
 
-export default function Toast({ message, isOpen, onClose, type = "success" }: ToastProps) {
+export default function Toast({ message, isOpen, onClose }: ToastProps) {
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
     if (isOpen) {
+      setVisible(true);
       const timer = setTimeout(() => {
-        onClose();
-      }, 3000);
+        setVisible(false);
+        setTimeout(onClose, 300);
+      }, 2500);
       return () => clearTimeout(timer);
     }
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
-  const bgStyles = {
-    success: "bg-primary-container border-primary/50 text-white",
-    warning: "bg-amber-600/90 border-amber-400/50 text-white",
-    error: "bg-error-container border-error/50 text-white",
-  };
-
-  const icons = {
-    success: "check_circle",
-    warning: "warning",
-    error: "error",
-  };
+  if (!isOpen && !visible) return null;
 
   return (
     <div
-      className={`fixed top-20 right-4 z-[9999] ${bgStyles[type]} px-4 py-3 rounded-lg shadow-2xl font-bold text-sm flex items-center gap-2 border animate-bounce`}
+      className={`fixed top-20 right-4 z-[9999] bg-primary-container text-white px-4 py-3 rounded-lg shadow-2xl font-label-bold text-sm flex items-center gap-2 border border-primary/50 transition-all duration-300 ${
+        visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+      }`}
     >
-      <span className="material-symbols-outlined text-lg">{icons[type]}</span>
+      <span className="material-symbols-outlined text-lg">check_circle</span>
       <span>{message}</span>
     </div>
   );
