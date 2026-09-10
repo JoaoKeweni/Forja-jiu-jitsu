@@ -3,6 +3,7 @@ import { useAuth } from "../auth/AuthContext";
 import {
   useStudents, usePendingStudents, useApproveStudent, useRejectStudent,
   useFinanceGrid, useSettlePayment, useTournaments, useCreateTournament, useMyTeams,
+  useUpdateStudent,
 } from "../api/hooks";
 import { apiError } from "../api/client";
 import { Button, Card, Input } from "../components/ui";
@@ -10,7 +11,7 @@ import { Loading, EmptyState } from "../components/States";
 import { useToast } from "../components/Toast";
 import { formatDate, formatCurrency } from "../lib/format";
 import { whatsappChargeUrl, whatsappContactUrl } from "../lib/whatsapp";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Search, Pencil } from "lucide-react";
 import type { BeltType, PaymentStatus, StudentDto, TournamentDto } from "../api/types";
 import TournamentDetail from "./TournamentDetail";
 
@@ -67,19 +68,59 @@ export default function ProfessorArea() {
 }
 
 // ── Alunos (ADM-02) ──
+const ALL_BELTS: BeltType[] = ["Branca", "Cinza", "Amarela", "Laranja", "Verde", "Azul", "Roxa", "Marrom", "Preta"];
+const STATUS_OPTIONS: { value: string; label: string }[] = [
+  { value: "", label: "Todos os status" },
+  { value: "Active", label: "Ativo" },
+  { value: "Pending", label: "Pendente" },
+  { value: "Rejected", label: "Inativo" },
+];
+
 function StudentsTab({ teamId }: { teamId: string }) {
-  const { data: students, isLoading } = useStudents(teamId || undefined);
-  if (isLoading) return <Loading />;
+  const [status, setStatus] = useState("");
+  const [belt, setBelt] = useState("");
+  const [search, setSearch] = useState("");
+  const { data: students, isLoading } = useStudents(teamId || undefined, status || undefined);
+
+  const filtered = (students ?? []).filter((s) => {
+    if (belt && s.belt !== belt) return false;
+    if (search && !s.fullName.toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      {students?.map((s) => <StudentCard key={s.id} s={s} />)}
-      {students?.length === 0 && <EmptyState message="Nenhum aluno nesta equipe." />}
+    <div>
+      {/* Controles de busca/filtro (ADM-02) */}
+      <div className="mb-4 flex flex-wrap gap-2">
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-on-surface-variant" />
+          <Input placeholder="Buscar por nome" value={search}
+            onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+        </div>
+        <select className="rounded-xl bg-surface-container-high border border-outline-variant px-3 py-2 text-sm"
+          value={belt} onChange={(e) => setBelt(e.target.value)}>
+          <option value="">Todas as faixas</option>
+          {ALL_BELTS.map((b) => <option key={b} value={b}>{b}</option>)}
+        </select>
+        <select className="rounded-xl bg-surface-container-high border border-outline-variant px-3 py-2 text-sm"
+          value={status} onChange={(e) => setStatus(e.target.value)}>
+          {STATUS_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+      </div>
+
+      {isLoading ? <Loading /> : (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {filtered.map((s) => <StudentCard key={s.id} s={s} />)}
+          {filtered.length === 0 && <EmptyState message="Nenhum aluno encontrado." />}
+        </div>
+      )}
     </div>
   );
 }
 
 function StudentCard({ s }: { s: StudentDto }) {
   const waUrl = whatsappContactUrl(s.phone);
+  const [editing, setEditing] = useState(false);
   return (
     <Card className="flex items-center gap-3">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-container-high">🥋</div>
@@ -88,13 +129,82 @@ function StudentCard({ s }: { s: StudentDto }) {
         <p className="text-sm text-on-surface-variant">Faixa {s.belt} · {s.degrees} graus</p>
         <p className="text-xs text-on-surface-variant">{s.teamName} · vence dia {s.dueDay}</p>
       </div>
-      {waUrl && (
-        <a href={waUrl} target="_blank" rel="noopener noreferrer" title="WhatsApp"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-status-paid text-white">
-          <MessageCircle className="h-4 w-4" />
-        </a>
-      )}
+      <div className="flex flex-col gap-1">
+        {waUrl && (
+          <a href={waUrl} target="_blank" rel="noopener noreferrer" title="WhatsApp"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-status-paid text-white">
+            <MessageCircle className="h-4 w-4" />
+          </a>
+        )}
+        <button title="Editar" onClick={() => setEditing(true)}
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface-container-high">
+          <Pencil className="h-4 w-4" />
+        </button>
+      </div>
+      {editing && <EditStudentModal student={s} onClose={() => setEditing(false)} />}
     </Card>
+  );
+}
+
+// ── Edição de aluno (ADM-03) ──
+function EditStudentModal({ student, onClose }: { student: StudentDto; onClose: () => void }) {
+  const update = useUpdateStudent();
+  const { data: teams } = useMyTeams();
+  const toast = useToast();
+  const [belt, setBelt] = useState<BeltType>(student.belt);
+  const [degrees, setDegrees] = useState(student.degrees);
+  const [dueDay, setDueDay] = useState(student.dueDay);
+  const [teamId, setTeamId] = useState(student.teamId);
+  const [error, setError] = useState("");
+
+  async function onSave() {
+    setError("");
+    try {
+      await update.mutateAsync({ id: student.id, belt, degrees, dueDay, teamId });
+      toast.show("Aluno atualizado!", "success");
+      onClose();
+    } catch (err) {
+      setError(apiError(err));
+    }
+  }
+
+  const selectCls = "w-full rounded-lg bg-surface-container-low border border-outline-variant px-2 py-1.5 text-sm";
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      onClick={onClose}>
+      <div className="w-full max-w-sm rounded-2xl bg-surface-container p-6 animate-fade-in"
+        onClick={(e) => e.stopPropagation()}>
+        <h3 className="font-display text-lg font-bold text-primary">Editar {student.fullName}</h3>
+        <div className="mt-4 space-y-3">
+          <label className="block text-xs text-on-surface-variant">Faixa
+            <select className={`mt-1 ${selectCls}`} value={belt} onChange={(e) => setBelt(e.target.value as BeltType)}>
+              {ALL_BELTS.map((b) => <option key={b} value={b}>{b}</option>)}
+            </select>
+          </label>
+          <label className="block text-xs text-on-surface-variant">Graus
+            <select className={`mt-1 ${selectCls}`} value={degrees} onChange={(e) => setDegrees(Number(e.target.value))}>
+              {[0, 1, 2, 3, 4].map((g) => <option key={g} value={g}>{g}</option>)}
+            </select>
+          </label>
+          <label className="block text-xs text-on-surface-variant">Dia de vencimento
+            <select className={`mt-1 ${selectCls}`} value={dueDay} onChange={(e) => setDueDay(Number(e.target.value))}>
+              {[5, 10, 15, 20].map((d) => <option key={d} value={d}>dia {d}</option>)}
+            </select>
+          </label>
+          <label className="block text-xs text-on-surface-variant">Equipe
+            <select className={`mt-1 ${selectCls}`} value={teamId} onChange={(e) => setTeamId(e.target.value)}>
+              {teams?.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+            </select>
+          </label>
+        </div>
+        {error && <p className="mt-2 text-sm text-error">{error}</p>}
+        <div className="mt-4 flex gap-2">
+          <Button className="flex-1" onClick={onSave} disabled={update.isPending}>Salvar</Button>
+          <Button variant="ghost" onClick={onClose}>Cancelar</Button>
+        </div>
+      </div>
+    </div>
   );
 }
 

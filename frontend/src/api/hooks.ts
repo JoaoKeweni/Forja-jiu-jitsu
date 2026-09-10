@@ -51,6 +51,16 @@ export function useRejectStudent() {
   });
 }
 
+export function useUpdateStudent() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, belt, degrees, dueDay, teamId }:
+      { id: string; belt: BeltType; degrees: number; dueDay: number; teamId: string }) =>
+      api.put(`/students/${id}`, { belt, degrees, dueDay, teamId }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["students"] }),
+  });
+}
+
 // ── Financeiro (professor) ──
 export function useFinanceGrid(teamId?: string, year?: number) {
   return useQuery({
