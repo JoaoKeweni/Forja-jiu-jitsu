@@ -1,5 +1,10 @@
 # 🥋 Documento de Contexto do Sistema — Forja Jiu-Jitsu
 
+> **Nota de arquitetura (set/2026)**: Este documento descreve o **contexto de negócio**, que permanece válido.
+> A implementação técnica migrou de Next.js + Supabase (full-stack) para **backend ASP.NET Core Web API (.NET 10)**
+> + **frontend React (Vite)**, com **PostgreSQL do Supabase** usado apenas como banco gerenciado.
+> Consulte [arquitetura.md](arquitetura.md) para os detalhes técnicos.
+
 ## 1. Visão Geral do Projeto
 O **Forja Jiu-Jitsu** é uma plataforma SaaS desenvolvida para a gestão simplificada e eficiente de academias de Jiu-Jitsu. O sistema atende desde o **Super Admin (Admin Geral)** que gerencia a rede de academias, até os **Professores/Gestores de Academia** que dão aula para múltiplos times e gerenciam alunos e campeonatos internos, e os **Alunos (Atletas)**.
 
