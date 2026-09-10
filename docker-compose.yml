@@ -1,0 +1,22 @@
+# PostgreSQL local para desenvolvimento (alternativa ao Supabase).
+# Suba com:  docker compose up -d
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: forja-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: forja
+    ports:
+      - "5432:5432"
+    volumes:
+      - forja_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d forja"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  forja_pgdata:
