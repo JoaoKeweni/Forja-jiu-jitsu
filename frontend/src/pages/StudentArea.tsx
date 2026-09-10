@@ -1,6 +1,8 @@
 import { useAuth } from "../auth/AuthContext";
 import { useMyStudent, useMyPayments } from "../api/hooks";
 import { Button, Card } from "../components/ui";
+import { EmptyState } from "../components/States";
+import { formatCurrency, monthShort } from "../lib/format";
 import type { PaymentStatus } from "../api/types";
 
 const statusColor: Record<PaymentStatus, string> = {
@@ -16,8 +18,6 @@ const statusLabel: Record<PaymentStatus, string> = {
   Overdue: "Atrasado",
   Exempt: "Isento",
 };
-
-const monthNames = ["", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
 export default function StudentArea() {
   const { user, logout, refresh } = useAuth();
@@ -93,9 +93,9 @@ function StudentDashboard({ onLogout }: { onLogout: () => void }) {
         {payments?.map((p) => (
           <Card key={p.id} className="flex items-center justify-between py-3">
             <div>
-              <p className="font-medium">{monthNames[p.month]} {p.year}</p>
+              <p className="font-medium">{monthShort(p.month)} {p.year}</p>
               <p className="text-sm text-on-surface-variant">
-                Vencimento dia {new Date(p.dueDate).getDate()} · R$ {p.amount.toFixed(2)}
+                Vencimento dia {new Date(p.dueDate).getDate()} · {formatCurrency(p.amount)}
               </p>
             </div>
             <span className={`rounded-full px-3 py-1 text-xs text-white ${statusColor[p.status]}`}>
@@ -103,9 +103,7 @@ function StudentDashboard({ onLogout }: { onLogout: () => void }) {
             </span>
           </Card>
         ))}
-        {payments?.length === 0 && (
-          <p className="text-sm text-on-surface-variant">Nenhuma mensalidade registrada.</p>
-        )}
+        {payments?.length === 0 && <EmptyState message="Nenhuma mensalidade registrada." />}
       </div>
     </div>
   );

@@ -6,6 +6,9 @@ import {
 } from "../api/hooks";
 import { apiError } from "../api/client";
 import { Button, Card, Input } from "../components/ui";
+import { Loading, EmptyState } from "../components/States";
+import { useToast } from "../components/Toast";
+import { formatDate, formatCurrency } from "../lib/format";
 import type { BeltType, PaymentStatus, StudentDto, TournamentDto } from "../api/types";
 import TournamentDetail from "./TournamentDetail";
 
@@ -64,11 +67,11 @@ export default function ProfessorArea() {
 // ── Alunos (ADM-02) ──
 function StudentsTab({ teamId }: { teamId: string }) {
   const { data: students, isLoading } = useStudents(teamId || undefined);
-  if (isLoading) return <p className="text-on-surface-variant">Carregando...</p>;
+  if (isLoading) return <Loading />;
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {students?.map((s) => <StudentCard key={s.id} s={s} />)}
-      {students?.length === 0 && <p className="text-on-surface-variant">Nenhum aluno.</p>}
+      {students?.length === 0 && <EmptyState message="Nenhum aluno nesta equipe." />}
     </div>
   );
 }
@@ -92,8 +95,8 @@ const DUE_DAYS = [5, 10, 15, 20];
 
 function ApprovalTab() {
   const { data: pending, isLoading } = usePendingStudents();
-  if (isLoading) return <p className="text-on-surface-variant">Carregando...</p>;
-  if (pending?.length === 0) return <p className="text-on-surface-variant">Nenhuma solicitação pendente.</p>;
+  if (isLoading) return <Loading />;
+  if (pending?.length === 0) return <EmptyState message="Nenhuma solicitação pendente." />;
 
   return (
     <div className="grid gap-3 sm:grid-cols-2">
@@ -105,6 +108,7 @@ function ApprovalTab() {
 function ApprovalCard({ student }: { student: StudentDto }) {
   const approve = useApproveStudent();
   const reject = useRejectStudent();
+  const toast = useToast();
   const [belt, setBelt] = useState<BeltType>("Branca");
   const [degrees, setDegrees] = useState(0);
   const [dueDay, setDueDay] = useState(10);
@@ -114,6 +118,16 @@ function ApprovalCard({ student }: { student: StudentDto }) {
     setError("");
     try {
       await approve.mutateAsync({ id: student.id, belt, degrees, dueDay });
+      toast.show(`${student.fullName} aprovado!`, "success");
+    } catch (err) {
+      setError(apiError(err));
+    }
+  }
+
+  async function onReject() {
+    try {
+      await reject.mutateAsync(student.id);
+      toast.show(`Solicitação de ${student.fullName} recusada.`, "info");
     } catch (err) {
       setError(apiError(err));
     }
@@ -155,7 +169,7 @@ function ApprovalCard({ student }: { student: StudentDto }) {
 
       <div className="mt-3 flex gap-2">
         <Button onClick={onApprove} disabled={approve.isPending}>🟢 Aprovar</Button>
-        <Button variant="danger" onClick={() => reject.mutate(student.id)} disabled={reject.isPending}>
+        <Button variant="danger" onClick={onReject} disabled={reject.isPending}>
           🔴 Recusar
         </Button>
       </div>
@@ -173,8 +187,18 @@ const statusColor: Record<PaymentStatus, string> = {
 function FinanceTab({ teamId }: { teamId: string }) {
   const { data: rows, isLoading } = useFinanceGrid(teamId || undefined, new Date().getFullYear());
   const settle = useSettlePayment();
+  const toast = useToast();
 
-  if (isLoading) return <p className="text-on-surface-variant">Carregando...</p>;
+  if (isLoading) return <Loading />;
+
+  async function onSettle(id: string, name: string) {
+    try {
+      await settle.mutateAsync({ id, method: "Pix" });
+      toast.show(`Pagamento de ${name} baixado.`, "success");
+    } catch (err) {
+      toast.show(apiError(err), "error");
+    }
+  }
 
   return (
     <div className="overflow-x-auto">
@@ -195,8 +219,8 @@ function FinanceTab({ teamId }: { teamId: string }) {
                   <td key={i} className="p-1 text-center">
                     {p ? (
                       <button
-                        title={`${p.status} — R$ ${p.amount.toFixed(2)}`}
-                        onClick={() => p.status !== "Paid" && settle.mutate({ id: p.id, method: "Pix" })}
+                        title={`${p.status} — ${formatCurrency(p.amount)}`}
+                        onClick={() => p.status !== "Paid" && onSettle(p.id, row.fullName)}
                         className={`h-6 w-6 rounded-full ${statusColor[p.status]}`}
                       />
                     ) : <span className="text-on-surface-variant/40">–</span>}
@@ -205,7 +229,7 @@ function FinanceTab({ teamId }: { teamId: string }) {
               })}
             </tr>
           ))}
-          {rows?.length === 0 && <tr><td className="p-2 text-on-surface-variant" colSpan={13}>Nenhum aluno ativo.</td></tr>}
+          {rows?.length === 0 && <tr><td className="p-2" colSpan={13}><EmptyState message="Nenhum aluno ativo." /></td></tr>}
         </tbody>
       </table>
       <p className="mt-3 text-xs text-on-surface-variant">
@@ -219,6 +243,7 @@ function FinanceTab({ teamId }: { teamId: string }) {
 function TournamentsTab() {
   const { data: tournaments, isLoading } = useTournaments();
   const create = useCreateTournament();
+  const toast = useToast();
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
@@ -229,12 +254,13 @@ function TournamentsTab() {
     try {
       await create.mutateAsync({ title, eventDate: date });
       setTitle(""); setDate("");
+      toast.show("Campeonato criado!", "success");
     } catch (err) {
       setError(apiError(err));
     }
   }
 
-  if (isLoading) return <p className="text-on-surface-variant">Carregando...</p>;
+  if (isLoading) return <Loading />;
 
   return (
     <div>
@@ -253,7 +279,7 @@ function TournamentsTab() {
           <Card key={t.id}>
             <p className="font-medium">{t.title}</p>
             <p className="text-sm text-on-surface-variant">
-              {new Date(t.eventDate).toLocaleDateString("pt-BR")} · {t.categoryCount} categorias
+              {formatDate(t.eventDate)} · {t.categoryCount} categorias
             </p>
             <span className="mt-2 inline-block rounded-full bg-surface-container-high px-2 py-0.5 text-xs">
               {t.status}
@@ -263,7 +289,7 @@ function TournamentsTab() {
             </Button>
           </Card>
         ))}
-        {tournaments?.length === 0 && <p className="text-on-surface-variant">Nenhum campeonato.</p>}
+        {tournaments?.length === 0 && <EmptyState message="Nenhum campeonato criado." />}
       </div>
 
       {selected && <TournamentDetail tournament={selected} onClose={() => setSelected(null)} />}
