@@ -9,6 +9,8 @@ import { Button, Card, Input } from "../components/ui";
 import { Loading, EmptyState } from "../components/States";
 import { useToast } from "../components/Toast";
 import { formatDate, formatCurrency } from "../lib/format";
+import { whatsappChargeUrl, whatsappContactUrl } from "../lib/whatsapp";
+import { MessageCircle } from "lucide-react";
 import type { BeltType, PaymentStatus, StudentDto, TournamentDto } from "../api/types";
 import TournamentDetail from "./TournamentDetail";
 
@@ -77,14 +79,21 @@ function StudentsTab({ teamId }: { teamId: string }) {
 }
 
 function StudentCard({ s }: { s: StudentDto }) {
+  const waUrl = whatsappContactUrl(s.phone);
   return (
     <Card className="flex items-center gap-3">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-container-high">🥋</div>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <p className="truncate font-medium">{s.fullName}</p>
         <p className="text-sm text-on-surface-variant">Faixa {s.belt} · {s.degrees} graus</p>
         <p className="text-xs text-on-surface-variant">{s.teamName} · vence dia {s.dueDay}</p>
       </div>
+      {waUrl && (
+        <a href={waUrl} target="_blank" rel="noopener noreferrer" title="WhatsApp"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-status-paid text-white">
+          <MessageCircle className="h-4 w-4" />
+        </a>
+      )}
     </Card>
   );
 }
@@ -207,29 +216,50 @@ function FinanceTab({ teamId }: { teamId: string }) {
           <tr className="text-left text-on-surface-variant">
             <th className="p-2">Aluno</th>
             {monthNames.map((m) => <th key={m} className="p-1 text-center">{m}</th>)}
+            <th className="p-1 text-center">Ações</th>
           </tr>
         </thead>
         <tbody>
-          {rows?.map((row) => (
-            <tr key={row.studentId} className="border-t border-outline-variant/30">
-              <td className="p-2 font-medium">{row.fullName}</td>
-              {monthNames.map((_, i) => {
-                const p = row.payments.find((x) => x.month === i + 1);
-                return (
-                  <td key={i} className="p-1 text-center">
-                    {p ? (
-                      <button
-                        title={`${p.status} — ${formatCurrency(p.amount)}`}
-                        onClick={() => p.status !== "Paid" && onSettle(p.id, row.fullName)}
-                        className={`h-6 w-6 rounded-full ${statusColor[p.status]}`}
-                      />
-                    ) : <span className="text-on-surface-variant/40">–</span>}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-          {rows?.length === 0 && <tr><td className="p-2" colSpan={13}><EmptyState message="Nenhum aluno ativo." /></td></tr>}
+          {rows?.map((row) => {
+            // Primeiro pagamento em aberto (atrasado ou a vencer) para a cobrança.
+            const pendingPayment = row.payments.find((p) => p.status === "Overdue" || p.status === "Pending");
+            const waUrl = pendingPayment
+              ? whatsappChargeUrl(row.phone, row.fullName, monthNames[pendingPayment.month - 1], pendingPayment.amount)
+              : null;
+            return (
+              <tr key={row.studentId} className="border-t border-outline-variant/30">
+                <td className="p-2 font-medium">{row.fullName}</td>
+                {monthNames.map((_, i) => {
+                  const p = row.payments.find((x) => x.month === i + 1);
+                  return (
+                    <td key={i} className="p-1 text-center">
+                      {p ? (
+                        <button
+                          title={`${p.status} — ${formatCurrency(p.amount)}`}
+                          onClick={() => p.status !== "Paid" && onSettle(p.id, row.fullName)}
+                          className={`h-6 w-6 rounded-full ${statusColor[p.status]}`}
+                        />
+                      ) : <span className="text-on-surface-variant/40">–</span>}
+                    </td>
+                  );
+                })}
+                <td className="p-1 text-center">
+                  {waUrl ? (
+                    <a
+                      href={waUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Cobrar via WhatsApp"
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-status-paid text-white"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                    </a>
+                  ) : <span className="text-on-surface-variant/40">–</span>}
+                </td>
+              </tr>
+            );
+          })}
+          {rows?.length === 0 && <tr><td className="p-2" colSpan={14}><EmptyState message="Nenhum aluno ativo." /></td></tr>}
         </tbody>
       </table>
       <p className="mt-3 text-xs text-on-surface-variant">
