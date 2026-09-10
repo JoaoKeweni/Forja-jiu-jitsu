@@ -1,0 +1,6 @@
+@Forja.Api_HostAddress = http://localhost:5063
+
+GET {{Forja.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

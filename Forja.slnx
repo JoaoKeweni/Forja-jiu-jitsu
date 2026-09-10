@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/Forja.Api/Forja.Api.csproj" />
+  </Folder>
+</Solution>
