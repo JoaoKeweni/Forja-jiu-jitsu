@@ -67,7 +67,10 @@ await using (var scope = app.Services.CreateAsyncScope())
     try
     {
         var db = services.GetRequiredService<ForjaDbContext>();
-        await db.Database.MigrateAsync();
+        if (db.Database.IsRelational())
+        {
+            await db.Database.MigrateAsync();
+        }
         await DbSeeder.SeedAsync(db);
         logger.LogInformation("Banco migrado e populado com sucesso.");
     }
@@ -92,3 +95,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Expõe Program para os testes de integração (WebApplicationFactory).
+public partial class Program { }
