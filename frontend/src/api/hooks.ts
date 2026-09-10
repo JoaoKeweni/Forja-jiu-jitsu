@@ -13,6 +13,21 @@ export function useMyTeams() {
   });
 }
 
+export interface ProfessorDashboard {
+  activeStudents: number;
+  pendingApprovals: number;
+  overduePayments: number;
+  adimplenciaPercent: number;
+  upcomingTournaments: number;
+}
+
+export function useProfessorDashboard() {
+  return useQuery({
+    queryKey: ["professor", "dashboard"],
+    queryFn: async () => (await api.get<ProfessorDashboard>(`/professor/dashboard`)).data,
+  });
+}
+
 // ── Alunos (professor) ──
 export function useStudents(teamId?: string, status?: string) {
   return useQuery({

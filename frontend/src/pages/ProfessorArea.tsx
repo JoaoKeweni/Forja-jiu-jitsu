@@ -3,7 +3,7 @@ import { useAuth } from "../auth/AuthContext";
 import {
   useStudents, usePendingStudents, useApproveStudent, useRejectStudent,
   useFinanceGrid, useSettlePayment, useTournaments, useCreateTournament, useMyTeams,
-  useUpdateStudent,
+  useUpdateStudent, useProfessorDashboard,
 } from "../api/hooks";
 import { apiError } from "../api/client";
 import { Button, Card, Input } from "../components/ui";
@@ -15,11 +15,11 @@ import { MessageCircle, Search, Pencil } from "lucide-react";
 import type { BeltType, PaymentStatus, StudentDto, TournamentDto } from "../api/types";
 import TournamentDetail from "./TournamentDetail";
 
-type Tab = "alunos" | "aprovacao" | "financeiro" | "campeonatos";
+type Tab = "dashboard" | "alunos" | "aprovacao" | "financeiro" | "campeonatos";
 
 export default function ProfessorArea() {
   const { logout } = useAuth();
-  const [tab, setTab] = useState<Tab>("alunos");
+  const [tab, setTab] = useState<Tab>("dashboard");
   // Seletor de equipe (RN-02): "" = todas as equipes do professor.
   const [teamId, setTeamId] = useState<string>("");
 
@@ -46,7 +46,7 @@ export default function ProfessorArea() {
       </header>
 
       <nav className="mb-4 flex gap-2 overflow-x-auto">
-        {(["alunos", "aprovacao", "financeiro", "campeonatos"] as Tab[]).map((t) => (
+        {(["dashboard", "alunos", "aprovacao", "financeiro", "campeonatos"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -59,10 +59,39 @@ export default function ProfessorArea() {
         ))}
       </nav>
 
+      {tab === "dashboard" && <DashboardTab onGoTo={setTab} />}
       {tab === "alunos" && <StudentsTab teamId={teamId} />}
       {tab === "aprovacao" && <ApprovalTab />}
       {tab === "financeiro" && <FinanceTab teamId={teamId} />}
       {tab === "campeonatos" && <TournamentsTab />}
+    </div>
+  );
+}
+
+// ── Dashboard (ADM-01) ──
+function DashboardTab({ onGoTo }: { onGoTo: (t: Tab) => void }) {
+  const { data, isLoading } = useProfessorDashboard();
+  if (isLoading) return <Loading />;
+  if (!data) return <EmptyState message="Sem dados." />;
+
+  return (
+    <div>
+      {data.pendingApprovals > 0 && (
+        <button onClick={() => onGoTo("aprovacao")}
+          className="mb-4 w-full rounded-xl bg-status-pending/20 px-4 py-3 text-left text-sm text-status-pending">
+          🔔 {data.pendingApprovals} aluno(s) aguardando aprovação nesta equipe. Ver fila →
+        </button>
+      )}
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Card><p className="text-sm text-on-surface-variant">Alunos ativos</p>
+          <p className="text-2xl font-bold">{data.activeStudents}</p></Card>
+        <Card><p className="text-sm text-on-surface-variant">Adimplência</p>
+          <p className="text-2xl font-bold text-status-paid">{data.adimplenciaPercent}%</p></Card>
+        <Card><p className="text-sm text-on-surface-variant">Mensalidades atrasadas</p>
+          <p className="text-2xl font-bold text-status-late">{data.overduePayments}</p></Card>
+        <Card><p className="text-sm text-on-surface-variant">Próximos campeonatos</p>
+          <p className="text-2xl font-bold">{data.upcomingTournaments}</p></Card>
+      </div>
     </div>
   );
 }
