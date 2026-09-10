@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Forja.Api.Data.Migrations
 {
     [DbContext(typeof(ForjaDbContext))]
-    [Migration("20260910002515_InitialCreate")]
+    [Migration("20260910011921_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -31,31 +31,39 @@ namespace Forja.Api.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("Address")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("address");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("phone");
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("slug");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_academies");
 
                     b.HasIndex("Slug")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_academies_slug");
 
                     b.ToTable("academies", (string)null);
                 });
@@ -63,22 +71,28 @@ namespace Forja.Api.Data.Migrations
             modelBuilder.Entity("Forja.Api.Domain.CategoryEnrollment", b =>
                 {
                     b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("category_id");
 
                     b.Property<Guid>("StudentId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("student_id");
 
                     b.Property<DateTime>("EnrolledAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("enrolled_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<bool>("WeighedIn")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("weighed_in");
 
-                    b.HasKey("CategoryId", "StudentId");
+                    b.HasKey("CategoryId", "StudentId")
+                        .HasName("pk_category_enrollments");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentId")
+                        .HasDatabaseName("ix_category_enrollments_student_id");
 
                     b.ToTable("category_enrollments", (string)null);
                 });
@@ -88,48 +102,63 @@ namespace Forja.Api.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("category_id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<Guid?>("Fighter1Id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("fighter1_id");
 
                     b.Property<Guid?>("Fighter2Id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("fighter2_id");
 
                     b.Property<string>("RoundName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("round_name");
 
                     b.Property<string>("Score")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("score");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<string>("VictoryType")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("victory_type");
 
                     b.Property<Guid?>("WinnerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("winner_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_matches");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_matches_category_id");
 
-                    b.HasIndex("Fighter1Id");
+                    b.HasIndex("Fighter1Id")
+                        .HasDatabaseName("ix_matches_fighter1_id");
 
-                    b.HasIndex("Fighter2Id");
+                    b.HasIndex("Fighter2Id")
+                        .HasDatabaseName("ix_matches_fighter2_id");
 
-                    b.HasIndex("WinnerId");
+                    b.HasIndex("WinnerId")
+                        .HasDatabaseName("ix_matches_winner_id");
 
                     b.ToTable("matches", (string)null);
                 });
@@ -139,49 +168,64 @@ namespace Forja.Api.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("amount");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<DateOnly>("DueDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("due_date");
 
                     b.Property<string>("Method")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("method");
 
                     b.Property<int>("Month")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("month");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("notes");
 
                     b.Property<DateTime?>("PaidAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("paid_at");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<Guid>("StudentId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("student_id");
 
                     b.Property<int>("Year")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("year");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_payments");
 
-                    b.HasIndex("Status");
+                    b.HasIndex("Status")
+                        .HasDatabaseName("ix_payments_status");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentId")
+                        .HasDatabaseName("ix_payments_student_id");
 
                     b.HasIndex("StudentId", "Month", "Year")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_payments_student_id_month_year");
 
                     b.ToTable("payments", null, t =>
                         {
@@ -194,14 +238,18 @@ namespace Forja.Api.Data.Migrations
             modelBuilder.Entity("Forja.Api.Domain.ProfessorTeam", b =>
                 {
                     b.Property<Guid>("ProfessorId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("professor_id");
 
                     b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("team_id");
 
-                    b.HasKey("ProfessorId", "TeamId");
+                    b.HasKey("ProfessorId", "TeamId")
+                        .HasName("pk_professor_teams");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("TeamId")
+                        .HasDatabaseName("ix_professor_teams_team_id");
 
                     b.ToTable("professor_teams", (string)null);
                 });
@@ -211,39 +259,49 @@ namespace Forja.Api.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("AvatarUrl")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("avatar_url");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("email");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("full_name");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("password_hash");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("phone");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("role");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_profiles");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_profiles_email");
 
                     b.ToTable("profiles", (string)null);
                 });
@@ -251,40 +309,52 @@ namespace Forja.Api.Data.Migrations
             modelBuilder.Entity("Forja.Api.Domain.Student", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<Guid>("AcademyId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("academy_id");
 
                     b.Property<string>("Belt")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("belt");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<int>("Degrees")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("degrees");
 
                     b.Property<int>("DueDay")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("due_day");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("team_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_students");
 
-                    b.HasIndex("AcademyId");
+                    b.HasIndex("AcademyId")
+                        .HasDatabaseName("ix_students_academy_id");
 
-                    b.HasIndex("Status");
+                    b.HasIndex("Status")
+                        .HasDatabaseName("ix_students_status");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("TeamId")
+                        .HasDatabaseName("ix_students_team_id");
 
                     b.ToTable("students", null, t =>
                         {
@@ -299,26 +369,33 @@ namespace Forja.Api.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<Guid>("AcademyId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("academy_id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<string>("Schedule")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("schedule");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_teams");
 
-                    b.HasIndex("AcademyId");
+                    b.HasIndex("AcademyId")
+                        .HasDatabaseName("ix_teams_academy_id");
 
                     b.ToTable("teams", (string)null);
                 });
@@ -328,39 +405,50 @@ namespace Forja.Api.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<Guid>("AcademyId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("academy_id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<DateOnly>("EventDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("event_date");
 
                     b.Property<string>("Location")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("location");
 
                     b.Property<string>("Rules")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("rules");
 
                     b.Property<TimeOnly?>("StartTime")
-                        .HasColumnType("time without time zone");
+                        .HasColumnType("time without time zone")
+                        .HasColumnName("start_time");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("title");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_tournaments");
 
-                    b.HasIndex("AcademyId");
+                    b.HasIndex("AcademyId")
+                        .HasDatabaseName("ix_tournaments_academy_id");
 
                     b.ToTable("tournaments", (string)null);
                 });
@@ -370,38 +458,48 @@ namespace Forja.Api.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("AgeGroup")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("age_group");
 
                     b.Property<string>("Belt")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("belt");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("now()");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("gender");
 
                     b.Property<decimal?>("MaxWeight")
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("max_weight");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("title");
 
                     b.Property<Guid>("TournamentId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("tournament_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_tournament_categories");
 
-                    b.HasIndex("TournamentId");
+                    b.HasIndex("TournamentId")
+                        .HasDatabaseName("ix_tournament_categories_tournament_id");
 
                     b.ToTable("tournament_categories", (string)null);
                 });
@@ -412,13 +510,15 @@ namespace Forja.Api.Data.Migrations
                         .WithMany("Enrollments")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_category_enrollments_tournament_categories_category_id");
 
                     b.HasOne("Forja.Api.Domain.Student", "Student")
                         .WithMany("CategoryEnrollments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_category_enrollments_students_student_id");
 
                     b.Navigation("Category");
 
@@ -431,22 +531,26 @@ namespace Forja.Api.Data.Migrations
                         .WithMany("Matches")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_matches_tournament_categories_category_id");
 
                     b.HasOne("Forja.Api.Domain.Student", "Fighter1")
                         .WithMany()
                         .HasForeignKey("Fighter1Id")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_matches_students_fighter1_id");
 
                     b.HasOne("Forja.Api.Domain.Student", "Fighter2")
                         .WithMany()
                         .HasForeignKey("Fighter2Id")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_matches_students_fighter2_id");
 
                     b.HasOne("Forja.Api.Domain.Student", "Winner")
                         .WithMany()
                         .HasForeignKey("WinnerId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_matches_students_winner_id");
 
                     b.Navigation("Category");
 
@@ -463,7 +567,8 @@ namespace Forja.Api.Data.Migrations
                         .WithMany("Payments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_payments_students_student_id");
 
                     b.Navigation("Student");
                 });
@@ -474,13 +579,15 @@ namespace Forja.Api.Data.Migrations
                         .WithMany("ProfessorTeams")
                         .HasForeignKey("ProfessorId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_professor_teams_profiles_professor_id");
 
                     b.HasOne("Forja.Api.Domain.Team", "Team")
                         .WithMany("ProfessorTeams")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_professor_teams_teams_team_id");
 
                     b.Navigation("Professor");
 
@@ -493,19 +600,22 @@ namespace Forja.Api.Data.Migrations
                         .WithMany("Students")
                         .HasForeignKey("AcademyId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_students_academies_academy_id");
 
                     b.HasOne("Forja.Api.Domain.Profile", "Profile")
                         .WithOne("Student")
                         .HasForeignKey("Forja.Api.Domain.Student", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_students_profiles_id");
 
                     b.HasOne("Forja.Api.Domain.Team", "Team")
                         .WithMany("Students")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_students_teams_team_id");
 
                     b.Navigation("Academy");
 
@@ -520,7 +630,8 @@ namespace Forja.Api.Data.Migrations
                         .WithMany("Teams")
                         .HasForeignKey("AcademyId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_teams_academies_academy_id");
 
                     b.Navigation("Academy");
                 });
@@ -531,7 +642,8 @@ namespace Forja.Api.Data.Migrations
                         .WithMany("Tournaments")
                         .HasForeignKey("AcademyId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_tournaments_academies_academy_id");
 
                     b.Navigation("Academy");
                 });
@@ -542,7 +654,8 @@ namespace Forja.Api.Data.Migrations
                         .WithMany("Categories")
                         .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_tournament_categories_tournaments_tournament_id");
 
                     b.Navigation("Tournament");
                 });

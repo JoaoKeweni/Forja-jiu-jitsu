@@ -160,5 +160,43 @@ public class ForjaDbContext(DbContextOptions<ForjaDbContext> options) : DbContex
             e.HasOne(x => x.Winner).WithMany()
                 .HasForeignKey(x => x.WinnerId).OnDelete(DeleteBehavior.SetNull);
         });
+
+        // Padroniza colunas, chaves e índices em snake_case (as tabelas já são snake_case).
+        // Isso mantém as check constraints (ex.: "degrees >= 0") coerentes com os nomes das colunas.
+        foreach (var entity in b.Model.GetEntityTypes())
+        {
+            foreach (var property in entity.GetProperties())
+                property.SetColumnName(ToSnakeCase(property.Name));
+
+            foreach (var key in entity.GetKeys())
+                key.SetName(ToSnakeCase(key.GetName()!));
+
+            foreach (var fk in entity.GetForeignKeys())
+                fk.SetConstraintName(ToSnakeCase(fk.GetConstraintName()!));
+
+            foreach (var index in entity.GetIndexes())
+                index.SetDatabaseName(ToSnakeCase(index.GetDatabaseName()!));
+        }
+    }
+
+    private static string ToSnakeCase(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return name;
+        var sb = new System.Text.StringBuilder(name.Length + 8);
+        for (var i = 0; i < name.Length; i++)
+        {
+            var c = name[i];
+            if (char.IsUpper(c))
+            {
+                if (i > 0 && (char.IsLower(name[i - 1]) || (i + 1 < name.Length && char.IsLower(name[i + 1]))))
+                    sb.Append('_');
+                sb.Append(char.ToLowerInvariant(c));
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+        return sb.ToString();
     }
 }
